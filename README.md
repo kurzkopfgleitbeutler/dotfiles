@@ -1,9 +1,5 @@
 # dotfiles
 
-These are meant to go in
-
-	~/.config/0_myconf/
-
-and symlinked in
-  
-	~
+	mkdir -p ~/yourbasehere/.config
+	git clone https://github.com/kurzkopfgleitbeutler/dotfiles ~/yourbasehere/.config
+	~/yourbasehere/.config/setup.sh
