@@ -1,0 +1,22 @@
+# http://stackoverflow.com/a/987162/3553458
+# Ignore everything
+*
+
+# But not these files...
+
+!.gitignore
+
+!bash/.bashrc
+!bash/.bash_aliases
+!bash/.bash_setenv
+!bash/.inputrc
+
+!emacs/emacs.org
+
+!git/.gitconfig
+
+!vi/.vimrc
+!vi/nvim/init.vim
+
+# ...even if they are in subdirectories
+!*/
