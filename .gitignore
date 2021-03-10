@@ -6,6 +6,7 @@
 
 !.gitignore
 !setup.sh
+!.profile
 
 !bash/.bashrc
 !bash/.bash_aliases
