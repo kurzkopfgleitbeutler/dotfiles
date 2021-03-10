@@ -9,6 +9,7 @@ scope () {
 
     bashrc="~/.bashrc"
     bashaliases="~/.bash_aliases"
+    bashfunctions="~/.bash_functions"
     bashenv="~/.bash_setenv"
     inputrc="~/.inputrc"
 
@@ -55,6 +56,7 @@ scope () {
 	trylink bash/.bashrc $bashrc
 	# the following only need to be done if $base is unset
 	#trylink bash/.bash_aliases $bashaliases
+	#trylink bash/.bash_functions $bashfunctions
 	#trylink bash/.bash_setenv $bashenv
 	#trylink bash/.inputrc $inputrc
 

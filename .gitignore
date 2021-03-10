@@ -10,6 +10,7 @@
 
 !bash/.bashrc
 !bash/.bash_aliases
+!bash/.bash_functions
 !bash/.bash_setenv
 !bash/.inputrc
 
