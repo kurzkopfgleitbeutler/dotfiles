@@ -53,9 +53,10 @@ scope () {
 
 	# bash
 	trylink bash/.bashrc $bashrc
-	trylink bash/.bash_aliases $bashaliases
-	trylink bash/.bash_setenv $bashenv
-	trylink bash/.inputrc $inputrc
+	# the following only need to be done if $base is unset
+	#trylink bash/.bash_aliases $bashaliases
+	#trylink bash/.bash_setenv $bashenv
+	#trylink bash/.inputrc $inputrc
 
 	# emacs
 	trylink emacs/init.el $emacsinit
