@@ -5,6 +5,8 @@ scope () {
     script_name="$(basename "$0")"
     logfile_name="log.txt"
 
+    profile="~/.profile"
+
     bashrc="~/.bashrc"
     bashaliases="~/.bash_aliases"
     bashenv="~/.bash_setenv"
@@ -16,15 +18,11 @@ scope () {
     gitconfig="~/.gitconfig"
 
     vimrc="~/.vimrc"
-    nviminit=""
+    nviminit="~/.config/nvim/init.vim"
 
     hello () {
-	printf "%b\n" "\n" | tee -a $logfile_name
-	date -Iseconds | tee -a $logfile_name
-	printf "%b\n" "Symlink configuration files in appropriate places" | tee -a $logfile_name
-	printf "%b\n" "HOME is $HOME" | tee -a $logfile_name
-	printf "%b\n" "current working directory is $script_path" | tee -a $logfile_name
-	printf "%b\n" "script name is $script_name" | tee -a $logfile_name
+	printf "%b\n" "\n$(date -Iseconds) symlink configuration files in appropriate places" | tee -a $logfile_name
+	printf "%b\n" "$script_path/$script_name" | tee -a $logfile_name
     }
 
     trylink () {
@@ -50,13 +48,13 @@ scope () {
 	hello
 
 	# set environment variables
-	# export base="$script_path"
+	trylink .profile $profile
+	if [ "$fail" != "$profile" ]; then sed -i "1i export base=\'$script_path\'" $bashrc; fi # prepend environment variable dynamically, only if trylinking worked
 
 	# bash
 	trylink bash/.bashrc $bashrc
 	trylink bash/.bash_aliases $bashaliases
 	trylink bash/.bash_setenv $bashenv
-	if [ "$fail" != "$bashenv" ]; then sed -i "1i export base=$script_path" $bashenv; fi # prepend environment variable dynamically, only if trylinking worked
 	trylink bash/.inputrc $inputrc
 
 	# emacs
@@ -65,6 +63,7 @@ scope () {
 
 	# vi
 	trylink vi/.vimrc $vimrc
+	trylink vi/nvim/init.vim $nviminit
 
 	# notify of failures
 	printf "%b\n" "grep 'ERROR:' $logfile_name"
