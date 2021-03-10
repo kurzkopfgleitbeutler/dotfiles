@@ -62,6 +62,9 @@ scope () {
 	trylink emacs/init.el $emacsinit
 	trylink emacs/site-start.el $emacssitestart
 
+	# git
+	trylink git/.gitconfig $gitconfig
+
 	# vi
 	trylink vi/.vimrc $vimrc
 	trylink vi/nvim/init.vim $nviminit
