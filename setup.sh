@@ -3,7 +3,7 @@ scope () {
 
     script_path="$(dirname "$(readlink -e -- "$0")")"
     script_name="$(basename "$0")"
-    logfile_name="log.txt"
+    logfile_name="$(date -Iseconds)_setup_log.txt"
 
     profile="~/.profile"
 
@@ -22,8 +22,8 @@ scope () {
     nviminit="~/.config/nvim/init.vim"
 
     hello () {
-	printf "%b\n" "\n$(date -Iseconds) symlink configuration files in appropriate places" | tee -a $logfile_name
 	printf "%b\n" "$script_path/$script_name" | tee -a $logfile_name
+	printf "%b\n" "Symlink configuration files in appropriate places" | tee -a $logfile_name
     }
 
     trylink () {
@@ -50,18 +50,33 @@ scope () {
 
 	# set environment variables
 	trylink .profile $profile
-	if [ "$fail" != "$profile" ]; then sed -i "1i export base=\'$script_path\'" $bashrc; fi # prepend environment variable dynamically, only if trylinking worked
+	# prepend environment variable dynamically, only if trylinking worked, and it’s not already set
+	if [ "$fail" != "$profile" ]
+	then
+	    if [ -z "$base" ]
+	    then
+		printf "%b\n" "file $profile : export base=\'$script_path\'" | tee -a $logfile_name
+		sed -i "1i export base=\'$script_path\'" $profile
+	    else
+		printf "%b\n" "ERROR: environment variable 'base' is already set, not prepending its definition to $profile" | tee -a $logfile_name
+	    fi
+	fi
 
 	# bash
 	trylink bash/.bashrc $bashrc
-	# the following only need to be done if $base is unset
-	#trylink bash/.bash_aliases $bashaliases
-	#trylink bash/.bash_functions $bashfunctions
-	#trylink bash/.bash_setenv $bashenv
-	#trylink bash/.inputrc $inputrc
+	# only need linking in HOME if $base is unset
+	if [ -z "$base" ]
+	then
+	    printf "%b\n" "no environment variable 'base', linking all bash files in HOME" | tee -a $logfile_name
+	    trylink bash/.bash_aliases $bashaliases
+	    trylink bash/.bash_functions $bashfunctions
+	    trylink bash/.bash_setenv $bashenv
+	    trylink bash/.inputrc $inputrc
+	fi
 
 	# emacs
 	trylink emacs/init.el $emacsinit
+	# setuid fuer admin Rechte
 	trylink emacs/site-start.el $emacssitestart
 
 	# git
