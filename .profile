@@ -1,3 +1,9 @@
+#export my_emacs_user_full_name=""
+#export my_emacs_user_mail_address=""
+#export my_emacs_my_org_directory=""
+#export my_emacs_my_emms_source_file_default_directory=""
+#export my_emacs_projects_dired_symlink=""
+#export my_base=""
 # ~/.profile: executed by the command interpreter for login shells.
 # This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
 # exists.
@@ -25,7 +31,7 @@ fi
 
 # include Telegram
 if [ -d "$HOME/apps/Telegram" ] ; then
-	PATH="$PATH:$HOME/apps/Telegram"
+    PATH="$PATH:$HOME/apps/Telegram"
 fi
 
 export PATH="$HOME/.cargo/bin:$PATH"
@@ -33,5 +39,5 @@ export PATH="$HOME/.cargo/bin:$PATH"
 # https://askubuntu.com/questions/60218/how-to-add-a-directory-to-the-path
 # `$ pip3 install wheel --upgrade` leads to "The script wheel is installed in '~/.local/bin' which is not on PATH. Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location."
 if [ -d "$HOME/.local/bin" ] ; then
-	PATH="$HOME/.local/bin:$PATH"
+    PATH="$HOME/.local/bin:$PATH"
 fi
