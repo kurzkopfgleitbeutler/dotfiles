@@ -17,24 +17,24 @@ shopt -s autocd cdspell checkwinsize dirspell dotglob histappend nocaseglob
 
 # Aliases
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
-if [ -f "$base/bash/.bash_aliases" ]; then
-    source "$base/bash/.bash_aliases"
+if [ -f "$my_base/bash/.bash_aliases" ]; then
+    source "$my_base/bash/.bash_aliases"
 elif [ -f "$HOME/.bash_aliases" ]; then
     source "$HOME/.bash_aliases"
 fi
 
 # Environment Variables
 #
-if [ -f "$base/bash/.bash_setenv" ]; then
-    source "$base/bash/.bash_setenv"
+if [ -f "$my_base/bash/.bash_setenv" ]; then
+    source "$my_base/bash/.bash_setenv"
 elif [ -f "$HOME/.bash_setenv" ]; then
     source "$HOME/.bash_setenv"
 fi
 
 # Functions
 #
-if [ -f "$base/bash/.bash_functions" ]; then
-    source "$base/bash/.bash_functions"
+if [ -f "$my_base/bash/.bash_functions" ]; then
+    source "$my_base/bash/.bash_functions"
 elif [ -f "$HOME/.bash_functions" ]; then
     source "$HOME/.bash_functions"
 fi
@@ -95,25 +95,25 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 # customize tab completion
 #
-if [ -f "$base/bash/.inputrc" ]; then
-    source "$base/bash/.inputrc"
+if [ -f "$my_base/bash/.inputrc" ]; then
+    source "$my_base/bash/.inputrc"
 elif [ -f "$HOME/.inputrc" ]; then
     source "$HOME/.inputrc"
 fi
 # Git Bash Completions
 #
-if [ -f "$base/bash/git-completion.bash" ]; then
-    source "$base/bash/git-completion.bash"
+if [ -f "$my_base/bash/git-completion.bash" ]; then
+    source "$my_base/bash/git-completion.bash"
 elif [ -f "$HOME/git-completion.bash" ]; then
     source "$HOME/git-completion.bash"
 fi
 # Rust Bash Completions
 #
-if [ -f "$base/bash/bash-completion/rustup" ]; then
-    source "$base/bash/bash-completion/rustup"
+if [ -f "$my_base/bash/bash-completion/rustup" ]; then
+    source "$my_base/bash/bash-completion/rustup"
 fi
-if [ -f "$base/bash/bash-completion/cargo" ]; then
-    source "$base/bash/bash-completion/cargo"
+if [ -f "$my_base/bash/bash-completion/cargo" ]; then
+    source "$my_base/bash/bash-completion/cargo"
 fi
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
