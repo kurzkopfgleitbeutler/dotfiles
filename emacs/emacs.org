@@ -1,6 +1,6 @@
 * literate emacs init
 :PROPERTIES:
-:Time-stamp: <2021-05-05T18:27:49>
+:Time-stamp: <2021-05-05T18:57:54>
 :header-args+: :results silent :mkdirp yes
 :END:
 ** About
@@ -63,6 +63,8 @@ https://stackoverflow.com/a/547451
 #+end_src
 
 *** environment
+Set all paths via environment variables in .profile, since that allows
+us to easily filter possibly infringing directory structures with [[https://wiki.archlinux.org/title/Git#Filtering_confidential_information][git filters]]:
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (cond ((eq system-type 'gnu/linux)
 	 (setq user-full-name (getenv "emacs_user_full_name")

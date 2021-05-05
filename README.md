@@ -4,4 +4,11 @@
 	git clone https://github.com/kurzkopfgleitbeutler/dotfiles ~/yourbasehere/.config
 	~/yourbasehere/.config/setup.sh
 
-https://wiki.archlinux.org/title/Git#Filtering_confidential_information
+~/yourbasehere/.config/.gitattributes:
+
+	.profile filter=clean-env
+
+~/yourbasehere/.config/.git/config:
+
+	[filter "clean-env"]
+		clean = "sed -E 's/^(export my_[^\"]*\")[^\"]*/#\\1/'"
