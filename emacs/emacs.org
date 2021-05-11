@@ -1,6 +1,6 @@
 * literate emacs init
 :PROPERTIES:
-:Time-stamp: <2021-05-05T18:57:54>
+:Time-stamp: <2021-05-07T09:34:37>
 :header-args+: :results silent :mkdirp yes
 :END:
 ** About
@@ -852,11 +852,56 @@ See info for format-time-string
 http://endlessparentheses.com/new-in-emacs-25-1-have-prettify-symbols-mode-reveal-the-symbol-at-point.html
 
 **** fonts
-Fantasque Sans Mono, Fira Code, Hack, Input Mono Compressed, Input Serif, Monoid
+#+name: font-playground
+#+begin_src emacs-lisp
+;; Averia Serif Libre, DejaVu Sans Mono, Fantasque Sans Mono, Fira
+;; Code, Hack, Input Mono Compressed, Input Serif, Monoid,
+;; OpenDyslexic[Mono]
+(setq myfont "Fantasque Sans Mono")
+
+(with-eval-after-load "org"
+
+  (when (member myfont (font-family-list))
+    (set-face-font 'default myfont)
+    ;; (set-face-font 'org-level-1 myfont)
+    ;; (set-face-font 'org-level-2 myfont)
+    ;; (set-face-font 'org-level-3 myfont)
+    ;; (set-face-font 'org-level-4 myfont)
+    ;; (set-face-font 'org-level-5 myfont)
+    ;; (set-face-font 'org-level-6 myfont)
+    ;; (set-face-font 'org-level-7 myfont)
+    ;; (set-face-font 'org-level-8 myfont)
+    (set-face-attribute 'org-level-1 nil :family myfont)
+    (set-face-attribute 'org-level-2 nil :family myfont)
+    (set-face-attribute 'org-level-3 nil :family myfont)
+    (set-face-attribute 'org-level-4 nil :family myfont)
+    (set-face-attribute 'org-level-5 nil :family myfont)
+    (set-face-attribute 'org-level-6 nil :family myfont)
+    (set-face-attribute 'org-level-7 nil :family myfont)
+    (set-face-attribute 'org-level-8 nil :family myfont)
+    )
+
+  )
+#+end_src
+
 #+begin_src emacs-lisp :tangle init.el
-(when (member "Fantasque Sans Mono" (font-family-list))
-  (add-to-list 'default-frame-alist
-	       '(font . "Fantasque Sans Mono")))
+(setq myfont "Fantasque Sans Mono")
+
+(when (member myfont (font-family-list))
+  (set-face-font 'default myfont)
+    (set-face-attribute 'org-level-1 nil :family myfont)
+    (set-face-attribute 'org-level-2 nil :family myfont)
+    (set-face-attribute 'org-level-3 nil :family myfont)
+    (set-face-attribute 'org-level-4 nil :family myfont)
+    (set-face-attribute 'org-level-5 nil :family myfont)
+    (set-face-attribute 'org-level-6 nil :family myfont)
+    (set-face-attribute 'org-level-7 nil :family myfont)
+    (set-face-attribute 'org-level-8 nil :family myfont)
+)
+
+;; (when (member myfont (font-family-list))
+;;   (add-to-list 'default-frame-alist
+;; 	       '(font . "Fantasque Sans Mono")))
 
 ;; https://explog.in/notes/writingsetup.html
 ;(set-face-attribute 'default nil :family "DejaVu Sans Mono")
@@ -892,6 +937,61 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Fonts.html
 https://www.gnu.org/software/emacs/manual/html_node/efaq/How-to-add-fonts.html
 https://emacs.stackexchange.com/questions/3038/using-a-different-font-for-each-major-mode/3042#3042
 https://stackoverflow.com/questions/39859141/how-to-use-different-fonts-within-the-same-org-mode-buffer
+
+***** https://zzamboni.org/post/beautifying-org-mode-in-emacs/
+Headlines and lists:
+#+begin_src emacs-lisp
+(let* ((variable-tuple
+	(cond ((x-list-fonts "ETBembo") '(:font "ETBembo"))
+	      ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+	      ((x-list-fonts "Lucida Grande") '(:font "Lucida Grande"))
+	      ((x-list-fonts "Verdana") '(:font "Verdana"))
+	      ((x-list-fonts "Sans Serif") '(:font "Sans Serif"))
+	      (nil (warn "Cannot find a Sans Serif Font. Install Source Sans Pro."))))
+       (base-font-color (face-foreground 'default nil 'default))
+       (headline `(:inherit default :weight bold :foreground ,base-font-color)))
+  (custom-theme-set-faces
+   'user
+   `(org-level-8 ((t (,@headline ,@variable-tuple))))
+   `(org-level-7 ((t (,@headline ,@variable-tuple))))
+   `(org-level-6 ((t (,@headline ,@variable-tuple))))
+   `(org-level-5 ((t (,@headline ,@variable-tuple))))
+   `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
+   `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
+   `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
+   `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
+   `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
+#+end_src
+
+Pitch:
+#+begin_src emacs-lisp
+(custom-theme-set-faces
+ 'user
+ '(variable-pitch ((t (:family "ETBembo" :height 180 :weight thin))))
+ '(fixed-pitch ((t (:family "Fira Code Retina" :height 160)))))
+#+end_src
+
+#+begin_src emacs-lisp
+(add-hook 'org-mode-hook 'variable-pitch-mode)
+#+end_src
+
+Faces for elements:
+#+begin_src emacs-lisp
+(custom-theme-set-faces
+ 'user
+ '(org-block ((t (:inherit fixed-pitch))))
+ '(org-code ((t (:inherit (shadow fixed-pitch)))))
+ '(org-document-info ((t (:foreground "dark orange"))))
+ '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+ '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+ '(org-link ((t (:foreground "royal blue" :underline t))))
+ '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-property-value ((t (:inherit fixed-pitch))) t)
+ '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-table ((t  (:inherit fixed-pitch :foreground "#83a598"))))
+ '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+ '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
+#+end_src
 
 *** behaviour
 **** input method
