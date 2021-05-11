@@ -1,8 +1,9 @@
 #export my_emacs_user_full_name=""
 #export my_emacs_user_mail_address=""
-#export my_emacs_my_org_directory=""
-#export my_emacs_my_emms_source_file_default_directory=""
+#export my_emacs_org_directory=""
+#export my_emacs_emms_source_file_default_directory=""
 #export my_emacs_projects_dired_symlink=""
+#export my_emacs_projectile_searchpath=""
 #export my_base=""
 # ~/.profile: executed by the command interpreter for login shells.
 # This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
