@@ -1,6 +1,6 @@
 * literate emacs init
 :PROPERTIES:
-:Time-stamp: <2021-05-07T09:34:37>
+:Time-stamp: <2021-05-12T08:15:31>
 :header-args+: :results silent :mkdirp yes
 :END:
 ** About
@@ -30,28 +30,28 @@ As noted [[https://stackoverflow.com/questions/60464/changing-the-default-folder
 https://stackoverflow.com/a/547451
 
 #+BEGIN_SRC emacs-lisp :tangle site-start.el
-  (cond ((eq system-type 'gnu/linux)
-	 ;;(message "this is linux")
-	 (let ((base (concat (getenv "my_base") "/emacs/")))
-	   (setq user-emacs-directory (file-name-as-directory base)
-		 user-init-file (expand-file-name "init.el" user-emacs-directory)
-		 my-base-directory (file-name-as-directory base)
-		 )
-	   )
+(cond ((eq system-type 'gnu/linux)
+       ;;(message "this is linux")
+       (let ((base (concat (getenv "my_base") "/emacs/")))
+	 (setq user-emacs-directory (file-name-as-directory base)
+	       user-init-file (expand-file-name "init.el" user-emacs-directory)
+	       my-base-directory (file-name-as-directory base)
+	       )
 	 )
-	((eq system-type 'windows-nt)
-	 ;; (setq user-init-file (expand-file-name "test.el" user-emacs-directory))
-	 (setenv "HOME" "")
-	 (setenv "PATH"
-		 (concat
-		  "C:/Users/" ; python
-		  ";" "C:/Users/" ; git
-		  ";" "C:/Users/" ; node & npm
-		  ";" "C:/Users/" ; gnutls
-		  ;; ";" (getenv "PATH")))
-		  (setq exec-path (split-string (getenv "PATH") path-separator))))
-	 )
-	)
+       )
+      ((eq system-type 'windows-nt)
+       ;; (setq user-init-file (expand-file-name "test.el" user-emacs-directory))
+       (setenv "HOME" "")
+       (setenv "PATH"
+	       (concat
+		"C:/Users/" ; python
+		";" "C:/Users/" ; git
+		";" "C:/Users/" ; node & npm
+		";" "C:/Users/" ; gnutls
+		;; ";" (getenv "PATH")))
+		(setq exec-path (split-string (getenv "PATH") path-separator))))
+       )
+      )
 #+END_SRC
 
 ** init.el
@@ -66,18 +66,19 @@ https://stackoverflow.com/a/547451
 Set all paths via environment variables in .profile, since that allows
 us to easily filter possibly infringing directory structures with [[https://wiki.archlinux.org/title/Git#Filtering_confidential_information][git filters]]:
 #+BEGIN_SRC emacs-lisp :tangle init.el
-  (cond ((eq system-type 'gnu/linux)
-	 (setq user-full-name (getenv "emacs_user_full_name")
-	       user-mail-address (getenv "emacs_user_mail_address")
-	       my-org-directory (getenv "emacs_my_org_directory")
-	       my-emms-source-file-default-directory (getenv "emacs_my_emms_source_file_default_directory")
-	       my-projects-dired-symlink (getenv "emacs_projects_dired_symlink")
-	       ))
-	((eq system-type 'windows-nt)
-	 (setq user-full-name ""
-	       user-mail-address ""
-	       my-org-directory ""
-	       )))
+(cond ((eq system-type 'gnu/linux)
+       (setq user-full-name (getenv "my_emacs_user_full_name")
+	     user-mail-address (getenv "my_emacs_user_mail_address")
+	     my-org-directory (getenv "my_emacs_org_directory")
+	     my-emms-source-file-default-directory (getenv "my_emacs_emms_source_file_default_directory")
+	     my-projects-dired-symlink (getenv "my_emacs_projects_dired_symlink")
+	     my-projectile-search-path (getenv "my_emacs_projectile_searchpath")
+	     ))
+      ((eq system-type 'windows-nt)
+       (setq user-full-name ""
+	     user-mail-address ""
+	     my-org-directory ""
+	     )))
 #+END_SRC
 
 *** other files
@@ -519,21 +520,21 @@ https://ericjmritz.wordpress.com/2015/08/29/using-page-breaks-in-gnu-emacs/
 
 ***** projectile
 project management library:
-#+begin_src emacs-lisp :tangle no
-    (use-package projectile
-      :init
-      (projectile-mode +1)
-      :bind (:map projectile-mode-map
-		  ("s-p" . projectile-command-map)
-		  ("C-c p" . projectile-command-map))
+#+begin_src emacs-lisp :tangle init.el
+(use-package projectile
+  :init
+  (projectile-mode +1)
+  :bind (:map projectile-mode-map
+	      ("s-p" . projectile-command-map)
+	      ("C-c p" . projectile-command-map))
   :config
-  (setq projectile-project-search-path '()))
+  (setq projectile-project-search-path `(,(file-name-as-directory my-projectile-search-path))))
 #+end_src
 
 ***** hungry-delete
 Make backspace and C-d erase /all/ consecutive white space in a given
 direction:
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle init.el
   (use-package hungry-delete
     :init
     (global-hungry-delete-mode))
@@ -670,11 +671,32 @@ sudo apt install --install-suggests bitlbee-libpurple bitlbee-plugin-otr
 https://emacs-lsp.github.io/lsp-mode/page/installation/#use-package
 
 ***** which-key
-#+begin_src emacs-lisp init.el
+#+begin_src emacs-lisp :tangle init.el
 (use-package which-key
   :config
   (which-key-mode)
   (setq which-key-idle-delay 0.01))
+#+end_src
+
+***** company
+#+begin_src emacs-lisp :tangle no
+(use-package company
+  :config
+  (global-company-mode)
+  (setq company-dabbrev-downcase nil
+	company-idle-delay 0.01
+	company-minimum-prefix-length 1
+	company-selection-wrap-around t
+	)
+  (company-tng-mode)
+  )
+#+end_src
+
+so kriegt man zumindest eine rudimentaere, und fast nutzlose etags file:
+#+begin_src emacs-lisp
+(async-shell-command "find . -type f -name '*.cls' | etags -r '/.* static .*){.*/i' -")
+(async-shell-command "find . -type f -name '*.js' | etags -ar '/.*function.*/i' -")
+(visit-tags-table TAGS)
 #+end_src
 
 ***** not in repositories - from manually downloaded file
@@ -1428,7 +1450,6 @@ superword-mode does the opposite:
 (setq enable-recursive-minibuffers t)
 (minibuffer-depth-indicate-mode)
 #+end_src
-
 
 *** keybindings
 **** better defaults
