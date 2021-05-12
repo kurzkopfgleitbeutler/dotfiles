@@ -173,58 +173,118 @@ Load and configure packages:
     )
 #+END_SRC
 
-***** org
+***** org-mode
 So much to learn from [[http://sriramkswamy.github.io/dotemacs/#orgheadline11][here]].  Note that it is possible to make org
 [[https://orgmode.org/manual/Agenda-Files.html][maintain the org-agenda-files itself]].
 #+BEGIN_SRC emacs-lisp :tangle init.el
-  (use-package org
-    :bind
-    (("C-c l" . org-store-link)
-     ("C-c a" . org-agenda)
-     ("C-c c" . org-capture)
-     ("C-c b" . org-iswitchb))
-    :config
-    (setq ;org-startup-indented t ; clean view
-     org-indent-mode nil
-     ;; org-startup-folded 'children
-     org-adapt-indentation nil
-     org-hide-emphasis-markers t
-     org-hide-leading-stars t
-     system-time-locale "C" ; make timestamps appear in English
-     org-special-ctrl-a/e t
-     org-src-fontify-natively t ; syntax highlight code blocks
-     org-src-tab-acts-natively t
-     org-indent-indentation-per-level 1 ; https://explog.in/notes/writingsetup.html
-					  ; org-cycle-separator-lines 1
-     org-default-notes-file (expand-file-name "agenda.org" my-org-directory)
-     ;; org-modules (quote (org-habit
-     ;; org-crypt))
-     org-clock-persist 'history
-     org-hide-block-startup t
-     org-confirm-babel-evaluate nil
-     org-src-preserve-indentation t ; https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-makefile.html
-     org-startup-with-inline-images t
-     )
-    (org-clock-persistence-insinuate)
-    (calendar-set-date-style "iso")
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     '((emacs-lisp . t)
-       (shell . t)))
-    (cond ((eq system-type 'gnu/linux)
-	   (setq org-directory my-org-directory
-		 org-agenda-files (list
-				   (expand-file-name "agenda.org" my-org-directory)
-				   )
-		 )
-	   )
-	  ((eq system-type 'windows-nt)
-	   org-agenda-files (list
-			     (expand-file-name "~/files/agendafiles.org")
-			     )
-	   )
-	  )
+(use-package org
+  :bind
+  (("C-c l" . org-store-link)
+   ("C-c a" . org-agenda)
+   ("C-c c" . org-capture)
+   ("C-c b" . org-iswitchb))
+  :config
+  (setq
+   ;; org-startup-indented t ; clean view
+   org-indent-mode nil
+   ;; org-startup-folded 'children
+   org-adapt-indentation nil
+   org-hide-emphasis-markers t
+   org-hide-leading-stars t
+   system-time-locale "C" ; make timestamps appear in English
+   org-special-ctrl-a/e t
+   org-src-fontify-natively t ; syntax highlight code blocks
+   org-src-tab-acts-natively t
+   org-indent-indentation-per-level 1 ; https://explog.in/notes/writingsetup.html
+   ;; org-cycle-separator-lines 1
+   org-default-notes-file (expand-file-name "agenda.org" my-org-directory)
+   org-clock-persist t
+   org-hide-block-startup t
+   org-confirm-babel-evaluate nil
+   org-src-preserve-indentation t ; https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-makefile.html
+   org-startup-with-inline-images t
+   ;; org-modules (quote (org-habit
+   ;; org-crypt))
+   )
+  (org-clock-persistence-insinuate)
+  (calendar-set-date-style "iso")
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (shell . t)))
+  (cond ((eq system-type 'gnu/linux)
+	 (setq org-directory my-org-directory
+	       org-agenda-files (list (expand-file-name "agenda" my-org-directory))
+	       diary-file (expand-file-name "diary.org" my-org-directory)
+	       ))
+	((eq system-type 'windows-nt)
+	 org-agenda-files (list (expand-file-name "~/files/agendafiles.org"))))
+
+  ;; fix fonts in orgmode
+  (when (display-graphic-p)
+    (variable-pitch-mode t)
+    ;; (mapc
+    ;;  (lambda (face)
+    ;;    (set-face-attribute face nil :inherit 'fixed-pitch))
+    ;;  (list 'org-code
+    ;; 	   'org-link
+    ;; 	   'org-block
+    ;; 	   'org-table
+    ;; 	   'org-block-begin-line
+    ;; 	   'org-block-end-line
+    ;; 	   'org-meta-line
+    ;; 	   'org-document-info-keyword
+    ;; 	   ))
+    ;; (mapc
+    ;;  (lambda (face)
+    ;;    (set-face-attribute face nil :inherit 'variable-pitch))
+    ;;  (list 'org-default
+    ;; 	   'org-level-8
+    ;; 	   'org-level-7
+    ;; 	   'org-level-6
+    ;; 	   'org-level-5
+    ;; 	   'org-level-4
+    ;; 	   'org-level-3
+    ;; 	   'org-level-2
+    ;; 	   'org-level-1
+    ;; 	   ))
+
+    ;; (custom-theme-set-faces
+    ;;  'user
+    ;;  ;; '(org-code ((t (:inherit fixed-pitch))))
+    ;;  ;; '(org-link ((t (:inherit fixed-pitch))))
+    ;;  ;; '(org-block ((t (:inherit fixed-pitch))))
+    ;;  ;; '(org-table ((t (:inherit fixed-pitch))))
+    ;;  ;; '(org-block-begin-line ((t (:inherit fixed-pitch))))
+    ;;  ;; '(org-block-end-line ((t (:inherit fixed-pitch))))
+    ;;  ;; '(org-meta-line ((t (:inherit fixed-pitch))))
+    ;;  ;; '(org-document-info-keyword ((t (:inherit fixed-pitch))))
+    ;;  ;; '(org-default ((t (:inherit default))))
+    ;;  ;; '(org-level-8 ((t (:inherit variable-pitch))))
+    ;;  ;; '(org-level-7 ((t (:inherit variable-pitch))))
+    ;;  ;; '(org-level-6 ((t (:inherit variable-pitch))))
+    ;;  ;; '(org-level-5 ((t (:inherit variable-pitch))))
+    ;;  ;; '(org-level-4 ((t (:inherit variable-pitch))))
+    ;;  ;; '(org-level-3 ((t (:inherit variable-pitch))))
+    ;;  ;; '(org-level-2 ((t (:inherit variable-pitch))))
+    ;;  ;; '(org-level-1 ((t (:inherit variable-pitch))))
+
+    ;;  '(org-block ((t (:inherit fixed-pitch))))
+    ;;  '(org-code ((t (:inherit (shadow fixed-pitch)))))
+    ;;  '(org-document-info ((t (:foreground "dark orange"))))
+    ;;  '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+    ;;  ;; '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+    ;;  ;; '(org-link ((t (:foreground "royal blue" :underline t))))
+    ;;  ;; '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+    ;;  ;; '(org-property-value ((t (:inherit fixed-pitch))) t)
+    ;;  ;; '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+    ;;  ;; '(org-table ((t  (:inherit fixed-pitch :foreground "#83a598"))))
+    ;;  ;; '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+    ;;  ;; '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
+    ;;  )
+
     )
+  )
 #+END_SRC
 https://jherrlin.github.io/posts/emacs-orgmode-source-code-blocks/
 
@@ -854,10 +914,7 @@ http://endlessparentheses.com/new-in-emacs-25-1-have-prettify-symbols-mode-revea
 **** fonts
 #+name: font-playground
 #+begin_src emacs-lisp
-;; Averia Serif Libre, DejaVu Sans Mono, Fantasque Sans Mono, Fira
-;; Code, Hack, Input Mono Compressed, Input Serif, Monoid,
-;; OpenDyslexic[Mono]
-(setq myfont "Fantasque Sans Mono")
+(push '(font . "Averia Serif Libre") default-frame-alist)
 
 (with-eval-after-load "org"
 
@@ -871,42 +928,76 @@ http://endlessparentheses.com/new-in-emacs-25-1-have-prettify-symbols-mode-revea
     ;; (set-face-font 'org-level-6 myfont)
     ;; (set-face-font 'org-level-7 myfont)
     ;; (set-face-font 'org-level-8 myfont)
-    (set-face-attribute 'org-level-1 nil :family myfont)
-    (set-face-attribute 'org-level-2 nil :family myfont)
-    (set-face-attribute 'org-level-3 nil :family myfont)
-    (set-face-attribute 'org-level-4 nil :family myfont)
-    (set-face-attribute 'org-level-5 nil :family myfont)
-    (set-face-attribute 'org-level-6 nil :family myfont)
-    (set-face-attribute 'org-level-7 nil :family myfont)
-    (set-face-attribute 'org-level-8 nil :family myfont)
+    ;; (set-face-attribute 'org-level-1 nil :family myfont)
+    ;; (set-face-attribute 'org-level-2 nil :family myfont)
+    ;; (set-face-attribute 'org-level-3 nil :family myfont)
+    ;; (set-face-attribute 'org-level-4 nil :family myfont)
+    ;; (set-face-attribute 'org-level-5 nil :family myfont)
+    ;; (set-face-attribute 'org-level-6 nil :family myfont)
+    ;; (set-face-attribute 'org-level-7 nil :family myfont)
+    ;; (set-face-attribute 'org-level-8 nil :family myfont)
+    (set-face-attribute 'org-level-1 nil :inherit myfont)
+    (set-face-attribute 'org-level-2 nil :inherit myfont)
+    (set-face-attribute 'org-level-3 nil :inherit myfont)
+    (set-face-attribute 'org-level-4 nil :inherit myfont)
+    (set-face-attribute 'org-level-5 nil :inherit myfont)
+    (set-face-attribute 'org-level-6 nil :inherit myfont)
+    (set-face-attribute 'org-level-7 nil :inherit myfont)
+    (set-face-attribute 'org-level-8 nil :inherit myfont)
     )
 
   )
 #+end_src
 
 #+begin_src emacs-lisp :tangle init.el
-(setq myfont "Fantasque Sans Mono")
+;; Averia Serif Libre, DejaVu Sans Mono, Fantasque Sans Mono, Fira
+;; Code, Hack, Input Mono Compressed, Input Serif, Monoid,
+;; OpenDyslexic[Mono], Roboto Mono/Condensed
+(setq mainfont "Fantasque Sans Mono")
+(setq fontdefault mainfont)
+(setq fontfixedpitch mainfont)
+(setq fontvariablepitch "Roboto Condensed")
 
-(when (member myfont (font-family-list))
-  (set-face-font 'default myfont)
-    (set-face-attribute 'org-level-1 nil :family myfont)
-    (set-face-attribute 'org-level-2 nil :family myfont)
-    (set-face-attribute 'org-level-3 nil :family myfont)
-    (set-face-attribute 'org-level-4 nil :family myfont)
-    (set-face-attribute 'org-level-5 nil :family myfont)
-    (set-face-attribute 'org-level-6 nil :family myfont)
-    (set-face-attribute 'org-level-7 nil :family myfont)
-    (set-face-attribute 'org-level-8 nil :family myfont)
-)
+;; (when (display-graphic-p)
+;;   (when (member myfont (font-family-list))
+;;     (set-face-font 'default myfont)
+;;     (set-face-font 'fixed-pitch myfont))
+;;   (when (member myfontvarpitch (font-family-list))
+;;     (set-face-font 'variable-pitch myfontvarpitch))
+
+(when (display-graphic-p)
+  (when (member fontdefault (font-family-list))
+    ;; (set-frame-font fontdefault nil t)
+    (set-face-attribute 'default nil :font fontdefault))
+  (when (member fontfixedpitch (font-family-list))
+    (set-face-attribute 'fixed-pitch nil :font fontfixedpitch))
+  (when (member fontvariablepitch (font-family-list))
+    (set-face-attribute 'variable-pitch nil :font fontvariablepitch))
+  )
 
 ;; (when (member myfont (font-family-list))
 ;;   (add-to-list 'default-frame-alist
 ;; 	       '(font . "Fantasque Sans Mono")))
 
 ;; https://explog.in/notes/writingsetup.html
-;(set-face-attribute 'default nil :family "DejaVu Sans Mono")
-;(set-face-attribute 'fixed-pitch nil :family "Fantasque Sans Mono")
-;(set-face-attribute 'variable-pitch nil :family "Input Serif")
+;; (set-face-attribute 'default nil :family myfont)
+;; (set-face-attribute 'fixed-pitch nil :family myfont)
+;; (set-face-attribute 'variable-pitch nil :family "Input Serif")
+
+;; (add-hook 'org-mode-hook
+;; 	    '(lambda ()
+;; 	       (mapc
+;; 		(lambda (face)
+;; 		  (set-face-attribute face nil :inherit 'fixed-pitch))
+;; 		(list 'org-level-8
+;; 		      'org-level-7
+;; 		      'org-level-6
+;; 		      'org-level-5
+;; 		      'org-level-4
+;; 		      'org-level-3
+;; 		      'org-level-2
+;; 		      'org-level-1
+;; 		      ))))
 
 ;; (add-hook 'org-mode-hook (lambda ()
 ;; 			   (variable-pitch-mode t)
