@@ -1145,6 +1145,7 @@ Use =C-x C-j= in a file buffer to jump to it in dired (dired-jump).
 	dired-recursive-copies     t
 	dired-recursive-deletes    t
 	read-file-name-completion-ignore-case t
+	read-buffer-completion-ignore-case t
 	dired-dwim-target t
 	dired-guess-shell-alist-user '(("\\.pdf\\'" "okular"))
 	)
