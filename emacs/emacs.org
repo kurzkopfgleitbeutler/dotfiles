@@ -1287,10 +1287,22 @@ https://www.emacswiki.org/emacs/EdiffMode
 
 **** calendar
 #+BEGIN_SRC emacs-lisp :tangle init.el
-  (add-hook 'calendar-load-hook
-            (lambda ()
-              (setq mark-holidays-in-calendar t)))
+(setq calendar-week-start-day 1
+      calendar-mark-holidays-flag t
+      ;; calendar-view-diary-initially-flag t
+      calendar-date-style "iso"
+      calendar-intermonth-text '(propertize
+				 (format "%2d"
+					 (car
+					  (calendar-iso-from-absolute
+					   (calendar-absolute-from-gregorian (list month day year)))))
+				 'font-lock-face 'font-lock-function-name-face) ; see help on var calendar-intermonth-text
+      )
+;; (add-hook 'calendar-load-hook
+;;           (lambda ()
+;;             (setq mark-holidays-in-calendar t)))
 #+END_SRC
+https://github.com/rudolfochrist/german-holidays/blob/master/german-holidays.el
 
 **** icomplete
 #+BEGIN_SRC emacs-lisp
