@@ -1,5 +1,6 @@
 #!/bin/sh
-scope () {
+scope ()
+(
 
     script_path="$(dirname "$(readlink -e -- "$0")")"
     script_name="$(basename "$0")"
@@ -90,6 +91,6 @@ scope () {
 	printf "%b\n" "grep 'ERROR:' $logfile_name"
 	printf "%b" "grep '...FAIL' $logfile_name"
     }
-    main
-}
+    main $@
+)
 scope $@
