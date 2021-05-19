@@ -1,9 +1,8 @@
-* literate emacs init
-:PROPERTIES:
-:Time-stamp: <2021-05-12T08:15:31>
-:header-args+: :results silent :mkdirp yes
-:END:
-** About
+#+Time-stamp: <2021-05-19T12:43:03>
+#+title: literate emacs init
+#+options: num:nil
+#+property: header-args :noweb yes :mkdirp yes :results silent
+
 There are three ways to personalize Emacs: Via the [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html][customize
 interface]], [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Invocation.html][command line arguments]], or writing an [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html][init file]].  I
 exclusively use the init file approach, because it lets me keep my
@@ -14,7 +13,7 @@ package-refresh-contents” when starting Emacs the first time with this
 configuration.  Use =M-x list-packages= from time to time to update
 packages.
 
-** /usr/local/share/site-lisp/site-start.el
+* /usr/local/share/site-lisp/site-start.el
 
 https://emacs.stackexchange.com/questions/56375/user-init-file-variable-value-doesnt-change
 Current workaround is symlinking init.el from a default path:
@@ -54,15 +53,15 @@ https://stackoverflow.com/a/547451
       )
 #+END_SRC
 
-** init.el
-*** hello
+* init.el
+** hello
 #+begin_src emacs-lisp :tangle init.el
 (message "[INFO] begin init.el")
 (message user-init-file)
 (message "[INFO] debug with M-x check-parens / ESC x check-parens")
 #+end_src
 
-*** environment
+** environment
 Set all paths via environment variables in .profile, since that allows
 us to easily filter possibly infringing directory structures with [[https://wiki.archlinux.org/title/Git#Filtering_confidential_information][git filters]]:
 #+BEGIN_SRC emacs-lisp :tangle init.el
@@ -81,8 +80,8 @@ us to easily filter possibly infringing directory structures with [[https://wiki
 	     )))
 #+END_SRC
 
-*** other files
-**** secrets
+** other files
+*** secrets
 This file is where to put configuration that contains sensitive
 information.
 
@@ -92,7 +91,7 @@ information.
       (load secrets-file))
   ;; in general, is load or load-file better suited for this?
 #+END_SRC
-**** customize
+*** customize
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 #+END_SRC
@@ -103,9 +102,409 @@ information.
   (load custom-file t)
 #+END_SRC
 
-*** packaging
-**** setup
-***** package
+** basics
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  ;;(message "my init.el loaded")
+  (setq load-prefer-newer t
+        disabled-command-function nil
+        save-interprogram-paste-before-kill t
+        echo-keystrokes 0.1
+        confirm-nonexistent-file-or-buffer nil
+        completion-ignore-case t
+        ;next-line-add-newlines t ; https://www.masteringemacs.org/article/effective-editing-movement
+        delete-by-moving-to-trash t
+        switch-to-buffer-in-dedicated-window 'prompt
+        kill-whole-line t
+        )
+  (fset 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+Move mouse cursor if too close to point:
+#+BEGIN_SRC emacs-lisp :tangle no
+  (mouse-avoidance-mode 'exile)
+#+END_SRC
+
+*** debug by default
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (setq debug-on-error t)
+#+END_SRC
+
+*** bookmarks
+Instead of saving bookmarks to file only on exit, write them as soon
+as they get set:
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (setq bookmark-save-flag 1)
+#+END_SRC
+
+*** truncate
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (setq-default truncate-lines t
+                word-wrap t)
+#+END_SRC
+
+*** parentheses
+Highlight corresponding parentheses when cursor is on one:
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (show-paren-mode t)
+#+END_SRC
+
+Automatically insert matching closing character when user types a pair
+character:
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (electric-pair-mode t)
+#+END_SRC
+
+*** reload buffers
+Automatically reload buffers when files change on disk:
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (global-auto-revert-mode t)
+  (setq global-auto-revert-non-file-buffers t)
+#+END_SRC
+
+*** winner-mode
+Record changes in window configuration:
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (winner-mode t)
+#+END_SRC
+
+*** sensible selection
+With active region, let typed text replace selection:
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (delete-selection-mode t)
+#+END_SRC
+
+*** deactivate bells
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (setq ;visible-bell nil ; default anyway
+        ring-bell-function 'ignore)
+#+END_SRC
+
+** interface
+*** line-number-mode
+#+begin_src emacs-lisp :tangle init.el
+(setq display-line-numbers-type 'relative)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+#+end_src
+https://emacs.stackexchange.com/questions/36149/show-both-relative-and-absolute-line-numbers-in-emacs-26
+https://www.emacswiki.org/emacs/LineNumbers
+
+(global-display-line-numbers-mode) Wuerde wahrscheinlich bei reboot
+die buffer-individuelle (manuelle) ueberschreiben
+
+*** TODO gui
+Remember to use ”M-x eval-buffer” when starting Emacs for the first
+time with this configuration.  Otherwise, this will not work:
+#+BEGIN_SRC emacs-lisp :tangle no
+  (setq menu-bar-mode nil
+        tool-bar-mode nil
+        scroll-bar-mode nil)
+#+END_SRC
+
+Somehow, this just does not work with the above.  However, eval-buffer
+does work when using this:
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (customize-save-variable 'menu-bar-mode nil)
+  (customize-save-variable 'tool-bar-mode nil)
+  (customize-save-variable 'scroll-bar-mode nil)
+#+END_SRC
+
+Not tried yet:
+#+BEGIN_SRC emacs-lisp :tangle no
+  (when window-system
+    (menu-bar-mode 0)
+    (tool-bar-mode 0)
+    (scroll-bar-mode 0)
+    (tooltip-mode 0))
+#+END_SRC
+
+*** TODO fringes
+Fringe display uses bitmaps, so it will not work with terminal Emacs:
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (setq-default indicate-buffer-boundaries 'left
+                indicate-empty-lines t)
+#+END_SRC
+
+*** cursor
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (setq-default x-stretch-cursor t)
+#+END_SRC
+
+*** current line
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (global-hl-line-mode t)
+#+END_SRC
+
+*** TODO modeline
+**** custom                                                        :noexport:
+http://emacs.stackexchange.com/questions/13652/how-to-customize-mode-line-format
+#+name: modelinedefault
+#+BEGIN_SRC emacs-lisp :tangle no
+  (setq-default mode-line-format)
+  (setq mode-line-format
+        (list
+         "%e"
+         mode-line-front-space
+         mode-line-mule-info
+         mode-line-client
+         mode-line-modified
+         mode-line-remote
+         mode-line-frame-identification
+         mode-line-buffer-identification
+         "   "
+         mode-line-position
+         (vc-mode vc-mode)
+         "  "
+         mode-line-modes
+         mode-line-misc-info
+         mode-line-end-spaces))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle no
+  (setq-default mode-line-format
+        (list
+         "%e"
+         mode-line-front-space
+         mode-line-mule-info
+         mode-line-client
+         mode-line-modified
+         mode-line-remote
+         mode-line-frame-identification
+         mode-line-buffer-identification
+         "   "
+         vc-mode
+         "  "
+         mode-line-modes
+         mode-line-misc-info
+         mode-line-end-spaces))
+#+END_SRC
+
+**** like occasionallycogent
+Helper functions to show different modeline in in/active windows:
+#+begin_src emacs-lisp :tangle no
+  ;; Keep track of selected window, so we can render the modeline differently
+  (defvar ato-line-selected-window (frame-selected-window))
+  (defun ato-line-set-selected-window (&rest _args)
+    (when (not (minibuffer-window-active-p (frame-selected-window)))
+      (setq ato-line-set-selected-window (frame-selected-window))
+      (force-mode-line-update)))
+  (defun ato-line-unset-selected-window ()
+    (setq ato-line-selected-window nil)
+    (force-mode-line-update))
+  (add-hook 'window-configuration-change-hook #'ato-line-set-selected-window)
+  (add-hook 'focus-in-hook #'ato-line-set-selected-window)
+  (add-hook 'focus-out-hook #'ato-line-unset-selected-window)
+  (advice-add 'handle-switch-frame :after #'ato-line-set-selected-window)
+  (advice-add 'select-window :after #'ato-line-set-selected-window)
+  (defun ato-line-selected-window-active-p ()
+    (eq ato-line-selected-window (selected-window)))
+#+end_src
+
+#+begin_src emacs-lisp :tangle no
+  (setq-default mode-line-format
+		(list
+		 '(:eval (propertize (if (eq))))))
+#+end_src
+Taken from https://occasionallycogent.com/custom_emacs_modeline/index.html
+
+**** column number
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (column-number-mode t)
+#+END_SRC
+
+**** clock
+See info for format-time-string
+#+BEGIN_SRC emacs-lisp :tangle no
+  (setq display-time-format "%F %R %a%t")
+  (display-time-mode t)
+#+END_SRC
+
+*** prettify symbols
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (global-prettify-symbols-mode t)
+  (setq prettify-symbols-unprettify-at-point 'right-edge)
+  ;; (add-hook 'emacs-lisp-mode-hook
+  ;; 	    (lambda ()
+  ;; 	      (push '("'gnu/linux" . ?🐧) prettify-symbols-alist)
+  ;; 	      ))
+#+END_SRC
+http://endlessparentheses.com/new-in-emacs-25-1-have-prettify-symbols-mode-reveal-the-symbol-at-point.html
+
+*** fonts
+#+name: font-playground
+#+begin_src emacs-lisp
+(push '(font . "Averia Serif Libre") default-frame-alist)
+
+(with-eval-after-load "org"
+
+  (when (member myfont (font-family-list))
+    (set-face-font 'default myfont)
+    ;; (set-face-font 'org-level-1 myfont)
+    ;; (set-face-font 'org-level-2 myfont)
+    ;; (set-face-font 'org-level-3 myfont)
+    ;; (set-face-font 'org-level-4 myfont)
+    ;; (set-face-font 'org-level-5 myfont)
+    ;; (set-face-font 'org-level-6 myfont)
+    ;; (set-face-font 'org-level-7 myfont)
+    ;; (set-face-font 'org-level-8 myfont)
+    ;; (set-face-attribute 'org-level-1 nil :family myfont)
+    ;; (set-face-attribute 'org-level-2 nil :family myfont)
+    ;; (set-face-attribute 'org-level-3 nil :family myfont)
+    ;; (set-face-attribute 'org-level-4 nil :family myfont)
+    ;; (set-face-attribute 'org-level-5 nil :family myfont)
+    ;; (set-face-attribute 'org-level-6 nil :family myfont)
+    ;; (set-face-attribute 'org-level-7 nil :family myfont)
+    ;; (set-face-attribute 'org-level-8 nil :family myfont)
+    (set-face-attribute 'org-level-1 nil :inherit myfont)
+    (set-face-attribute 'org-level-2 nil :inherit myfont)
+    (set-face-attribute 'org-level-3 nil :inherit myfont)
+    (set-face-attribute 'org-level-4 nil :inherit myfont)
+    (set-face-attribute 'org-level-5 nil :inherit myfont)
+    (set-face-attribute 'org-level-6 nil :inherit myfont)
+    (set-face-attribute 'org-level-7 nil :inherit myfont)
+    (set-face-attribute 'org-level-8 nil :inherit myfont)
+    )
+
+  )
+#+end_src
+
+#+begin_src emacs-lisp :tangle init.el
+;; Averia Serif Libre, DejaVu Sans Mono, Fantasque Sans Mono, Fira
+;; Code, Hack, Input Mono Compressed, Input Serif, Monoid,
+;; OpenDyslexic[Mono], Roboto Mono/Condensed
+(setq mainfont "Fantasque Sans Mono")
+(setq fontdefault mainfont)
+(setq fontfixedpitch mainfont)
+(setq fontvariablepitch "Roboto Condensed")
+
+;; (when (display-graphic-p)
+;;   (when (member myfont (font-family-list))
+;;     (set-face-font 'default myfont)
+;;     (set-face-font 'fixed-pitch myfont))
+;;   (when (member myfontvarpitch (font-family-list))
+;;     (set-face-font 'variable-pitch myfontvarpitch))
+
+(when (display-graphic-p)
+  (when (member fontdefault (font-family-list))
+    ;; (set-frame-font fontdefault nil t)
+    (set-face-attribute 'default nil :font fontdefault))
+  (when (member fontfixedpitch (font-family-list))
+    (set-face-attribute 'fixed-pitch nil :font fontfixedpitch))
+  (when (member fontvariablepitch (font-family-list))
+    (set-face-attribute 'variable-pitch nil :font fontvariablepitch))
+  )
+
+;; (when (member myfont (font-family-list))
+;;   (add-to-list 'default-frame-alist
+;; 	       '(font . "Fantasque Sans Mono")))
+
+;; https://explog.in/notes/writingsetup.html
+;; (set-face-attribute 'default nil :family myfont)
+;; (set-face-attribute 'fixed-pitch nil :family myfont)
+;; (set-face-attribute 'variable-pitch nil :family "Input Serif")
+
+;; (add-hook 'org-mode-hook
+;; 	    '(lambda ()
+;; 	       (mapc
+;; 		(lambda (face)
+;; 		  (set-face-attribute face nil :inherit 'fixed-pitch))
+;; 		(list 'org-level-8
+;; 		      'org-level-7
+;; 		      'org-level-6
+;; 		      'org-level-5
+;; 		      'org-level-4
+;; 		      'org-level-3
+;; 		      'org-level-2
+;; 		      'org-level-1
+;; 		      ))))
+
+;; (add-hook 'org-mode-hook (lambda ()
+;; 			   (variable-pitch-mode t)
+;; 			   (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+;; 			   (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+;; 			   ))
+
+;; (add-hook 'org-mode-hook
+;; 	  '(lambda ()
+;; 	     (variable-pitch-mode 1) ;; All fonts with variable pitch.
+;; 	     (mapc
+;; 	      (lambda (face) ;; Other fonts with fixed pitch.
+;; 		(set-face-attribute face nil :inherit 'fixed-pitch))
+;; 	      (list 'org-code
+;; 		    'org-link
+;; 		    'org-block
+;; 		    'org-table
+;; 		    'org-block-begin-line
+;; 		    'org-block-end-line
+;; 		    'org-meta-line
+;; 		    'org-document-info-keyword))))
+#+end_src
+https://old.reddit.com/r/emacs/comments/5twcka/which_font_do_you_use/ddq3mx7/
+https://stackoverflow.com/questions/3758139/variable-pitch-for-org-mode-fixed-pitch-for-tables
+
+further reading:
+https://www.gnu.org/software/emacs/manual/html_node/emacs/Fonts.html
+https://www.gnu.org/software/emacs/manual/html_node/efaq/How-to-add-fonts.html
+https://emacs.stackexchange.com/questions/3038/using-a-different-font-for-each-major-mode/3042#3042
+https://stackoverflow.com/questions/39859141/how-to-use-different-fonts-within-the-same-org-mode-buffer
+
+**** https://zzamboni.org/post/beautifying-org-mode-in-emacs/
+Headlines and lists:
+#+begin_src emacs-lisp
+(let* ((variable-tuple
+	(cond ((x-list-fonts "ETBembo") '(:font "ETBembo"))
+	      ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+	      ((x-list-fonts "Lucida Grande") '(:font "Lucida Grande"))
+	      ((x-list-fonts "Verdana") '(:font "Verdana"))
+	      ((x-list-fonts "Sans Serif") '(:font "Sans Serif"))
+	      (nil (warn "Cannot find a Sans Serif Font. Install Source Sans Pro."))))
+       (base-font-color (face-foreground 'default nil 'default))
+       (headline `(:inherit default :weight bold :foreground ,base-font-color)))
+  (custom-theme-set-faces
+   'user
+   `(org-level-8 ((t (,@headline ,@variable-tuple))))
+   `(org-level-7 ((t (,@headline ,@variable-tuple))))
+   `(org-level-6 ((t (,@headline ,@variable-tuple))))
+   `(org-level-5 ((t (,@headline ,@variable-tuple))))
+   `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
+   `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
+   `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
+   `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
+   `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
+#+end_src
+
+Pitch:
+#+begin_src emacs-lisp
+(custom-theme-set-faces
+ 'user
+ '(variable-pitch ((t (:family "ETBembo" :height 180 :weight thin))))
+ '(fixed-pitch ((t (:family "Fira Code Retina" :height 160)))))
+#+end_src
+
+#+begin_src emacs-lisp
+(add-hook 'org-mode-hook 'variable-pitch-mode)
+#+end_src
+
+Faces for elements:
+#+begin_src emacs-lisp
+(custom-theme-set-faces
+ 'user
+ '(org-block ((t (:inherit fixed-pitch))))
+ '(org-code ((t (:inherit (shadow fixed-pitch)))))
+ '(org-document-info ((t (:foreground "dark orange"))))
+ '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+ '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+ '(org-link ((t (:foreground "royal blue" :underline t))))
+ '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-property-value ((t (:inherit fixed-pitch))) t)
+ '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-table ((t  (:inherit fixed-pitch :foreground "#83a598"))))
+ '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+ '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
+#+end_src
+
+** packaging
+*** setup
+**** package
 Define repositories additional packages will be pulled from.  Since
 the GNU TLS library can not be bundled on Windows due to legal
 reasons, this is done platform-specific:
@@ -144,7 +543,7 @@ Load ”package”, so that it can be used:
 
 [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Package-Files.html][Packaging]] puts the install location to =package-user-dir=
 
-***** use-package
+**** use-package
 Download and install (if it is not installed), and load the package
 ”use-package”.  It is used as package manager:
 #+BEGIN_SRC emacs-lisp :tangle init.el
@@ -163,10 +562,10 @@ everything it loads:
         use-package-always-ensure t)
 #+END_SRC
 
-**** packages
+*** packages
 Load and configure packages:
 
-***** magit
+**** magit
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (use-package magit
     :bind
@@ -174,7 +573,7 @@ Load and configure packages:
     )
 #+END_SRC
 
-***** org-mode
+**** org-mode
 So much to learn from [[http://sriramkswamy.github.io/dotemacs/#orgheadline11][here]].  Note that it is possible to make org
 [[https://orgmode.org/manual/Agenda-Files.html][maintain the org-agenda-files itself]].
 #+BEGIN_SRC emacs-lisp :tangle init.el
@@ -317,7 +716,7 @@ https://emacs.stackexchange.com/questions/34561/summing-properties-across-subhea
 #+end_src
 https://orgmode.org/manual/Org-Crypt.html
 
-****** testsecret                                                     :crypt:
+***** testsecret                                                      :crypt:
 
 It disables backup creation and auto saving.
 
@@ -336,7 +735,7 @@ Null prefix argument turns off the mode."
             (set (make-local-variable 'backup-inhibited) t)
             ;; disable auto-save
 
-****** toc-org
+***** toc-org
 M-x toc-org-mode
 #+BEGIN_SRC emacs-lisp :tangle no
   (use-package toc-org
@@ -348,7 +747,7 @@ M-x toc-org-mode
 #+END_SRC
 https://github.com/snosov1/toc-org
 
-****** tangle-dir
+***** tangle-dir
 Put string into register r via =C-x r i r= for easy access:
 ’ :tangle (org-in-tangle-dir "")’
 #+begin_src emacs-lisp :tangle init.el
@@ -363,7 +762,7 @@ Put string into register r via =C-x r i r= for easy access:
 #+end_src
 https://emacs.stackexchange.com/questions/46479/how-to-set-a-tangled-parent-directory-for-each-subtree-in-org-mode
 
-***** abbrev-mode
+**** abbrev-mode
 https://www.emacswiki.org/emacs/AbbrevMode
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (use-package abbrev
@@ -380,7 +779,7 @@ https://www.emacswiki.org/emacs/AbbrevMode
 (setq-default abbrev-mode t)
 (setq save-abbrevs 'silently)
 
-****** abbrev file
+***** abbrev file
 #+BEGIN_SRC emacs-lisp :tangle abbrev_defs
   (define-abbrev-table 'global-abbrev-table '(
 					      ;; ("i" "I" nil 1)
@@ -426,7 +825,7 @@ https://www.emacswiki.org/emacs/AbbrevMode
 					      ))
 #+END_SRC
 
-***** theme
+**** theme
 Use solarized-light in window system, wombat when run in console mode
 (emacs -nw):
 #+BEGIN_SRC emacs-lisp :tangle init.el
@@ -462,7 +861,7 @@ Eval this to disable all coloring in emacs, using only black and white:
 (setq global-font-lock-mode nil)
 #+end_src
 
-***** emms
+**** emms
 [[https://www.gnu.org/software/emms/manual/#Quickstart-Guide][The Emacs Multimedia System]]
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (use-package emms
@@ -474,7 +873,7 @@ Eval this to disable all coloring in emacs, using only black and white:
     )
 #+END_SRC
 
-***** aggressive-indent-mode
+**** aggressive-indent-mode
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (use-package aggressive-indent
     :config
@@ -482,7 +881,7 @@ Eval this to disable all coloring in emacs, using only black and white:
     )
 #+END_SRC
 
-***** web-mode
+**** web-mode
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (use-package web-mode
     :config
@@ -491,17 +890,17 @@ Eval this to disable all coloring in emacs, using only black and white:
     )
 #+END_SRC
 
-***** expand-region
+**** expand-region
 #+begin_src emacs-lisp :tangle init.el
 (global-set-key (kbd "M-i") 'er/expand-region)
 #+end_src
 
-***** org-ref
+**** org-ref
 #+begin_src emacs-lisp :tangle no
   (use-package org-ref)
 #+end_src
 
-***** change-inner
+**** change-inner
 #+begin_src emacs-lisp :tangle no
   (use-package change-inner
     :config
@@ -509,7 +908,7 @@ Eval this to disable all coloring in emacs, using only black and white:
     (global-set-key (kbd "M-p") 'change-outer))
 #+end_src
 
-***** page-break-lines
+**** page-break-lines
 Displays page breaks as lines:
 #+begin_src emacs-lisp :tangle no
   (use-package page-break-lines
@@ -518,7 +917,7 @@ Displays page breaks as lines:
 #+end_src
 https://ericjmritz.wordpress.com/2015/08/29/using-page-breaks-in-gnu-emacs/
 
-***** projectile
+**** projectile
 project management library:
 #+begin_src emacs-lisp :tangle init.el
 (use-package projectile
@@ -531,7 +930,7 @@ project management library:
   (setq projectile-project-search-path `(,(file-name-as-directory my-projectile-search-path))))
 #+end_src
 
-***** hungry-delete
+**** hungry-delete
 Make backspace and C-d erase /all/ consecutive white space in a given
 direction:
 #+begin_src emacs-lisp :tangle init.el
@@ -542,7 +941,7 @@ direction:
 
 see also: =C-h f cycle-spacing RET=
 
-***** openwith
+**** openwith
 While it opens the files from dired with RET as requested, this always
 throws error "Openend ..."
 #+begin_src emacs-lisp :tangle no
@@ -622,7 +1021,7 @@ http://ergoemacs.org/emacs/emacs_dired_open_file_in_ext_apps.html
 possible alternative to both:
 https://old.reddit.com/r/emacs/comments/l786s4/a_humble_advice_on_dired_and_projectile_for_elisp/
 
-***** keypression
+**** keypression
 Bugged on my machine: opens lots of empty windows
 #+begin_src emacs-lisp :tangle no
   (use-package keypression
@@ -632,13 +1031,13 @@ Bugged on my machine: opens lots of empty windows
 #+end_src
 https://github.com/chuntaro/emacs-keypression
 
-***** fountain-mode
+**** fountain-mode
 Write screenplays (has basically no working export):
 #+begin_src emacs-lisp :tangle no
 (use-package fountain-mode)
 #+end_src
 
-***** bitlbee
+**** bitlbee
 connect to telegram, whatsapp, etc over irc:
 #+begin_src emacs-lisp :tangle no
 (use-package bitlbee
@@ -658,7 +1057,7 @@ sudo apt install --install-suggests bitlbee-libpurple bitlbee-plugin-otr
   (find-file user-init-file)
 #+end_src
 
-***** lsp-mode
+**** lsp-mode
 #+begin_src emacs-lisp :tangle no
   (use-package lsp-mode
     :init
@@ -670,7 +1069,7 @@ sudo apt install --install-suggests bitlbee-libpurple bitlbee-plugin-otr
 #+end_src
 https://emacs-lsp.github.io/lsp-mode/page/installation/#use-package
 
-***** which-key
+**** which-key
 #+begin_src emacs-lisp :tangle init.el
 (use-package which-key
   :config
@@ -678,7 +1077,7 @@ https://emacs-lsp.github.io/lsp-mode/page/installation/#use-package
   (setq which-key-idle-delay 0.01))
 #+end_src
 
-***** company
+**** company
 #+begin_src emacs-lisp :tangle no
 (use-package company
   :config
@@ -699,415 +1098,22 @@ so kriegt man zumindest eine rudimentaere, und fast nutzlose etags file:
 (visit-tags-table TAGS)
 #+end_src
 
-***** not in repositories - from manually downloaded file
-****** apex-mode
+**** TODO flymake
+**** json-navigator
+#+begin_src emacs-lisp :tangle init.el
+(use-package json-navigator)
+#+end_src
+
+**** TODO tree-mode
+**** not in repositories - from manually downloaded file
+***** apex-mode
 #+begin_src emacs-lisp :tangle init.el
 (add-to-list 'load-path (concat my-base-directory "apex-mode/"))
 (require 'apex-mode)
 #+end_src
 
-*** basics
-#+BEGIN_SRC emacs-lisp :tangle init.el
-  ;;(message "my init.el loaded")
-  (setq load-prefer-newer t
-        disabled-command-function nil
-        save-interprogram-paste-before-kill t
-        echo-keystrokes 0.1
-        confirm-nonexistent-file-or-buffer nil
-        completion-ignore-case t
-        ;next-line-add-newlines t ; https://www.masteringemacs.org/article/effective-editing-movement
-        delete-by-moving-to-trash t
-        switch-to-buffer-in-dedicated-window 'prompt
-        kill-whole-line t
-        )
-  (fset 'yes-or-no-p 'y-or-n-p)
-#+END_SRC
-
-Move mouse cursor if too close to point:
-#+BEGIN_SRC emacs-lisp :tangle no
-  (mouse-avoidance-mode 'exile)
-#+END_SRC
-
-**** debug by default
-#+BEGIN_SRC emacs-lisp :tangle init.el
-  (setq debug-on-error t)
-#+END_SRC
-
-**** bookmarks
-Instead of saving bookmarks to file only on exit, write them as soon
-as they get set:
-#+BEGIN_SRC emacs-lisp :tangle init.el
-  (setq bookmark-save-flag 1)
-#+END_SRC
-
-**** truncate
-#+BEGIN_SRC emacs-lisp :tangle init.el
-  (setq-default truncate-lines t
-                word-wrap t)
-#+END_SRC
-
-**** parentheses
-Highlight corresponding parentheses when cursor is on one:
-#+BEGIN_SRC emacs-lisp :tangle init.el
-  (show-paren-mode t)
-#+END_SRC
-
-Automatically insert matching closing character when user types a pair
-character:
-#+BEGIN_SRC emacs-lisp :tangle init.el
-  (electric-pair-mode t)
-#+END_SRC
-
-**** reload buffers
-Automatically reload buffers when files change on disk:
-#+BEGIN_SRC emacs-lisp :tangle init.el
-  (global-auto-revert-mode t)
-  (setq global-auto-revert-non-file-buffers t)
-#+END_SRC
-
-**** winner-mode
-Record changes in window configuration:
-#+BEGIN_SRC emacs-lisp :tangle init.el
-  (winner-mode t)
-#+END_SRC
-
-**** sensible selection
-With active region, let typed text replace selection:
-#+BEGIN_SRC emacs-lisp :tangle init.el
-  (delete-selection-mode t)
-#+END_SRC
-
-**** deactivate bells
-#+BEGIN_SRC emacs-lisp :tangle init.el
-  (setq ;visible-bell nil ; default anyway
-        ring-bell-function 'ignore)
-#+END_SRC
-
-*** interface
-**** line-number-mode
-#+begin_src emacs-lisp :tangle init.el
-(setq display-line-numbers-type 'relative)
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
-#+end_src
-https://emacs.stackexchange.com/questions/36149/show-both-relative-and-absolute-line-numbers-in-emacs-26
-https://www.emacswiki.org/emacs/LineNumbers
-
-(global-display-line-numbers-mode) Wuerde wahrscheinlich bei reboot
-die buffer-individuelle (manuelle) ueberschreiben
-
-**** TODO gui
-Remember to use ”M-x eval-buffer” when starting Emacs for the first
-time with this configuration.  Otherwise, this will not work:
-#+BEGIN_SRC emacs-lisp :tangle no
-  (setq menu-bar-mode nil
-        tool-bar-mode nil
-        scroll-bar-mode nil)
-#+END_SRC
-
-Somehow, this just does not work with the above.  However, eval-buffer
-does work when using this:
-#+BEGIN_SRC emacs-lisp :tangle init.el
-  (customize-save-variable 'menu-bar-mode nil)
-  (customize-save-variable 'tool-bar-mode nil)
-  (customize-save-variable 'scroll-bar-mode nil)
-#+END_SRC
-
-Not tried yet:
-#+BEGIN_SRC emacs-lisp :tangle no
-  (when window-system
-    (menu-bar-mode 0)
-    (tool-bar-mode 0)
-    (scroll-bar-mode 0)
-    (tooltip-mode 0))
-#+END_SRC
-
-**** TODO fringes
-Fringe display uses bitmaps, so it will not work with terminal Emacs:
-#+BEGIN_SRC emacs-lisp :tangle init.el
-  (setq-default indicate-buffer-boundaries 'left
-                indicate-empty-lines t)
-#+END_SRC
-
-**** cursor
-#+BEGIN_SRC emacs-lisp :tangle init.el
-  (setq-default x-stretch-cursor t)
-#+END_SRC
-
-**** current line
-#+BEGIN_SRC emacs-lisp :tangle init.el
-  (global-hl-line-mode t)
-#+END_SRC
-
-**** TODO modeline
-***** custom                                                       :noexport:
-http://emacs.stackexchange.com/questions/13652/how-to-customize-mode-line-format
-#+name: modelinedefault
-#+BEGIN_SRC emacs-lisp :tangle no
-  (setq-default mode-line-format)
-  (setq mode-line-format
-        (list
-         "%e"
-         mode-line-front-space
-         mode-line-mule-info
-         mode-line-client
-         mode-line-modified
-         mode-line-remote
-         mode-line-frame-identification
-         mode-line-buffer-identification
-         "   "
-         mode-line-position
-         (vc-mode vc-mode)
-         "  "
-         mode-line-modes
-         mode-line-misc-info
-         mode-line-end-spaces))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp :tangle no
-  (setq-default mode-line-format
-        (list
-         "%e"
-         mode-line-front-space
-         mode-line-mule-info
-         mode-line-client
-         mode-line-modified
-         mode-line-remote
-         mode-line-frame-identification
-         mode-line-buffer-identification
-         "   "
-         vc-mode
-         "  "
-         mode-line-modes
-         mode-line-misc-info
-         mode-line-end-spaces))
-#+END_SRC
-
-***** like occasionallycogent
-Helper functions to show different modeline in in/active windows:
-#+begin_src emacs-lisp :tangle no
-  ;; Keep track of selected window, so we can render the modeline differently
-  (defvar ato-line-selected-window (frame-selected-window))
-  (defun ato-line-set-selected-window (&rest _args)
-    (when (not (minibuffer-window-active-p (frame-selected-window)))
-      (setq ato-line-set-selected-window (frame-selected-window))
-      (force-mode-line-update)))
-  (defun ato-line-unset-selected-window ()
-    (setq ato-line-selected-window nil)
-    (force-mode-line-update))
-  (add-hook 'window-configuration-change-hook #'ato-line-set-selected-window)
-  (add-hook 'focus-in-hook #'ato-line-set-selected-window)
-  (add-hook 'focus-out-hook #'ato-line-unset-selected-window)
-  (advice-add 'handle-switch-frame :after #'ato-line-set-selected-window)
-  (advice-add 'select-window :after #'ato-line-set-selected-window)
-  (defun ato-line-selected-window-active-p ()
-    (eq ato-line-selected-window (selected-window)))
-#+end_src
-
-#+begin_src emacs-lisp :tangle no
-  (setq-default mode-line-format
-		(list
-		 '(:eval (propertize (if (eq))))))
-#+end_src
-Taken from https://occasionallycogent.com/custom_emacs_modeline/index.html
-
-***** column number
-#+BEGIN_SRC emacs-lisp :tangle init.el
-  (column-number-mode t)
-#+END_SRC
-
-***** clock
-See info for format-time-string
-#+BEGIN_SRC emacs-lisp :tangle no
-  (setq display-time-format "%F %R %a%t")
-  (display-time-mode t)
-#+END_SRC
-
-**** prettify symbols
-#+BEGIN_SRC emacs-lisp :tangle init.el
-  (global-prettify-symbols-mode t)
-  (setq prettify-symbols-unprettify-at-point 'right-edge)
-  ;; (add-hook 'emacs-lisp-mode-hook
-  ;; 	    (lambda ()
-  ;; 	      (push '("'gnu/linux" . ?🐧) prettify-symbols-alist)
-  ;; 	      ))
-#+END_SRC
-http://endlessparentheses.com/new-in-emacs-25-1-have-prettify-symbols-mode-reveal-the-symbol-at-point.html
-
-**** fonts
-#+name: font-playground
-#+begin_src emacs-lisp
-(push '(font . "Averia Serif Libre") default-frame-alist)
-
-(with-eval-after-load "org"
-
-  (when (member myfont (font-family-list))
-    (set-face-font 'default myfont)
-    ;; (set-face-font 'org-level-1 myfont)
-    ;; (set-face-font 'org-level-2 myfont)
-    ;; (set-face-font 'org-level-3 myfont)
-    ;; (set-face-font 'org-level-4 myfont)
-    ;; (set-face-font 'org-level-5 myfont)
-    ;; (set-face-font 'org-level-6 myfont)
-    ;; (set-face-font 'org-level-7 myfont)
-    ;; (set-face-font 'org-level-8 myfont)
-    ;; (set-face-attribute 'org-level-1 nil :family myfont)
-    ;; (set-face-attribute 'org-level-2 nil :family myfont)
-    ;; (set-face-attribute 'org-level-3 nil :family myfont)
-    ;; (set-face-attribute 'org-level-4 nil :family myfont)
-    ;; (set-face-attribute 'org-level-5 nil :family myfont)
-    ;; (set-face-attribute 'org-level-6 nil :family myfont)
-    ;; (set-face-attribute 'org-level-7 nil :family myfont)
-    ;; (set-face-attribute 'org-level-8 nil :family myfont)
-    (set-face-attribute 'org-level-1 nil :inherit myfont)
-    (set-face-attribute 'org-level-2 nil :inherit myfont)
-    (set-face-attribute 'org-level-3 nil :inherit myfont)
-    (set-face-attribute 'org-level-4 nil :inherit myfont)
-    (set-face-attribute 'org-level-5 nil :inherit myfont)
-    (set-face-attribute 'org-level-6 nil :inherit myfont)
-    (set-face-attribute 'org-level-7 nil :inherit myfont)
-    (set-face-attribute 'org-level-8 nil :inherit myfont)
-    )
-
-  )
-#+end_src
-
-#+begin_src emacs-lisp :tangle init.el
-;; Averia Serif Libre, DejaVu Sans Mono, Fantasque Sans Mono, Fira
-;; Code, Hack, Input Mono Compressed, Input Serif, Monoid,
-;; OpenDyslexic[Mono], Roboto Mono/Condensed
-(setq mainfont "Fantasque Sans Mono")
-(setq fontdefault mainfont)
-(setq fontfixedpitch mainfont)
-(setq fontvariablepitch "Roboto Condensed")
-
-;; (when (display-graphic-p)
-;;   (when (member myfont (font-family-list))
-;;     (set-face-font 'default myfont)
-;;     (set-face-font 'fixed-pitch myfont))
-;;   (when (member myfontvarpitch (font-family-list))
-;;     (set-face-font 'variable-pitch myfontvarpitch))
-
-(when (display-graphic-p)
-  (when (member fontdefault (font-family-list))
-    ;; (set-frame-font fontdefault nil t)
-    (set-face-attribute 'default nil :font fontdefault))
-  (when (member fontfixedpitch (font-family-list))
-    (set-face-attribute 'fixed-pitch nil :font fontfixedpitch))
-  (when (member fontvariablepitch (font-family-list))
-    (set-face-attribute 'variable-pitch nil :font fontvariablepitch))
-  )
-
-;; (when (member myfont (font-family-list))
-;;   (add-to-list 'default-frame-alist
-;; 	       '(font . "Fantasque Sans Mono")))
-
-;; https://explog.in/notes/writingsetup.html
-;; (set-face-attribute 'default nil :family myfont)
-;; (set-face-attribute 'fixed-pitch nil :family myfont)
-;; (set-face-attribute 'variable-pitch nil :family "Input Serif")
-
-;; (add-hook 'org-mode-hook
-;; 	    '(lambda ()
-;; 	       (mapc
-;; 		(lambda (face)
-;; 		  (set-face-attribute face nil :inherit 'fixed-pitch))
-;; 		(list 'org-level-8
-;; 		      'org-level-7
-;; 		      'org-level-6
-;; 		      'org-level-5
-;; 		      'org-level-4
-;; 		      'org-level-3
-;; 		      'org-level-2
-;; 		      'org-level-1
-;; 		      ))))
-
-;; (add-hook 'org-mode-hook (lambda ()
-;; 			   (variable-pitch-mode t)
-;; 			   (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
-;; 			   (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
-;; 			   ))
-
-;; (add-hook 'org-mode-hook
-;; 	  '(lambda ()
-;; 	     (variable-pitch-mode 1) ;; All fonts with variable pitch.
-;; 	     (mapc
-;; 	      (lambda (face) ;; Other fonts with fixed pitch.
-;; 		(set-face-attribute face nil :inherit 'fixed-pitch))
-;; 	      (list 'org-code
-;; 		    'org-link
-;; 		    'org-block
-;; 		    'org-table
-;; 		    'org-block-begin-line
-;; 		    'org-block-end-line
-;; 		    'org-meta-line
-;; 		    'org-document-info-keyword))))
-#+end_src
-https://old.reddit.com/r/emacs/comments/5twcka/which_font_do_you_use/ddq3mx7/
-https://stackoverflow.com/questions/3758139/variable-pitch-for-org-mode-fixed-pitch-for-tables
-
-further reading:
-https://www.gnu.org/software/emacs/manual/html_node/emacs/Fonts.html
-https://www.gnu.org/software/emacs/manual/html_node/efaq/How-to-add-fonts.html
-https://emacs.stackexchange.com/questions/3038/using-a-different-font-for-each-major-mode/3042#3042
-https://stackoverflow.com/questions/39859141/how-to-use-different-fonts-within-the-same-org-mode-buffer
-
-***** https://zzamboni.org/post/beautifying-org-mode-in-emacs/
-Headlines and lists:
-#+begin_src emacs-lisp
-(let* ((variable-tuple
-	(cond ((x-list-fonts "ETBembo") '(:font "ETBembo"))
-	      ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
-	      ((x-list-fonts "Lucida Grande") '(:font "Lucida Grande"))
-	      ((x-list-fonts "Verdana") '(:font "Verdana"))
-	      ((x-list-fonts "Sans Serif") '(:font "Sans Serif"))
-	      (nil (warn "Cannot find a Sans Serif Font. Install Source Sans Pro."))))
-       (base-font-color (face-foreground 'default nil 'default))
-       (headline `(:inherit default :weight bold :foreground ,base-font-color)))
-  (custom-theme-set-faces
-   'user
-   `(org-level-8 ((t (,@headline ,@variable-tuple))))
-   `(org-level-7 ((t (,@headline ,@variable-tuple))))
-   `(org-level-6 ((t (,@headline ,@variable-tuple))))
-   `(org-level-5 ((t (,@headline ,@variable-tuple))))
-   `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
-   `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
-   `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
-   `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
-   `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
-#+end_src
-
-Pitch:
-#+begin_src emacs-lisp
-(custom-theme-set-faces
- 'user
- '(variable-pitch ((t (:family "ETBembo" :height 180 :weight thin))))
- '(fixed-pitch ((t (:family "Fira Code Retina" :height 160)))))
-#+end_src
-
-#+begin_src emacs-lisp
-(add-hook 'org-mode-hook 'variable-pitch-mode)
-#+end_src
-
-Faces for elements:
-#+begin_src emacs-lisp
-(custom-theme-set-faces
- 'user
- '(org-block ((t (:inherit fixed-pitch))))
- '(org-code ((t (:inherit (shadow fixed-pitch)))))
- '(org-document-info ((t (:foreground "dark orange"))))
- '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
- '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
- '(org-link ((t (:foreground "royal blue" :underline t))))
- '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
- '(org-property-value ((t (:inherit fixed-pitch))) t)
- '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
- '(org-table ((t  (:inherit fixed-pitch :foreground "#83a598"))))
- '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
- '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
-#+end_src
-
-*** behaviour
-**** input method
+** behaviour
+*** input method
 https://stackoverflow.com/a/15801170
 #+BEGIN_SRC emacs-lisp :tangle no
   ;; Main setup for  all the buffers
@@ -1121,7 +1127,7 @@ https://stackoverflow.com/a/15801170
     (set-input-method "programmer-dvorak"))
 #+END_SRC
 
-**** startup
+*** startup
 #+BEGIN_SRC emacs-lisp :tangle init.el
 (setq inhibit-startup-screen t
       ;initial-scratch-message ";; C-M-x eval-defun\n;; üäöß ÜÄÖẞ\n"
@@ -1135,7 +1141,7 @@ Make the GNU project commercial [[https://emacs.stackexchange.com/questions/432/
     (message ""))
 #+END_SRC
 
-***** hello
+**** hello
 #+BEGIN_SRC emacs-lisp :tangle no
   (message "
   ███████╗███╗   ███╗ █████╗  ██████╗███████╗██╗
@@ -1147,7 +1153,7 @@ Make the GNU project commercial [[https://emacs.stackexchange.com/questions/432/
   ")
 #+END_SRC
 
-**** Writing prose
+*** Writing prose
 Look into tildify-mode as well.
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (add-hook 'text-mode-hook
@@ -1156,7 +1162,7 @@ Look into tildify-mode as well.
               (auto-fill-mode)))
 #+END_SRC
 
-**** whitespace
+*** whitespace
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (setq show-trailing-whitespace t)
 #+END_SRC
@@ -1171,7 +1177,7 @@ There is an alternative that does less:
   (add-hook 'before-save-hook (lambda() (delete-trailing-whitespace)))
 #+END_SRC
 
-**** backups, autosaves & lockfiles
+*** backups, autosaves & lockfiles
 http://stackoverflow.com/a/151946
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (setq make-backup-files   nil
@@ -1186,7 +1192,7 @@ http://stackoverflow.com/a/151946
 https://www.gnu.org/software/emacs/manual/html_node/elisp/Backquote.html
 http://snarfed.org/gnu_emacs_backup_files
 
-**** locale
+*** locale
 Note that on Windows, [[https://rufflewind.com/2014-07-20/pasting-unicode-in-emacs-on-windows][the selection coding system is utf-16-le]], hence
 the need for [[http://stackoverflow.com/a/2903256/1435577][the unless clause]].
 
@@ -1206,26 +1212,26 @@ http://stackoverflow.com/a/17537564
         default-buffer-file-coding-system 'utf-8-unix)
 #+END_SRC
 
-**** time-stamps
+*** time-stamps
 Auto-update time stamps if present:
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (add-hook 'before-save-hook 'time-stamp)
   (setq time-stamp-format "%:y-%02m-%02dT%02H:%02M:%02S")
 #+END_SRC
 
-**** network security
+*** network security
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (setq network-security-level 'high
         nsm-save-host-names t)
 #+END_SRC
 
-**** save-place
+*** save-place
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (save-place-mode t)
   ;(setq save-place-file (concat my-base-directory "places"))
 #+END_SRC
 
-**** search
+*** search
 Character-folding search
 http://endlessparentheses.com/new-in-emacs-25-1-easily-search-non-ascii-characters.html
 #+BEGIN_SRC emacs-lisp :tangle init.el
@@ -1233,7 +1239,7 @@ http://endlessparentheses.com/new-in-emacs-25-1-easily-search-non-ascii-characte
         replace-char-fold   t)
 #+END_SRC
 
-**** ido-mode
+*** ido-mode
 https://masteringemacs.org/article/introduction-to-ido-mode
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (ido-mode t)
@@ -1245,7 +1251,7 @@ https://masteringemacs.org/article/introduction-to-ido-mode
 	)
 #+END_SRC
 
-**** dired
+*** dired
 The default keybinding for =dired-hide-details-mode= is =(=.
 Use =C-x C-j= in a file buffer to jump to it in dired (dired-jump).
 #+BEGIN_SRC emacs-lisp :tangle init.el
@@ -1267,7 +1273,7 @@ Use =C-x C-j= in a file buffer to jump to it in dired (dired-jump).
 TODO: interesting stuff here:
 https://www.emacswiki.org/emacs/DiredPower
 
-**** ibuffer
+*** ibuffer
 #+BEGIN_SRC emacs-lisp :tangle init.el
   ;; (setq-default ibuffer-default-sorting-mode 'alphabetic)
   (add-hook 'ibuffer-mode-hook (lambda ()
@@ -1276,7 +1282,7 @@ https://www.emacswiki.org/emacs/DiredPower
                                  ))
 #+END_SRC
 
-**** shell
+*** shell
 TODO: https://github.com/monsanto/readline-complete.el
 
 #+begin_src emacs-lisp :tangle init.el
@@ -1285,7 +1291,7 @@ TODO: https://github.com/monsanto/readline-complete.el
 	)
 #+end_src
 
-***** system shell
+**** system shell
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (setq comint-scroll-to-bottom-on-input t
         comint-prompt-read-only          t
@@ -1293,7 +1299,7 @@ TODO: https://github.com/monsanto/readline-complete.el
         comint-completion-autolist       t)
 #+END_SRC
 
-***** eshell
+**** eshell
 #+BEGIN_SRC emacs-lisp :tangle init.el
 (setq eshell-scroll-to-bottom-on-input t
       eshell-error-if-no-glob t
@@ -1392,14 +1398,14 @@ alias v nvim $1
 alias workgit ssh-agent; pass -c ssh-keygen; ssh-add .ssh/github
 #+end_src
 
-**** ediff
+*** ediff
 https://www.emacswiki.org/emacs/EdiffMode
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (setq ediff-window-setup-function 'ediff-setup-windows-plain
         ediff-split-window-function 'split-window-horizontally)
 #+END_SRC
 
-**** calendar
+*** calendar
 #+BEGIN_SRC emacs-lisp :tangle init.el
 (setq calendar-week-start-day 1
       calendar-mark-holidays-flag t
@@ -1418,13 +1424,13 @@ https://www.emacswiki.org/emacs/EdiffMode
 #+END_SRC
 https://github.com/rudolfochrist/german-holidays/blob/master/german-holidays.el
 
-**** icomplete
+*** icomplete
 #+BEGIN_SRC emacs-lisp
   (icomplete-mode)
   (setq icomplete-compute-delay 0)
 #+END_SRC
 
-**** CamelCase - super- and subword movement
+*** CamelCase - super- and subword movement
 Display underscores in CamelCase without file modification:
 #+begin_src emacs-lisp :tangle no
   (setq-default glasses-mode nil)
@@ -1435,7 +1441,7 @@ superword-mode does the opposite:
   (setq-default subword-mode t)
 #+end_src
 
-**** safe local variables
+*** safe local variables
 #+BEGIN_SRC emacs-lisp :tangle no
   (setq safe-local-variable-values
         (list
@@ -1445,14 +1451,14 @@ superword-mode does the opposite:
          (AUTHOR . (getenv "USER"))))
 #+END_SRC
 
-**** recursive minibuffer
+*** recursive minibuffer
 #+begin_src emacs-lisp :tangle init.el
 (setq enable-recursive-minibuffers t)
 (minibuffer-depth-indicate-mode)
 #+end_src
 
-*** keybindings
-**** better defaults
+** keybindings
+*** better defaults
 These bindings replace already-present ones with more useful
 functionality:
 #+BEGIN_SRC emacs-lisp :tangle init.el
@@ -1466,7 +1472,7 @@ functionality:
 
 #+END_SRC
 
-***** Scroll
+**** Scroll
 Scroll half-pages instead of full ones:
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (require 'view)
@@ -1481,7 +1487,7 @@ Don’t move point when scrolling it out of the window:
 #+end_src
 Taken from https://superuser.com/a/184421
 
-***** Unfill
+**** Unfill
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (defun endless/fill-or-unfill ()
     "Like ‘fill-paragraph’, but unfill if used twice."
@@ -1497,7 +1503,7 @@ Taken from https://superuser.com/a/184421
 #+END_SRC
 Taken from http://endlessparentheses.com/fill-and-unfill-paragraphs-with-a-single-key.html
 
-**** new additions
+*** new additions
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (global-set-key (kbd "<f1>")    'linum-mode)
   (global-set-key (kbd "<f2>")    'toggle-truncate-lines)
@@ -1515,7 +1521,7 @@ Taken from http://endlessparentheses.com/fill-and-unfill-paragraphs-with-a-singl
 #+END_SRC
 https://www.masteringemacs.org/article/mastering-key-bindings-emacs
 
-***** highlight changes
+**** highlight changes
 See http://stackoverflow.com/a/1210266
 #+BEGIN_SRC emacs-lisp :tangle no
   (global-set-key (kbd "<f8>")    'highlight-changes-visible-mode)
@@ -1523,14 +1529,14 @@ See http://stackoverflow.com/a/1210266
   (setq highlight-changes-visibility-initial-state nil)
 #+END_SRC
 
-***** windmove
+**** windmove
 #+BEGIN_SRC emacs-lisp :tangle no
   (when (fboundp 'windmove-default-keybindings)
     (windmove-default-keybindings))
   (setq windmove-wrap-around t)
 #+END_SRC
 
-***** The Toggle-Map and Wizardry
+**** The Toggle-Map and Wizardry
 #+begin_src emacs-lisp :tangle init.el
   (define-prefix-command 'ato/toggle-map)
   ;; The manual recommends C-c for user keys, but C-x t is always free,
@@ -1556,8 +1562,8 @@ See http://stackoverflow.com/a/1210266
 #+end_src
 Taken from https://endlessparentheses.com/the-toggle-map-and-wizardry.html
 
-*** programming languages
-**** python
+** programming languages
+*** python
 On Ubuntu, the [[https://stackoverflow.com/questions/17139067/how-do-i-change-the-default-command-for-run-python][default]] python is 2.
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (cond ((eq system-type 'gnu/linux)
@@ -1565,7 +1571,7 @@ On Ubuntu, the [[https://stackoverflow.com/questions/17139067/how-do-i-change-th
          ))
 #+END_SRC
 
-*** Windows
+** Windows
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (cond ((eq system-type 'windows-nt)
          (add-to-list 'default-frame-alist
@@ -1574,8 +1580,8 @@ On Ubuntu, the [[https://stackoverflow.com/questions/17139067/how-do-i-change-th
          ))
 #+END_SRC
 
-*** session management
-***** initial dired
+** session management
+**** initial dired
 Let my-projects-dired-symlink be the path to a directory containing
 symlinks to projects:
 #+NAME: start-with-dired
@@ -1607,7 +1613,7 @@ symlinks to projects:
       )
 #+end_src
 
-***** desktop
+**** desktop
 http://stackoverflow.com/a/4485083
 #+NAME: desktop-save
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -1618,7 +1624,7 @@ http://stackoverflow.com/a/4485083
 	)
 #+END_SRC
 
-***** termwindow
+**** termwindow
 #+name: termwindow
 #+begin_src emacs-lisp :tangle no
 (add-hook 'emacs-startup-hook (lambda ()
@@ -1629,7 +1635,7 @@ http://stackoverflow.com/a/4485083
 				))
 #+end_src
 
-***** combined
+**** combined
 #+BEGIN_SRC emacs-lisp :noweb yes :tangle no
 (cond ((eq system-type 'gnu/linux)
 ;       <<desktop-save>>
@@ -1641,13 +1647,13 @@ http://stackoverflow.com/a/4485083
        ))
 #+END_SRC
 
-***** minibuffer history
+**** minibuffer history
 More Infos [[https://www.emacswiki.org/emacs/SaveHist][here]] and [[https://stackoverflow.com/questions/1229142/how-can-i-save-my-mini-buffer-history-in-emacs][here]] and [[https://emacs.stackexchange.com/questions/4187/strip-text-properties-in-savehist][here]].
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (savehist-mode t)
 #+END_SRC
 
-*** TODO profiling init
+** TODO profiling init
 #+begin_src emacs-lisp :tangle no
 Profile Emacs Startup
 (add-hook 'emacs-startup-hook
@@ -1659,63 +1665,46 @@ Profile Emacs Startup
                      gcs-done)))
 #+end_src
 
-*** EOF init.el
+** EOF init.el
 #+begin_src emacs-lisp :tangle init.el
 (message "[INFO] init.el loaded successfully")
 #+end_src
 
+* notes on other cool stuff
 ** dynamic libraries
 As noted [[https://emacs.stackexchange.com/questions/27202/how-do-i-install-gnutls-for-emacs-25-1-on-windows][here]], the variable =dynamic-library-alist= is useful for
 finding out which version of a library Emacs is expecting.
 
-** notes on other cool stuff
-*** rudel
-elpa package for collaborative editing (eg with gobby protocol)
-https://www.emacswiki.org/emacs/Rudel
+** artist-mode
 
-*** ditaa
-external program for rendering ascii diagrams
-http://orgmode.org/worg/org-contrib/babel/languages/ob-doc-ditaa.html
-http://floatsolutions.com/blog/2010/10/displaying-inline-images-in-emacs-org-mode/
-http://stackoverflow.com/questions/17621495/emacs-org-display-inline-images
+** picture-mode
 
-*** artist-mode
+** ruler-mode
 
-*** picture-mode
+** scroll-lock-mode + view-mode
 
-*** ruler-mode
+** ses-mode
 
-*** scroll-lock-mode + view-mode
+** speedbar
 
-*** ses-mode
+** type-break-mode
 
-*** speedbar
-
-*** type-break-mode
-
-*** hi-lock-mode
+** hi-lock-mode
 M-s h .
 
-*** filter packages by archive
+** filter packages by archive
 http://emacsist.com/10243 which mentions
 http://endlessparentheses.com/new-in-emacs-25-1-filtering-by-status-and-archive.html
 as source
 
-***  other links
+**  other links
 http://nicolas.petton.fr/blog/per-computer-emacs-settings.html
 http://nicolas.petton.fr/blog/blogging-with-org-mode.html
 C-h a -mode$ RET
 https://www.math.uh.edu/~bgb/emacs_keys.html
 
-*** truncate like nano
+** truncate like nano
 https://www.reddit.com/r/emacs/comments/6au45k/is_it_possible_to_truncate_long_lines_the_same/
 
 or what about this?: Truncate all lines, except the one point is on,
 which gets wrapped.
-
-** COMMENT Footnotes                                      :noexport:archive:
-# Local Variables:
-# End:
-
-orgmode.org/manual/JavaScript-support.html
-#+INFOJS_OPT: view:info toc:nil
