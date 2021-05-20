@@ -17,6 +17,8 @@
 
 !emacs/emacs.org
 !emacs/readme.org
+!emacs/apex-mode/apex-mode.el
+!emacs/apex-mode/README.md
 
 !git/.gitconfig
 
