@@ -54,21 +54,21 @@ scope ()
 	# prepend environment variable dynamically, only if trylinking worked, and it’s not already set
 	if [ "$fail" != "$profile" ]
 	then
-	    if [ -z "$base" ]
+	    if [ -z "$my_base" ]
 	    then
-		printf "%b\n" "file $profile : export base=\'$script_path\'" | tee -a $logfile_name
-		sed -i "1i export base=\'$script_path\'" $profile
+		printf "%b\n" "file $profile : export my_base=\'$script_path\'" | tee -a $logfile_name
+		sed -i "1i export my_base=\'$script_path\'" $profile
 	    else
-		printf "%b\n" "ERROR: environment variable 'base' is already set, not prepending its definition to $profile" | tee -a $logfile_name
+		printf "%b\n" "ERROR: environment variable 'my_base' is already set, not prepending its definition to $profile" | tee -a $logfile_name
 	    fi
 	fi
 
 	# bash
 	trylink bash/.bashrc $bashrc
-	# only need linking in HOME if $base is unset
-	if [ -z "$base" ]
+	# only need linking in HOME if $my_base is unset
+	if [ -z "$my_base" ]
 	then
-	    printf "%b\n" "no environment variable 'base', linking all bash files in HOME" | tee -a $logfile_name
+	    printf "%b\n" "no environment variable 'my_base', linking all bash files in HOME" | tee -a $logfile_name
 	    trylink bash/.bash_aliases $bashaliases
 	    trylink bash/.bash_functions $bashfunctions
 	    trylink bash/.bash_setenv $bashenv
