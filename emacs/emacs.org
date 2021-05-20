@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-05-19T12:43:03>
+#+Time-stamp: <2021-05-20T12:15:21>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -104,7 +104,6 @@ information.
 
 ** basics
 #+BEGIN_SRC emacs-lisp :tangle init.el
-  ;;(message "my init.el loaded")
   (setq load-prefer-newer t
         disabled-command-function nil
         save-interprogram-paste-before-kill t
@@ -133,7 +132,8 @@ Move mouse cursor if too close to point:
 Instead of saving bookmarks to file only on exit, write them as soon
 as they get set:
 #+BEGIN_SRC emacs-lisp :tangle init.el
-  (setq bookmark-save-flag 1)
+(setq bookmark-save-flag 1
+      bookmark-default-file (expand-file-name "bookmarks" my-base-directory))
 #+END_SRC
 
 *** truncate
