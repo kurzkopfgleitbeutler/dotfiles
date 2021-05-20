@@ -1,0 +1,11 @@
+# check bash(1), section 'Readline Variables' for options
+
+set show-all-if-unmodified on
+
+# https://unix.stackexchange.com/questions/16243/is-there-a-way-to-set-coloring-for-cd-tab-complete
+set colored-stats on
+
+# https://askubuntu.com/questions/87061/can-i-make-tab-auto-completion-case-insensitive-in-the-terminal
+set completion-ignore-case on
+
+set show-all-if-ambiguous on
