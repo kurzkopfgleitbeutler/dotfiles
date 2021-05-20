@@ -1,5 +1,6 @@
 # http://stackoverflow.com/a/987162/3553458
 # Ignore everything
+
 *
 
 # But not these files...
@@ -15,6 +16,7 @@
 !bash/.inputrc
 
 !emacs/emacs.org
+!emacs/readme.org
 
 !git/.gitconfig
 
@@ -22,4 +24,5 @@
 !vi/nvim/init.vim
 
 # ...even if they are in subdirectories
+
 !*/
