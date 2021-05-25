@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-05-20T12:15:21>
+#+Time-stamp: <2021-05-25T13:33:23>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -621,6 +621,10 @@ So much to learn from [[http://sriramkswamy.github.io/dotemacs/#orgheadline11][h
 	 org-agenda-files (list (expand-file-name "~/files/agendafiles.org"))))
 
   ;; fix fonts in orgmode
+  (when (display-graphic-p)
+    (when (member fontdefault (font-family-list))
+      (set-frame-font fontdefault nil t)))
+
   (when (display-graphic-p)
     (variable-pitch-mode t)
     ;; (mapc
@@ -1285,12 +1289,6 @@ https://www.emacswiki.org/emacs/DiredPower
 *** shell
 TODO: https://github.com/monsanto/readline-complete.el
 
-#+begin_src emacs-lisp :tangle init.el
-  (setq pcomplete-ignore-case t
-	;explicit-shell-file-name "bash"
-	)
-#+end_src
-
 **** system shell
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (setq comint-scroll-to-bottom-on-input t
@@ -1301,7 +1299,11 @@ TODO: https://github.com/monsanto/readline-complete.el
 
 **** eshell
 #+BEGIN_SRC emacs-lisp :tangle init.el
-(setq eshell-scroll-to-bottom-on-input t
+(setq eshell-cmpl-ignore-case t ;pcomplete-ignore-case is assigned to ‘pcomplete-ignore-case’ locally after eshell starts.
+      eshell-cmpl-autolist t
+      eshell-cmpl-recexact t
+
+      eshell-scroll-to-bottom-on-input t
       eshell-error-if-no-glob t
       eshell-hist-ignoredups t
       eshell-prefer-lisp-functions t
@@ -1330,6 +1332,7 @@ TODO: https://github.com/monsanto/readline-complete.el
 			      (eshell/alias "gco" "git commit $*")
 			      (eshell/alias "gd" "git diff $*")
 			      (eshell/alias "gf" "git fetch $*")
+			      (eshell/alias "gib" "kdeconnect-cli --name $1 --share $2")
 			      (eshell/alias "gl" "git log -3")
 			      (eshell/alias "gm" "git merge $*")
 			      (eshell/alias "gpl" "git pull $*")
@@ -1351,9 +1354,19 @@ TODO: https://github.com/monsanto/readline-complete.el
 			      (add-to-list 'eshell-visual-commands "emacs-nox")
 			      (add-to-list 'eshell-visual-commands "nvim")
 			      (add-to-list 'eshell-visual-commands "ranger")
+			      (add-to-list 'eshell-visual-commands "ncdu")
+			      (add-to-list 'eshell-visual-commands "top")
+			      (add-to-list 'eshell-visual-commands "htop")
+			      (add-to-list 'eshell-visual-commands "alsamixer")
 			      (add-to-list 'eshell-visual-subcommands '("git" "log" "diff" "show"))
 			      (add-to-list 'eshell-visual-subcommands '("pass" "edit"))
 			      ))
+
+(setq ;;eshell-prompt-regexp
+      eshell-prompt-function
+      (lambda ()
+	(concat (eshell/basename (abbreviate-file-name (eshell/pwd)))
+		(if (= (user-uid) 0) " # " " $ "))))
 #+END_SRC
 
 ALTERNATIVE:
