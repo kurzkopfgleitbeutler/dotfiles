@@ -24,7 +24,7 @@ URxvt.saveLines: 5000
 *pointerColorBackground:S_base1
 *pointerColorForeground:S_base01
 
-!! OR: solarized dark
+! !! OR: solarized dark
 ! *background:            S_base03
 ! *foreground:            S_base0
 ! *fadeColor:             S_base03
