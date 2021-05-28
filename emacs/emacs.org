@@ -367,6 +367,14 @@ http://endlessparentheses.com/new-in-emacs-25-1-have-prettify-symbols-mode-revea
   )
 #+end_src
 
+taken from https://github.com/jwiegley/dot-emacs/blob/master/init.el
+#+begin_src emacs-lisp :tangle no
+(defun my-set-font ()
+  (set-frame-font "Roboto Condensed" t t)
+  )
+(advice-add 'make-frame-command :after #'my-set-font)
+#+end_src
+
 #+begin_src emacs-lisp :tangle init.el
 ;; Averia Serif Libre, DejaVu Sans Mono, Fantasque Sans Mono, Fira
 ;; Code, Hack, Input Mono Compressed, Input Serif, Monoid,
@@ -621,9 +629,9 @@ So much to learn from [[http://sriramkswamy.github.io/dotemacs/#orgheadline11][h
 	 org-agenda-files (list (expand-file-name "~/files/agendafiles.org"))))
 
   ;; fix fonts in orgmode
-  (when (display-graphic-p)
-    (when (member fontdefault (font-family-list))
-      (set-frame-font fontdefault nil t)))
+  ;; (when (display-graphic-p)
+  ;;   (when (member fontdefault (font-family-list))
+  ;;     (set-frame-font fontdefault nil t)))
 
   (when (display-graphic-p)
     (variable-pitch-mode t)
