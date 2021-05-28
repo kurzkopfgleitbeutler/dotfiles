@@ -14,3 +14,10 @@
 		clean = "sed -E 's/^(export my_[^\"]*\")[^\"]*/#\\1/'"
 	[filter "clean-gitprofile"]
 		clean = "sed -E 's/= (.*)/=/'"
+
+use ssh for credentials:
+
+        git remote -v
+	git remote remove origin
+	git remote add origin git@github.com:kurzkopfgleitbeutler/dotfiles.git
+	git push --set-upstream origin master
