@@ -35,10 +35,10 @@ if [ -d "$HOME/apps/Telegram" ] ; then
     PATH="$PATH:$HOME/apps/Telegram"
 fi
 
-export PATH="$HOME/.cargo/bin:$PATH"
 
 # https://askubuntu.com/questions/60218/how-to-add-a-directory-to-the-path
 # `$ pip3 install wheel --upgrade` leads to "The script wheel is installed in '~/.local/bin' which is not on PATH. Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location."
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
+. "$HOME/.cargo/env"
