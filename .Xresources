@@ -1,0 +1,5 @@
+!! URxvt Appearance
+URxvt.font: xft:DejaVu Sans Mono:style=regular:size=13
+URxvt.scrollBar: False
+URxvt.saveLines: 5000
+!URxvt.borderLess: True !kills it in i3

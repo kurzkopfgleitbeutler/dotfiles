@@ -8,6 +8,7 @@
 !.gitignore
 !setup.sh
 !.profile
+!.Xresources
 
 !bash/.bashrc
 !bash/.bash_aliases
