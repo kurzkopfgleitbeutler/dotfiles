@@ -1,8 +1,7 @@
 # dotfiles
 
-	mkdir -p ~/yourbasehere/.config
-	git clone https://github.com/kurzkopfgleitbeutler/dotfiles ~/yourbasehere/.config
-	~/yourbasehere/.config/setup.sh
+	git clone https://github.com/kurzkopfgleitbeutler/dotfiles ~/dotfiles
+	~/dotfiles/setup.sh
 
 ~/yourbasehere/.config/.gitattributes:
 
