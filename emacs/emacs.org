@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-05-25T13:33:23>
+#+Time-stamp: <2021-05-28T08:15:44>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -1307,7 +1307,11 @@ TODO: https://github.com/monsanto/readline-complete.el
 
 **** eshell
 #+BEGIN_SRC emacs-lisp :tangle init.el
-(setq eshell-cmpl-ignore-case t ;pcomplete-ignore-case is assigned to ‘pcomplete-ignore-case’ locally after eshell starts.
+(setq eshell-prompt-function ; Make sure to update ‘eshell-prompt-regexp’ so that it will match your prompt.
+      (lambda ()
+	(concat (eshell/basename (abbreviate-file-name (eshell/pwd)))
+		(if (= (user-uid) 0) " # " " $ ")))
+      eshell-cmpl-ignore-case t ;pcomplete-ignore-case is assigned to ‘pcomplete-ignore-case’ locally after eshell starts.
       eshell-cmpl-autolist t
       eshell-cmpl-recexact t
 
@@ -1349,14 +1353,18 @@ TODO: https://github.com/monsanto/readline-complete.el
 			      (eshell/alias "l" "ls -CFAlh --color=auto")
 			      (eshell/alias "mkdir" "mkdir -pv $*")
 			      (eshell/alias "mv" "mv -v $*")
-			      (eshell/alias "path" "printf \"%b\n\" \"$PATH\" | tr -s \":\" \"\n\"")
+			      (eshell/alias "path" "printf \"%b\n\" \"$PATH\" | tr -s \":\" \"\n\"") ; is functionally identical to eshell/addpath without arguments
 			      (eshell/alias "r" "ranger")
+			      (eshell/alias "raus" "lsblk -e7; udisksctl unmount --no-user-interaction --block-device $1")
+			      (eshell/alias "rein" "lsblk -e7; udisksctl mount --no-user-interaction --block-device $1")
 			      (eshell/alias "rm" "rm -rf $*")
 			      (eshell/alias "rmdir" "rmdir --ignore-fail-on-non-empty -v $1")
+			      (eshell/alias "rp" "rsync -vaHAX $*")
 			      (eshell/alias "today" "touch $(date -I_)")
 			      (eshell/alias "update" "sudo apt update && apt list --upgradable && sudo apt upgrade && sudo apt autoremove && sudo apt-get autoclean && flatpak update && flatpak uninstall --delete-data --unused && sudo youtube-dl --update")
 			      (eshell/alias "v" "nvim $*")
 			      (eshell/alias "workgit" "ssh-agent; pass -c ssh-keygen; ssh-add ~/.ssh/github")
+			      (eshell/alias "x" "exit")
 
 			      ;; deal with curses-like programs
 			      (add-to-list 'eshell-visual-commands "emacs-nox")
@@ -1370,11 +1378,17 @@ TODO: https://github.com/monsanto/readline-complete.el
 			      (add-to-list 'eshell-visual-subcommands '("pass" "edit"))
 			      ))
 
-(setq ;;eshell-prompt-regexp
-      eshell-prompt-function
-      (lambda ()
-	(concat (eshell/basename (abbreviate-file-name (eshell/pwd)))
-		(if (= (user-uid) 0) " # " " $ "))))
+;; (defun eshell/x ()
+;;   "exit eshell and close its window"
+;;   (if (equal (count-windows) 1)
+;;       (progn
+;; 	(message "eshell: kill-buffer")
+;; 	(kill-buffer))
+;;     (progn
+;;       (message "eshell: kill-buffer-and-window")
+;;       (kill-buffer-and-window))
+;;     ))
+
 #+END_SRC
 
 ALTERNATIVE:
