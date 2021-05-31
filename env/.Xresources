@@ -4,6 +4,7 @@
 URxvt.font: xft:DejaVu Sans Mono:style=regular:size=13
 URxvt.scrollBar: False
 URxvt.saveLines: 5000
+URxvt.scrollTtyOutput: False
 !URxvt.borderLess: True !kills it in i3
 
 !! https://github.com/solarized/xresources/blob/master/Xresources.light
