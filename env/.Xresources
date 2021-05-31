@@ -6,6 +6,7 @@ URxvt.scrollBar: False
 URxvt.saveLines: 5000
 URxvt.scrollTtyOutput: False
 URxvt.scrollWithBuffer: True
+URxvt.scrollTtyKeypress: True
 !URxvt.borderLess: True !kills it in i3
 
 !! https://github.com/solarized/xresources/blob/master/Xresources.light
