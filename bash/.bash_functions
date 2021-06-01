@@ -7,3 +7,7 @@ les () {
 ropy () {
      rsync --verbose --archive --hard-links --acls --xattrs --partial --delete-during "$1" "$2" >> "$2"/sync-report.txt 2>> "$2"/sync-errors.txt
 }
+
+gib () {
+    kdeconnect-cli --name "$1" --share "$2"
+}
