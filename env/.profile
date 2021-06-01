@@ -15,6 +15,9 @@ export my_emacs_projectile_searchpath=""
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
+# gnupg
+export GPG_TTY=$(tty)
+
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
