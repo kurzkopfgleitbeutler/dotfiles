@@ -24,7 +24,7 @@
 !git/.gitconfig
 
 !vi/.vimrc
-!vi/nvim/init.vim
+!nvim/init.vim
 
 # ...even if they are in subdirectories
 
