@@ -17,7 +17,7 @@
 
 use ssh for credentials:
 
-        git remote -v
+	git remote -v
 	git remote remove origin
 	git remote add origin git@github.com:kurzkopfgleitbeutler/dotfiles.git
 	git push --set-upstream origin master
