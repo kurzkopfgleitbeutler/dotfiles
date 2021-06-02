@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-05-31T11:23:54>
+#+Time-stamp: <2021-06-02T08:53:20>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -1318,6 +1318,7 @@ TODO: https://github.com/monsanto/readline-complete.el
       eshell-scroll-to-bottom-on-input t
       eshell-error-if-no-glob t
       eshell-hist-ignoredups t
+      eshell-history-size 1000
       eshell-prefer-lisp-functions t
       eshell-destroy-buffer-when-process-dies t)
 (add-hook 'eshell-mode-hook (lambda ()
@@ -1350,7 +1351,7 @@ TODO: https://github.com/monsanto/readline-complete.el
 			      (eshell/alias "gpl" "git pull $*")
 			      (eshell/alias "gps" "git push $*")
 			      (eshell/alias "gs" "git status")
-			      (eshell/alias "l" "ls -CFAlh --color=auto --group-directories-first")
+			      (eshell/alias "l" "ls -CFAlhv --color=auto --group-directories-first")
 			      (eshell/alias "mkdir" "mkdir -pv $*")
 			      (eshell/alias "mv" "mv -v $*")
 			      (eshell/alias "path" "printf \"%b\n\" \"$PATH\" | tr -s \":\" \"\n\"") ; is functionally identical to eshell/addpath without arguments
