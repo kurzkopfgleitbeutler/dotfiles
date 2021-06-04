@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-06-02T08:53:20>
+#+Time-stamp: <2021-06-04T11:33:39>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -384,26 +384,8 @@ taken from https://github.com/jwiegley/dot-emacs/blob/master/init.el
 (setq fontfixedpitch mainfont)
 (setq fontvariablepitch "Roboto Condensed")
 
-;; (when (display-graphic-p)
-;;   (when (member myfont (font-family-list))
-;;     (set-face-font 'default myfont)
-;;     (set-face-font 'fixed-pitch myfont))
-;;   (when (member myfontvarpitch (font-family-list))
-;;     (set-face-font 'variable-pitch myfontvarpitch))
-
 (when (display-graphic-p)
-  (when (member fontdefault (font-family-list))
-    ;; (set-frame-font fontdefault nil t)
-    (set-face-attribute 'default nil :font fontdefault))
-  (when (member fontfixedpitch (font-family-list))
-    (set-face-attribute 'fixed-pitch nil :font fontfixedpitch))
-  (when (member fontvariablepitch (font-family-list))
-    (set-face-attribute 'variable-pitch nil :font fontvariablepitch))
-  )
-
-;; (when (member myfont (font-family-list))
-;;   (add-to-list 'default-frame-alist
-;; 	       '(font . "Fantasque Sans Mono")))
+  (variable-pitch-mode t))
 
 ;; https://explog.in/notes/writingsetup.html
 ;; (set-face-attribute 'default nil :family myfont)
@@ -573,6 +555,24 @@ everything it loads:
 *** packages
 Load and configure packages:
 
+**** font-utils
+#+begin_src emacs-lisp :tangle init.el
+(use-package font-utils
+  :demand
+  :init
+  (when (display-graphic-p)
+    (when (member fontdefault (font-family-list))
+      ;; (set-frame-font fontdefault nil t)
+      (set-face-attribute 'default nil :font fontdefault))
+    (when (member fontfixedpitch (font-family-list))
+      (set-face-attribute 'fixed-pitch nil :font fontfixedpitch))
+    (when (member fontvariablepitch (font-family-list))
+      (set-face-attribute 'variable-pitch nil :font fontvariablepitch))
+    )
+
+  )
+#+end_src
+
 **** magit
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (use-package magit
@@ -627,75 +627,6 @@ So much to learn from [[http://sriramkswamy.github.io/dotemacs/#orgheadline11][h
 	       ))
 	((eq system-type 'windows-nt)
 	 org-agenda-files (list (expand-file-name "~/files/agendafiles.org"))))
-
-  ;; fix fonts in orgmode
-  ;; (when (display-graphic-p)
-  ;;   (when (member fontdefault (font-family-list))
-  ;;     (set-frame-font fontdefault nil t)))
-
-  (when (display-graphic-p)
-    (variable-pitch-mode t)
-    ;; (mapc
-    ;;  (lambda (face)
-    ;;    (set-face-attribute face nil :inherit 'fixed-pitch))
-    ;;  (list 'org-code
-    ;; 	   'org-link
-    ;; 	   'org-block
-    ;; 	   'org-table
-    ;; 	   'org-block-begin-line
-    ;; 	   'org-block-end-line
-    ;; 	   'org-meta-line
-    ;; 	   'org-document-info-keyword
-    ;; 	   ))
-    ;; (mapc
-    ;;  (lambda (face)
-    ;;    (set-face-attribute face nil :inherit 'variable-pitch))
-    ;;  (list 'org-default
-    ;; 	   'org-level-8
-    ;; 	   'org-level-7
-    ;; 	   'org-level-6
-    ;; 	   'org-level-5
-    ;; 	   'org-level-4
-    ;; 	   'org-level-3
-    ;; 	   'org-level-2
-    ;; 	   'org-level-1
-    ;; 	   ))
-
-    ;; (custom-theme-set-faces
-    ;;  'user
-    ;;  ;; '(org-code ((t (:inherit fixed-pitch))))
-    ;;  ;; '(org-link ((t (:inherit fixed-pitch))))
-    ;;  ;; '(org-block ((t (:inherit fixed-pitch))))
-    ;;  ;; '(org-table ((t (:inherit fixed-pitch))))
-    ;;  ;; '(org-block-begin-line ((t (:inherit fixed-pitch))))
-    ;;  ;; '(org-block-end-line ((t (:inherit fixed-pitch))))
-    ;;  ;; '(org-meta-line ((t (:inherit fixed-pitch))))
-    ;;  ;; '(org-document-info-keyword ((t (:inherit fixed-pitch))))
-    ;;  ;; '(org-default ((t (:inherit default))))
-    ;;  ;; '(org-level-8 ((t (:inherit variable-pitch))))
-    ;;  ;; '(org-level-7 ((t (:inherit variable-pitch))))
-    ;;  ;; '(org-level-6 ((t (:inherit variable-pitch))))
-    ;;  ;; '(org-level-5 ((t (:inherit variable-pitch))))
-    ;;  ;; '(org-level-4 ((t (:inherit variable-pitch))))
-    ;;  ;; '(org-level-3 ((t (:inherit variable-pitch))))
-    ;;  ;; '(org-level-2 ((t (:inherit variable-pitch))))
-    ;;  ;; '(org-level-1 ((t (:inherit variable-pitch))))
-
-    ;;  '(org-block ((t (:inherit fixed-pitch))))
-    ;;  '(org-code ((t (:inherit (shadow fixed-pitch)))))
-    ;;  '(org-document-info ((t (:foreground "dark orange"))))
-    ;;  '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
-    ;;  ;; '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
-    ;;  ;; '(org-link ((t (:foreground "royal blue" :underline t))))
-    ;;  ;; '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-    ;;  ;; '(org-property-value ((t (:inherit fixed-pitch))) t)
-    ;;  ;; '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-    ;;  ;; '(org-table ((t  (:inherit fixed-pitch :foreground "#83a598"))))
-    ;;  ;; '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
-    ;;  ;; '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
-    ;;  )
-
-    )
   )
 #+END_SRC
 https://jherrlin.github.io/posts/emacs-orgmode-source-code-blocks/
@@ -761,7 +692,7 @@ https://github.com/snosov1/toc-org
 
 ***** tangle-dir
 Put string into register r via =C-x r i r= for easy access:
-’ :tangle (org-in-tangle-dir "")’
+‘:tangle (org-in-tangle-dir "")’
 #+begin_src emacs-lisp :tangle init.el
   (defun org-in-tangle-dir (sub-path)
     "Expand the SUB-PATH into the directory given by the tangle-dir
