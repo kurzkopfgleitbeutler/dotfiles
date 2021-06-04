@@ -1,96 +1,113 @@
 #!/bin/sh
 scope ()
 (
-
+    # ---------- VARIABLES -----------
     script_path="$(dirname "$(readlink -e -- "$0")")"
     script_name="$(basename "$0")"
-    logfile_name="$(date -Iseconds)_setup_log.txt"
+    logfile_name=/dev/null
+    runtime_dependencies="sudo ssh-askpass ln sed"
+    export SUDO_ASKPASS="$(which ssh-askpass)"
+    unset verbose
+    unset distname
 
-    profile="~/.profile"
+    # ---------- ARGPARSE ------------
+    while getopts 'lv' c
+    do
+	case $c in
+	    l) logfile_name="log.txt"; shift ;;
+	    v) verbose=1; shift ;;
+	    --) shift; break ;;
+	    *) echo "[ERROR] unsupported argument: $1"; usage ;;
+	esac
+    done
 
-    bashrc="~/.bashrc"
-    bashaliases="~/.bash_aliases"
-    bashfunctions="~/.bash_functions"
-    bashenv="~/.bash_setenv"
-    inputrc="~/.inputrc"
-
-    emacsinit="~/.config/emacs/init.el"
-    emacssitestart="/usr/local/share/emacs/site-lisp/site-start.el"
-
-    gitconfig="~/.gitconfig"
-
-    vimrc="~/.vimrc"
-    nviminit="~/.config/nvim/init.vim"
-
-    hello () {
-	printf "%b\n" "$script_path/$script_name" | tee -a $logfile_name
-	printf "%b\n" "Symlink configuration files in appropriate places" | tee -a $logfile_name
+    # ---------- FUNCTIONS -----------
+    usage () {
+	printf "%b\n" "Usage: $script_name [-v] [-l]"
+	exit 2
     }
-
-    trylink () {
-	unset fail
-	if [ ! -e "$1" ]
+    hello () {
+	printf "%b\n" "[INFO] $script_path/$script_name\n$(date -Iseconds)"
+	printf "%b\n" "Symlink configuration files in appropriate places"
+    }
+    log () {
+	if [ -n "$verbose" ]
 	then
-	    printf "%b\n" "ERROR: no file to symlink ($1)" | tee -a $logfile_name
+	    "$@" | tee -a $logfile_name
 	else
-	    if [ -e "$2" ]
+	    "$@" >> $logfile_name
+	fi
+    }
+    check_for_app () {
+	for dep in $@
+	do
+	    if [ -n "$(which $dep)" ]
 	    then
-		printf "%b\n" "ERROR: $2 already exists, not touching it" | tee -a $logfile_name
+		printf "%b\n" "found $dep"
 	    else
-		printf "%b\n" "ln $script_path/$1 $2" | tee -a $logfile_name
-		# https://hyperpolyglot.org/shell#exceptions-note
-		trap "printf \"%b\n\" \" ...FAIL\" | tee -a $logfile_name; fail=\"$2\"" ERR
-		ln "$script_path/$1" "$2"
-		trap - ERR
+		printf "%b\n" "[ERROR] $dep not found, aborting"
+		exit 2
 	    fi
+	done
+    }
+    trysudo () {
+	if [ -n "$(getent group sudo | grep -o $USER)" ]
+	then
+	    sudo -A "$@"
+	else
+	    printf "%b\n" "[WARN] $USER has no sudo rights: $@"
+	fi
+    }
+    which_os () {
+	if [ -r /etc/redhat-release ]
+	then
+	    distname="fedora"
+	elif [ -r /etc/os-release ] # or /etc/lsb-release
+	then
+	    distname="ubuntu"
 	fi
     }
 
+    # ---------- MAIN ----------------
     main () {
 	hello
+	check_for_app $runtime_dependencies
 
-	# set environment variables
-	trylink .profile $profile
-	# prepend environment variable dynamically, only if trylinking worked, and it’s not already set
-	if [ "$fail" != "$profile" ]
+	ln -vs ~/dotfiles/env/.profile ~/.profile
+	if [ -n "$(sed -n '/^export my_base/p' ~/dotfiles/env/.profile)" ]
 	then
-	    if [ -z "$my_base" ]
-	    then
-		printf "%b\n" "file $profile : export my_base=\'$script_path\'" | tee -a $logfile_name
-		sed -i "1i export my_base=\'$script_path\'" $profile
-	    else
-		printf "%b\n" "ERROR: environment variable 'my_base' is already set, not prepending its definition to $profile" | tee -a $logfile_name
-	    fi
+	    sed -i "1i export my_base=\'$script_path\'" ~/dotfiles/env/.profile
 	fi
 
 	# bash
-	trylink bash/.bashrc $bashrc
-	# only need linking in HOME if $my_base is unset
-	if [ -z "$my_base" ]
+	ln -vs ~/dotfiles/bash/.bashrc ~/.bashrc
+	ln -vs ~/dotfiles/bash/.bash_aliases ~/.bash_aliases
+	ln -vs ~/dotfiles/bash/.bash_setenv ~/.bash_setenv
+	ln -vs ~/dotfiles/bash/.inputrc ~/.inputrc
+
+	#emacs
+	ln -vs ~/dotfiles/emacs/init.el ~/.config/emacs/init.el
+	if [ "$distname" = "fedora" ]
 	then
-	    printf "%b\n" "no environment variable 'my_base', linking all bash files in HOME" | tee -a $logfile_name
-	    trylink bash/.bash_aliases $bashaliases
-	    trylink bash/.bash_functions $bashfunctions
-	    trylink bash/.bash_setenv $bashenv
-	    trylink bash/.inputrc $inputrc
+	    trysudo ln -vs ~/dotfiles/emacs/site-start.el /usr/share/emacs/site-lisp/site-start.d/site-start.el
+	elif [ "$distname" = "ubuntu" ]
+	then
+	    trysudo ln -vs ~/dotfiles/emacs/site-start.el /usr/local/share/emacs/site-lisp/site-start.el
 	fi
 
-	# emacs
-	trylink emacs/init.el $emacsinit
-	# setuid fuer admin Rechte
-	trylink emacs/site-start.el $emacssitestart
-
 	# git
-	trylink git/.gitconfig $gitconfig
+	ln -vs ~/dotfiles/git/.gitconfig ~/.gitconfig
 
-	# vi
-	trylink vi/.vimrc $vimrc
-	trylink vi/nvim/init.vim $nviminit
+	# neovim
+	ln -vs ~/dotfiles/nvim/init.vim ~/.config/nvim/init.vim
 
-	# notify of failures
-	printf "%b\n" "grep 'ERROR:' $logfile_name"
-	printf "%b" "grep '...FAIL' $logfile_name"
+	# vim
+	ln -vs ~/dotfiles/vim/.vimrc ~/.vimrc
+
+	printf "%b\n" ""
     }
-    main $@
+    log main $@
 )
 scope $@
+
+# ---------- COMMENTS ------------
