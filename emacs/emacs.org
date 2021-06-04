@@ -904,7 +904,10 @@ Eval this to disable all coloring in emacs, using only black and white:
 
 **** expand-region
 #+begin_src emacs-lisp :tangle init.el
-(global-set-key (kbd "M-i") 'er/expand-region)
+(use-package expand-region
+  :config
+  (global-set-key (kbd "M-i") 'er/expand-region)
+)
 #+end_src
 
 **** org-ref
