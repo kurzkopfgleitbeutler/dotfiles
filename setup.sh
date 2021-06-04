@@ -5,7 +5,7 @@ scope ()
     script_path="$(dirname "$(readlink -e -- "$0")")"
     script_name="$(basename "$0")"
     logfile_name=/dev/null
-    runtime_dependencies="sudo ssh-askpass ln sed"
+    runtime_dependencies="sudo ln sed"
     export SUDO_ASKPASS="$(which ssh-askpass)"
     unset verbose
     unset distname
@@ -53,7 +53,14 @@ scope ()
     trysudo () {
 	if [ -n "$(getent group sudo | grep -o $USER)" ]
 	then
-	    sudo -A "$@"
+	    if [ -n "$SUDO_ASKPASS" ]
+	    then
+		sudo -A "$@"
+	    else
+		read -s -t 30 -p "[sudo] password for $USER: " sudoPW
+		echo $sudoPW | sudo -S "$@"
+		unset sudoPW
+	    fi
 	else
 	    printf "%b\n" "[WARN] $USER has no sudo rights: $@"
 	fi
