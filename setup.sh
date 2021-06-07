@@ -14,7 +14,7 @@ scope ()
     while getopts 'lv' c
     do
 	case $c in
-	    l) logfile_name="log.txt"; shift ;;
+	    l) logfile_name="log_${script_name%.*}.txt"; shift ;;
 	    v) verbose=1; shift ;;
 	    --) shift; break ;;
 	    *) echo "[ERROR] unsupported argument: $1"; usage ;;
@@ -36,6 +36,12 @@ scope ()
 	    "$@" | tee -a $logfile_name
 	else
 	    "$@" >> $logfile_name
+	fi
+    }
+    debug () {
+	if [ -n "$debug" ]
+	then
+	    "$@"
 	fi
     }
     check_for_app () {
