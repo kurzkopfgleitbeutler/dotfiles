@@ -235,90 +235,6 @@ Fringe display uses bitmaps, so it will not work with terminal Emacs:
 (global-hl-line-mode t)
 #+END_SRC
 
-*** TODO modeline
-**** custom                                                        :noexport:
-http://emacs.stackexchange.com/questions/13652/how-to-customize-mode-line-format
-#+name: modelinedefault
-#+BEGIN_SRC emacs-lisp :tangle no
-(setq-default mode-line-format)
-(setq mode-line-format
-      (list
-       "%e"
-       mode-line-front-space
-       mode-line-mule-info
-       mode-line-client
-       mode-line-modified
-       mode-line-remote
-       mode-line-frame-identification
-       mode-line-buffer-identification
-       "   "
-       mode-line-position
-       (vc-mode vc-mode)
-       "  "
-       mode-line-modes
-       mode-line-misc-info
-       mode-line-end-spaces))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(setq-default mode-line-format
-	      (list
-	       "%e"
-	       mode-line-front-space
-	       mode-line-mule-info
-	       mode-line-client
-	       mode-line-modified
-	       mode-line-remote
-	       mode-line-frame-identification
-	       mode-line-buffer-identification
-	       "   "
-	       vc-mode
-	       "  "
-	       mode-line-modes
-	       mode-line-misc-info
-	       mode-line-end-spaces))
-#+END_SRC
-
-**** like occasionallycogent
-Helper functions to show different modeline in in/active windows:
-#+begin_src emacs-lisp :tangle no
-;; Keep track of selected window, so we can render the modeline differently
-(defvar ato-line-selected-window (frame-selected-window))
-(defun ato-line-set-selected-window (&rest _args)
-  (when (not (minibuffer-window-active-p (frame-selected-window)))
-    (setq ato-line-set-selected-window (frame-selected-window))
-    (force-mode-line-update)))
-(defun ato-line-unset-selected-window ()
-  (setq ato-line-selected-window nil)
-  (force-mode-line-update))
-(add-hook 'window-configuration-change-hook #'ato-line-set-selected-window)
-(add-hook 'focus-in-hook #'ato-line-set-selected-window)
-(add-hook 'focus-out-hook #'ato-line-unset-selected-window)
-(advice-add 'handle-switch-frame :after #'ato-line-set-selected-window)
-(advice-add 'select-window :after #'ato-line-set-selected-window)
-(defun ato-line-selected-window-active-p ()
-  (eq ato-line-selected-window (selected-window)))
-#+end_src
-
-#+begin_src emacs-lisp :tangle no
-(setq-default mode-line-format
-	      (list
-	       '(:eval (propertize (if (eq))))))
-#+end_src
-Taken from https://occasionallycogent.com/custom_emacs_modeline/index.html
-
-**** column number
-#+BEGIN_SRC emacs-lisp :tangle init.el
-(column-number-mode t)
-#+END_SRC
-
-**** clock
-See info for format-time-string
-#+BEGIN_SRC emacs-lisp :tangle no
-(setq display-time-format "%F %R %a%t")
-(display-time-mode t)
-#+END_SRC
-
 *** prettify symbols
 #+BEGIN_SRC emacs-lisp :tangle init.el
 (global-prettify-symbols-mode t)
@@ -803,6 +719,90 @@ Eval this to disable all coloring in emacs, using only black and white:
 (setq-default global-font-lock-mode nil)
 (setq global-font-lock-mode nil)
 #+end_src
+
+***** modeline
+****** custom                                                      :noexport:
+http://emacs.stackexchange.com/questions/13652/how-to-customize-mode-line-format
+#+name: modelinedefault
+#+BEGIN_SRC emacs-lisp :tangle no
+(setq-default mode-line-format)
+(setq mode-line-format
+      (list
+       "%e"
+       mode-line-front-space
+       mode-line-mule-info
+       mode-line-client
+       mode-line-modified
+       mode-line-remote
+       mode-line-frame-identification
+       mode-line-buffer-identification
+       "   "
+       mode-line-position
+       (vc-mode vc-mode)
+       "  "
+       mode-line-modes
+       mode-line-misc-info
+       mode-line-end-spaces))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(setq-default mode-line-format
+	      (list
+	       "%e"
+	       mode-line-front-space
+	       mode-line-mule-info
+	       mode-line-client
+	       mode-line-modified
+	       mode-line-remote
+	       mode-line-frame-identification
+	       mode-line-buffer-identification
+	       "   "
+	       vc-mode
+	       "  "
+	       mode-line-modes
+	       mode-line-misc-info
+	       mode-line-end-spaces))
+#+END_SRC
+
+****** like occasionallycogent
+Helper functions to show different modeline in in/active windows:
+#+begin_src emacs-lisp :tangle no
+;; Keep track of selected window, so we can render the modeline differently
+(defvar ato-line-selected-window (frame-selected-window))
+(defun ato-line-set-selected-window (&rest _args)
+  (when (not (minibuffer-window-active-p (frame-selected-window)))
+    (setq ato-line-set-selected-window (frame-selected-window))
+    (force-mode-line-update)))
+(defun ato-line-unset-selected-window ()
+  (setq ato-line-selected-window nil)
+  (force-mode-line-update))
+(add-hook 'window-configuration-change-hook #'ato-line-set-selected-window)
+(add-hook 'focus-in-hook #'ato-line-set-selected-window)
+(add-hook 'focus-out-hook #'ato-line-unset-selected-window)
+(advice-add 'handle-switch-frame :after #'ato-line-set-selected-window)
+(advice-add 'select-window :after #'ato-line-set-selected-window)
+(defun ato-line-selected-window-active-p ()
+  (eq ato-line-selected-window (selected-window)))
+#+end_src
+
+#+begin_src emacs-lisp :tangle no
+(setq-default mode-line-format
+	      (list
+	       '(:eval (propertize (if (eq 'emacs ))))))
+#+end_src
+Taken from https://occasionallycogent.com/custom_emacs_modeline/index.html
+
+****** column number
+#+BEGIN_SRC emacs-lisp :tangle init.el
+(column-number-mode t)
+#+END_SRC
+
+****** clock
+See info for format-time-string
+#+BEGIN_SRC emacs-lisp :tangle no
+(setq display-time-format "%F %R %a%t")
+(display-time-mode t)
+#+END_SRC
 
 **** emms
 [[https://www.gnu.org/software/emms/manual/#Quickstart-Guide][The Emacs Multimedia System]]
