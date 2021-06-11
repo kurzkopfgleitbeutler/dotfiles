@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-06-07T16:46:57>
+#+Time-stamp: <2021-06-11T12:34:28>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -1253,7 +1253,7 @@ Use =C-x C-j= in a file buffer to jump to it in dired (dired-jump).
       read-file-name-completion-ignore-case t
       read-buffer-completion-ignore-case t
       dired-dwim-target t
-      dired-guess-shell-alist-user '(("\\.pdf\\'" "okular"))
+      dired-guess-shell-alist-user '(("\\.pdf\\'" "mupdf")) ;or: okular
       )
 #+END_SRC
 
