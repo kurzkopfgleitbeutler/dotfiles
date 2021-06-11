@@ -50,6 +50,7 @@ map <C-l> <C-w>l
 set termguicolors
 " set background=light
 " colorscheme jellybeans
+colo desert
 
 "code folding
 "set foldmethod=syntax
