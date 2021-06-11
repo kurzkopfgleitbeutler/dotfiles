@@ -204,9 +204,10 @@ time with this configuration.  Otherwise, this will not work:
 Somehow, this just does not work with the above.  However, eval-buffer
 does work when using this:
 #+BEGIN_SRC emacs-lisp :tangle init.el
-(customize-save-variable 'menu-bar-mode nil)
-(customize-save-variable 'tool-bar-mode nil)
-(customize-save-variable 'scroll-bar-mode nil)
+  (when (display-graphic-p)
+    (customize-save-variable 'menu-bar-mode nil)
+    (customize-save-variable 'tool-bar-mode nil)
+    (customize-save-variable 'scroll-bar-mode nil))
 #+END_SRC
 
 Not tried yet:
@@ -301,8 +302,8 @@ taken from https://github.com/jwiegley/dot-emacs/blob/master/init.el
 (setq fontfixedpitch mainfont)
 (setq fontvariablepitch "Roboto Condensed")
 
-(when (display-graphic-p)
-  (variable-pitch-mode t))
+;; (when (display-graphic-p)
+;;   (variable-pitch-mode t))
 
 ;; https://explog.in/notes/writingsetup.html
 ;; (set-face-attribute 'default nil :family myfont)
