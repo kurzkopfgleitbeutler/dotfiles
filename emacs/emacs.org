@@ -692,12 +692,17 @@ Use solarized-light in window system, wombat when run in console mode
 (use-package solarized-theme
   :config
   ;; (setq custom-safe-themes 'solarized-light)
-  ;; (load-theme 'solarized-light t)
   (defun theme-after-init ()
     (if (display-graphic-p)
 	(progn
 	  (mapcar #'disable-theme custom-enabled-themes)
 	  (load-theme 'solarized-light t)
+	  ;; Attributes can be read with (face-attribute 'mode-line :background)
+	  ;; (set-face-attribute 'mode-line nil :background "grey75" :foreground "black")
+	  ;; (set-face-attribute 'mode-line-inactive nil :background "grey90" :foreground "grey75" )
+	  ;; (set-face-attribute 'mode-line-inactive nil :background nil :foreground nil :box nil :inherit nil)
+	  ;; (set-face-background 'minibuffer-prompt "grey90")
+	  ;; (add-hook 'focus-in-hook #'ato-line-set-selected-window)
 	  )
       (progn
 	(mapcar #'disable-theme custom-enabled-themes)
@@ -706,6 +711,7 @@ Use solarized-light in window system, wombat when run in console mode
   )
 (add-hook 'window-setup-hook 'theme-after-init)
 #+END_SRC
+https://www.gonsie.com/blorg/modeline.html
 
 #+begin_src emacs-lisp :tangle no
 (add-hook 'window-setup-hook (progn (mapcar #'disable-theme custom-enabled-themes)(load-theme 'solarized-light t)))
