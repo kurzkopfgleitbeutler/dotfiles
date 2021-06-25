@@ -1012,20 +1012,35 @@ sudo apt install --install-suggests bitlbee-libpurple bitlbee-plugin-otr
 (find-file user-init-file)
 #+end_src
 
+**** rust-mode
+#+begin_src emacs-lisp :tangle init.el
+(use-package rust-mode
+  :config
+  (add-hook 'rust-mode-hook (lambda ()
+			      (setq indent-tabs-mode nil)))
+  ;; (add-hook 'before-save-hook (lambda ()
+  ;; 				(when (eq 'rust-mode major-mode)
+  ;; 				  (lsp-format-buffer))))
+  (setq rust-format-on-save t)
+  (define-key rust-mode-map (kbd "C-c C-c") 'rust-compile)
+  )
+#+end_src
+
 **** lsp-mode
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle init.el
 (use-package lsp-mode
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l")
   :hook (;; replace XXX-mode with concrete major-mode(e.g. python-mode)
-	 (XXX-mode . lsp)
-	 :commands lsp))
+	 (rust-mode . lsp))
+  :commands lsp
+  )
 #+end_src
 https://emacs-lsp.github.io/lsp-mode/page/installation/#use-package
 
 **** which-key
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp :tangle no
 (use-package which-key
   :config
   (which-key-mode)
