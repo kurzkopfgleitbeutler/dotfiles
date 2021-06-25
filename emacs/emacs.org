@@ -539,6 +539,7 @@ So much to learn from [[http://sriramkswamy.github.io/dotemacs/#orgheadline11][h
    '((emacs-lisp . t)
      (shell . t)
      (js . t)))
+  (add-to-list 'org-src-lang-modes '("html" . web))
   (cond ((eq system-type 'gnu/linux)
 	 (setq org-directory my-org-directory
 	       org-agenda-files (list (expand-file-name "agenda" my-org-directory))
