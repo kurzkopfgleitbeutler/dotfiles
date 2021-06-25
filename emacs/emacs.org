@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-06-11T12:34:28>
+#+Time-stamp: <2021-06-25T08:56:07>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -1048,15 +1048,16 @@ https://emacs-lsp.github.io/lsp-mode/page/installation/#use-package
 #+end_src
 
 **** company
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle init.el
 (use-package company
   :config
-  (global-company-mode)
   (setq company-dabbrev-downcase nil
 	company-idle-delay 0.01
 	company-minimum-prefix-length 1
 	company-selection-wrap-around t
+	company-global-modes '(not eshell-mode)
 	)
+  (global-company-mode)
   (company-tng-mode)
   )
 #+end_src
