@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-06-25T08:56:07>
+#+Time-stamp: <2021-06-25T13:59:55>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -183,7 +183,7 @@ With active region, let typed text replace selection:
 ** interface
 *** line-number-mode
 #+begin_src emacs-lisp :tangle init.el
-(setq display-line-numbers-type 'relative)
+(setq display-line-numbers-type t) ; or 'relative
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+end_src
 https://emacs.stackexchange.com/questions/36149/show-both-relative-and-absolute-line-numbers-in-emacs-26
