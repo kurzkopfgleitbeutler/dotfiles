@@ -26,6 +26,8 @@
 !vim/.vimrc
 !nvim/init.vim
 
+!i3/config
+
 # ...even if they are in subdirectories
 
 !*/
