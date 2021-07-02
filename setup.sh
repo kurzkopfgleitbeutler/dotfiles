@@ -108,8 +108,15 @@ scope ()
 	    trysudo ln -vs ~/dotfiles/emacs/site-start.el /usr/local/share/emacs/site-lisp/site-start.el
 	fi
 
+	# env
+	ln -vs ~/dotfiles/env/.profile  ~/.profile
+	ln -vs ~/dotfiles/env/.Xresources  ~/.Xresources
+
 	# git
 	ln -vs ~/dotfiles/git/.gitconfig ~/.gitconfig
+
+	# i3
+	ln -vs ~/dotfiles/i3/config ~/.config/i3/config
 
 	# neovim
 	ln -vs ~/dotfiles/nvim/init.vim ~/.config/nvim/init.vim
