@@ -120,6 +120,11 @@ scope ()
 
 	# neovim
 	ln -vs ~/dotfiles/nvim/init.vim ~/.config/nvim/init.vim
+	# flatpak version
+	mkdir -v ~/.var/app/io.neovim.nvim/config/nvim
+	ln -vs ~/dotfiles/nvim/init.vim ~/.var/app/io.neovim.nvim/config/nvim/init.vim
+	# note that nvim plugin manager junegunn/vim-plug uses ~/.local/share/nvim/ to put plugins
+	# but the flatpak version needs them in ~/.var/app/io.neovim.nvim/data/nvim
 
 	# vim
 	ln -vs ~/dotfiles/vim/.vimrc ~/.vimrc

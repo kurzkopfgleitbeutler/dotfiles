@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-06-25T13:59:55>
+#+Time-stamp: <2021-07-14T15:45:57>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -1355,13 +1355,13 @@ TODO: https://github.com/monsanto/readline-complete.el
 			      (eshell/alias "rp" "rsync -vaHAX $*")
 			      (eshell/alias "today" "touch $(date -I_)")
 			      (eshell/alias "update" "sudo apt update && apt list --upgradable && sudo apt upgrade && sudo apt autoremove && sudo apt-get autoclean && flatpak update && flatpak uninstall --delete-data --unused && sudo youtube-dl --update")
-			      (eshell/alias "v" "nvim $*")
+			      (eshell/alias "v" "io.neovim.nvim $*")
 			      (eshell/alias "workgit" "ssh-agent; pass -c ssh-keygen; ssh-add ~/.ssh/github")
 			      (eshell/alias "x" "exit")
 
 			      ;; deal with curses-like programs
 			      (add-to-list 'eshell-visual-commands "emacs-nox")
-			      (add-to-list 'eshell-visual-commands "nvim")
+			      (add-to-list 'eshell-visual-commands "io.neovim.nvim")
 			      (add-to-list 'eshell-visual-commands "ranger")
 			      (add-to-list 'eshell-visual-commands "ncdu")
 			      (add-to-list 'eshell-visual-commands "top")

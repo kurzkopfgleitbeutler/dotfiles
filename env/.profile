@@ -45,3 +45,8 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 . "$HOME/.cargo/env"
+
+# add flatpak bins to path
+if [ -d "/var/lib/flatpak/exports/bin" ] ; then
+    PATH="/var/lib/flatpak/exports/bin:$PATH"
+fi
