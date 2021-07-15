@@ -1024,7 +1024,7 @@ sudo apt install --install-suggests bitlbee-libpurple bitlbee-plugin-otr
   ;; 				(when (eq 'rust-mode major-mode)
   ;; 				  (lsp-format-buffer))))
   (setq rust-format-on-save t)
-  (define-key rust-mode-map (kbd "C-c C-c") 'rust-compile)
+  (define-key rust-mode-map (kbd "C-c C-c") 'rust-run)
   )
 #+end_src
 
