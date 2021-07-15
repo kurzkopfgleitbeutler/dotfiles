@@ -1467,7 +1467,7 @@ Display underscores in CamelCase without file modification:
 #+end_src
 
 superword-mode does the opposite:
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle init.el
 (setq-default subword-mode t)
 #+end_src
 
