@@ -75,3 +75,7 @@ URxvt.scrollTtyKeypress: True
 !! white dark/light
 *color7:                S_base2
 *color15:               S_base3
+
+!! xmessage
+Xmessage*geometry: +1920+1200
+Xmessage*Scrollbar.width: 0
