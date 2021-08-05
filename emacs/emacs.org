@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-07-14T15:45:57>
+#+Time-stamp: <2021-08-03T08:03:42>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -1345,6 +1345,7 @@ TODO: https://github.com/monsanto/readline-complete.el
 			      (eshell/alias "gps" "git push $*")
 			      (eshell/alias "gs" "git status")
 			      (eshell/alias "l" "ls -CFAlhv --color=auto --group-directories-first $*")
+			      (eshell/alias "m" "mpv --no-audio-display --shuffle $(cat playlist.m3u | shuf)")
 			      (eshell/alias "mkdir" "mkdir -pv $*")
 			      (eshell/alias "path" "printf \"%b\n\" \"$PATH\" | tr -s \":\" \"\n\"") ; is functionally identical to eshell/addpath without arguments
 			      (eshell/alias "perms" "stat -c '%A %a %n' $*")
