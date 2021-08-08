@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-08-03T08:03:42>
+#+Time-stamp: <2021-08-08T16:10:05>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -192,7 +192,7 @@ https://www.emacswiki.org/emacs/LineNumbers
 (global-display-line-numbers-mode) Wuerde wahrscheinlich bei reboot
 die buffer-individuelle (manuelle) ueberschreiben
 
-*** TODO gui
+*** gui
 Remember to use ”M-x eval-buffer” when starting Emacs for the first
 time with this configuration.  Otherwise, this will not work:
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -219,7 +219,7 @@ Not tried yet:
   (tooltip-mode 0))
 #+END_SRC
 
-*** TODO fringes
+*** fringes
 Fringe display uses bitmaps, so it will not work with terminal Emacs:
 #+BEGIN_SRC emacs-lisp :tangle init.el
 (setq-default indicate-buffer-boundaries 'left
@@ -247,7 +247,7 @@ Fringe display uses bitmaps, so it will not work with terminal Emacs:
 #+END_SRC
 http://endlessparentheses.com/new-in-emacs-25-1-have-prettify-symbols-mode-reveal-the-symbol-at-point.html
 
-*** fonts
+*** TODO fonts
 #+name: font-playground
 #+begin_src emacs-lisp
 (push '(font . "Averia Serif Libre") default-frame-alist)
@@ -283,14 +283,6 @@ http://endlessparentheses.com/new-in-emacs-25-1-have-prettify-symbols-mode-revea
     )
 
   )
-#+end_src
-
-taken from https://github.com/jwiegley/dot-emacs/blob/master/init.el
-#+begin_src emacs-lisp :tangle no
-(defun my-set-font ()
-  (set-frame-font "Roboto Condensed" t t)
-  )
-(advice-add 'make-frame-command :after #'my-set-font)
 #+end_src
 
 #+begin_src emacs-lisp :tangle init.el
@@ -349,11 +341,26 @@ taken from https://github.com/jwiegley/dot-emacs/blob/master/init.el
 https://old.reddit.com/r/emacs/comments/5twcka/which_font_do_you_use/ddq3mx7/
 https://stackoverflow.com/questions/3758139/variable-pitch-for-org-mode-fixed-pitch-for-tables
 
+taken from https://github.com/jwiegley/dot-emacs/blob/master/init.el
+#+begin_src emacs-lisp :tangle init.el
+(defun my-set-font ()
+  (message "my-set-font got called")
+  (set-frame-font mainfont t t)
+  (set-face-attribute 'default nil :height 140)
+  )
+(advice-add 'make-frame-command :after #'my-set-font)
+#+end_src
+
 further reading:
 https://www.gnu.org/software/emacs/manual/html_node/emacs/Fonts.html
 https://www.gnu.org/software/emacs/manual/html_node/efaq/How-to-add-fonts.html
 https://emacs.stackexchange.com/questions/3038/using-a-different-font-for-each-major-mode/3042#3042
 https://stackoverflow.com/questions/39859141/how-to-use-different-fonts-within-the-same-org-mode-buffer
+
+https://emacs.stackexchange.com/questions/51438/why-after-init-hook-is-not-invoked-workaround-is-emacs-startup-hook
+#+begin_src emacs-lisp :tangle init.el
+(add-hook 'emacs-startup-hook 'my-set-font)
+#+end_src
 
 **** https://zzamboni.org/post/beautifying-org-mode-in-emacs/
 Headlines and lists:
@@ -474,7 +481,7 @@ everything it loads:
 Load and configure packages:
 
 **** font-utils
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp :tangle no
 (use-package font-utils
   :demand
   :init
@@ -487,7 +494,6 @@ Load and configure packages:
     (when (member fontvariablepitch (font-family-list))
       (set-face-attribute 'variable-pitch nil :font fontvariablepitch))
     )
-
   )
 #+end_src
 
@@ -712,6 +718,10 @@ Use solarized-light in window system, wombat when run in console mode
 	(mapcar #'disable-theme custom-enabled-themes)
 	(load-theme 'wombat t)
 	)))
+  (setq solarized-scale-org-headlines nil
+	solarized-use-variable-pitch nil)
+  :init
+  (my-set-font)
   )
 (add-hook 'window-setup-hook 'theme-after-init)
 #+END_SRC
@@ -1170,7 +1180,7 @@ Look into tildify-mode as well.
 
 *** whitespace
 #+BEGIN_SRC emacs-lisp :tangle init.el
-(setq show-trailing-whitespace t)
+(setq-default show-trailing-whitespace t)
 #+END_SRC
 
 When saving a file, do some cleanup:
