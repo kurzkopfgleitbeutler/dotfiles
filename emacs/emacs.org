@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-08-09T08:17:52>
+#+Time-stamp: <2021-08-09T13:04:12>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -271,97 +271,25 @@ Fringe display uses bitmaps, so it will not work with terminal Emacs:
 #+END_SRC
 http://endlessparentheses.com/new-in-emacs-25-1-have-prettify-symbols-mode-reveal-the-symbol-at-point.html
 
-*** TODO fonts
+*** fonts
 
-#+name: font-playground
-#+begin_src emacs-lisp
-(push '(font . "Averia Serif Libre") default-frame-alist)
-
-(with-eval-after-load "org"
-
-  (when (member myfont (font-family-list))
-    (set-face-font 'default myfont)
-    ;; (set-face-font 'org-level-1 myfont)
-    ;; (set-face-font 'org-level-2 myfont)
-    ;; (set-face-font 'org-level-3 myfont)
-    ;; (set-face-font 'org-level-4 myfont)
-    ;; (set-face-font 'org-level-5 myfont)
-    ;; (set-face-font 'org-level-6 myfont)
-    ;; (set-face-font 'org-level-7 myfont)
-    ;; (set-face-font 'org-level-8 myfont)
-    ;; (set-face-attribute 'org-level-1 nil :family myfont)
-    ;; (set-face-attribute 'org-level-2 nil :family myfont)
-    ;; (set-face-attribute 'org-level-3 nil :family myfont)
-    ;; (set-face-attribute 'org-level-4 nil :family myfont)
-    ;; (set-face-attribute 'org-level-5 nil :family myfont)
-    ;; (set-face-attribute 'org-level-6 nil :family myfont)
-    ;; (set-face-attribute 'org-level-7 nil :family myfont)
-    ;; (set-face-attribute 'org-level-8 nil :family myfont)
-    (set-face-attribute 'org-level-1 nil :inherit myfont)
-    (set-face-attribute 'org-level-2 nil :inherit myfont)
-    (set-face-attribute 'org-level-3 nil :inherit myfont)
-    (set-face-attribute 'org-level-4 nil :inherit myfont)
-    (set-face-attribute 'org-level-5 nil :inherit myfont)
-    (set-face-attribute 'org-level-6 nil :inherit myfont)
-    (set-face-attribute 'org-level-7 nil :inherit myfont)
-    (set-face-attribute 'org-level-8 nil :inherit myfont)
-    )
-
-  )
-#+end_src
+Some nice ones from my font collection:
+- Averia Serif Libre
+- DejaVu Sans Mono
+- Fantasque Sans Mono
+- Fira Code
+- Hack
+- Input Mono Compressed
+- Input Serif
+- Monoid
+- OpenDyslexic[Mono]
+- Roboto Mono/Condensed
 
 #+begin_src emacs-lisp :tangle init.el
-;; Averia Serif Libre, DejaVu Sans Mono, Fantasque Sans Mono, Fira
-;; Code, Hack, Input Mono Compressed, Input Serif, Monoid,
-;; OpenDyslexic[Mono], Roboto Mono/Condensed
 (setq mainfont "Fantasque Sans Mono")
 (setq fontdefault mainfont)
 (setq fontfixedpitch mainfont)
 (setq fontvariablepitch "Roboto Condensed")
-
-;; (when (display-graphic-p)
-;;   (variable-pitch-mode t))
-
-;; https://explog.in/notes/writingsetup.html
-;; (set-face-attribute 'default nil :family myfont)
-;; (set-face-attribute 'fixed-pitch nil :family myfont)
-;; (set-face-attribute 'variable-pitch nil :family "Input Serif")
-
-;; (add-hook 'org-mode-hook
-;;	    '(lambda ()
-;;	       (mapc
-;;		(lambda (face)
-;;		  (set-face-attribute face nil :inherit 'fixed-pitch))
-;;		(list 'org-level-8
-;;		      'org-level-7
-;;		      'org-level-6
-;;		      'org-level-5
-;;		      'org-level-4
-;;		      'org-level-3
-;;		      'org-level-2
-;;		      'org-level-1
-;;		      ))))
-
-;; (add-hook 'org-mode-hook (lambda ()
-;;			   (variable-pitch-mode t)
-;;			   (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
-;;			   (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
-;;			   ))
-
-;; (add-hook 'org-mode-hook
-;;	  '(lambda ()
-;;	     (variable-pitch-mode 1) ;; All fonts with variable pitch.
-;;	     (mapc
-;;	      (lambda (face) ;; Other fonts with fixed pitch.
-;;		(set-face-attribute face nil :inherit 'fixed-pitch))
-;;	      (list 'org-code
-;;		    'org-link
-;;		    'org-block
-;;		    'org-table
-;;		    'org-block-begin-line
-;;		    'org-block-end-line
-;;		    'org-meta-line
-;;		    'org-document-info-keyword))))
 #+end_src
 https://old.reddit.com/r/emacs/comments/5twcka/which_font_do_you_use/ddq3mx7/
 https://stackoverflow.com/questions/3758139/variable-pitch-for-org-mode-fixed-pitch-for-tables
@@ -372,8 +300,24 @@ taken from https://github.com/jwiegley/dot-emacs/blob/master/init.el
   (message "my-set-font got called")
   (set-frame-font mainfont t t)
   (set-face-attribute 'default nil :height 140)
+
+  ;; https://explog.in/notes/writingsetup.html
+  (set-face-attribute 'default nil :family mainfont)
+  (set-face-attribute 'fixed-pitch nil :family mainfont)
+  (set-face-attribute 'variable-pitch nil :family "Input Serif")
+
+  ;; (when (display-graphic-p)
+  ;;   (when (member fontdefault (font-family-list))
+  ;;     (set-frame-font fontdefault nil t)
+  ;;     (set-face-attribute 'default nil :font fontdefault))
+  ;;   (when (member fontfixedpitch (font-family-list))
+  ;;     (set-face-attribute 'fixed-pitch nil :font fontfixedpitch))
+  ;;   (when (member fontvariablepitch (font-family-list))
+  ;;     (set-face-attribute 'variable-pitch nil :font fontvariablepitch))
+  ;;   )
+
   )
-(advice-add 'make-frame-command :after #'my-set-font)
+;; (advice-add 'make-frame-command :after #'my-set-font)
 #+end_src
 
 further reading:
@@ -385,62 +329,6 @@ https://stackoverflow.com/questions/39859141/how-to-use-different-fonts-within-t
 https://emacs.stackexchange.com/questions/51438/why-after-init-hook-is-not-invoked-workaround-is-emacs-startup-hook
 #+begin_src emacs-lisp :tangle init.el
 (add-hook 'emacs-startup-hook 'my-set-font)
-#+end_src
-
-**** https://zzamboni.org/post/beautifying-org-mode-in-emacs/
-
-Headlines and lists:
-#+begin_src emacs-lisp
-(let* ((variable-tuple
-	(cond ((x-list-fonts "ETBembo") '(:font "ETBembo"))
-	      ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
-	      ((x-list-fonts "Lucida Grande") '(:font "Lucida Grande"))
-	      ((x-list-fonts "Verdana") '(:font "Verdana"))
-	      ((x-list-fonts "Sans Serif") '(:font "Sans Serif"))
-	      (nil (warn "Cannot find a Sans Serif Font. Install Source Sans Pro."))))
-       (base-font-color (face-foreground 'default nil 'default))
-       (headline `(:inherit default :weight bold :foreground ,base-font-color)))
-  (custom-theme-set-faces
-   'user
-   `(org-level-8 ((t (,@headline ,@variable-tuple))))
-   `(org-level-7 ((t (,@headline ,@variable-tuple))))
-   `(org-level-6 ((t (,@headline ,@variable-tuple))))
-   `(org-level-5 ((t (,@headline ,@variable-tuple))))
-   `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
-   `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
-   `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
-   `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
-   `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
-#+end_src
-
-Pitch:
-#+begin_src emacs-lisp
-(custom-theme-set-faces
- 'user
- '(variable-pitch ((t (:family "ETBembo" :height 180 :weight thin))))
- '(fixed-pitch ((t (:family "Fira Code Retina" :height 160)))))
-#+end_src
-
-#+begin_src emacs-lisp
-(add-hook 'org-mode-hook 'variable-pitch-mode)
-#+end_src
-
-Faces for elements:
-#+begin_src emacs-lisp
-(custom-theme-set-faces
- 'user
- '(org-block ((t (:inherit fixed-pitch))))
- '(org-code ((t (:inherit (shadow fixed-pitch)))))
- '(org-document-info ((t (:foreground "dark orange"))))
- '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
- '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
- '(org-link ((t (:foreground "royal blue" :underline t))))
- '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
- '(org-property-value ((t (:inherit fixed-pitch))) t)
- '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
- '(org-table ((t  (:inherit fixed-pitch :foreground "#83a598"))))
- '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
- '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
 #+end_src
 
 ** packaging
@@ -476,11 +364,6 @@ older package versions:
 	))
 #+END_SRC
 
-Load ”package”, so that it can be used:
-#+BEGIN_SRC emacs-lisp :tangle no
-(when (< emacs-major-version 27)
-  (package-initialize))
-#+END_SRC
 #+BEGIN_SRC emacs-lisp :tangle init.el
 (package-initialize)
 #+END_SRC
@@ -510,24 +393,6 @@ everything it loads:
 *** packages
 
 Load and configure packages:
-
-**** font-utils
-
-#+begin_src emacs-lisp :tangle no
-(use-package font-utils
-  :demand
-  :init
-  (when (display-graphic-p)
-    (when (member fontdefault (font-family-list))
-      ;; (set-frame-font fontdefault nil t)
-      (set-face-attribute 'default nil :font fontdefault))
-    (when (member fontfixedpitch (font-family-list))
-      (set-face-attribute 'fixed-pitch nil :font fontfixedpitch))
-    (when (member fontvariablepitch (font-family-list))
-      (set-face-attribute 'variable-pitch nil :font fontvariablepitch))
-    )
-  )
-#+end_src
 
 **** magit
 
@@ -569,8 +434,6 @@ So much to learn from [[http://sriramkswamy.github.io/dotemacs/#orgheadline11][h
    org-confirm-babel-evaluate nil
    org-src-preserve-indentation t ; https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-makefile.html
    org-startup-with-inline-images t
-   ;; org-modules (quote (org-habit
-   ;; org-crypt))
    )
   (org-clock-persistence-insinuate)
   (calendar-set-date-style "iso")
@@ -591,54 +454,6 @@ So much to learn from [[http://sriramkswamy.github.io/dotemacs/#orgheadline11][h
   )
 #+END_SRC
 https://jherrlin.github.io/posts/emacs-orgmode-source-code-blocks/
-
-Summing Properties Across Subheadings with =org-sum-tally-in-subtree=:
-#+begin_src emacs-lisp :tangle no
-(defun org-sum-tally-in-subtree ()
-  "Add up all the price properties of headings underneath the current one
-  The total is written to the sum property of this heading"
-  (interactive)
-  (org-entry-put (point) "sum"
-		 (number-to-string
-		  (let ((total 0))
-		    (save-excursion
-		      (org-map-tree
-		       (lambda ()
-			 (let ((n (org-entry-get (point) "price")))
-			   (when (stringp n)
-			     (setq total (+ total (string-to-number n))))))))
-		    total))))
-#+end_src
-https://emacs.stackexchange.com/questions/34561/summing-properties-across-subheadings-org-mode
-
-#+begin_src emacs-lisp :tangle no
-(require 'org-crypt)
-(org-crypt-use-before-save-magic)
-(setq org-tags-exclude-from-inheritance '("crypt")
-      org-crypt-key "61FBB412")
-
-#+end_src
-https://orgmode.org/manual/Org-Crypt.html
-
-***** testsecret                                                      :crypt:
-
-It disables backup creation and auto saving.
-
-With no argument, this command toggles the mode.
-Non-null prefix argument turns on the mode.
-Null prefix argument turns off the mode."
-      ;; The initial value.
-      nil
-      ;; The indicator for the mode line.
-      " Sensitive"
-      ;; The minor mode bindings.
-      nil
-      (if (symbol-value sensitive-mode)
-	  (progn
-	    ;; disable backups
-	    (set (make-local-variable 'backup-inhibited) t)
-	    ;; disable auto-save
-
 
 ***** toc-org
 
@@ -762,6 +577,14 @@ Use solarized-light in window system, wombat when run in console mode
 	solarized-use-variable-pitch nil)
   :init
   (my-set-font)
+  (set-face-attribute 'org-level-1 nil :weight bold)
+  (set-face-attribute 'org-level-2 nil :weight bold)
+  (set-face-attribute 'org-level-3 nil :weight bold)
+  (set-face-attribute 'org-level-4 nil :weight bold)
+  (set-face-attribute 'org-level-5 nil :weight bold)
+  (set-face-attribute 'org-level-6 nil :weight bold)
+  (set-face-attribute 'org-level-7 nil :weight bold)
+  (set-face-attribute 'org-level-8 nil :weight bold)
   )
 (add-hook 'window-setup-hook 'theme-after-init)
 #+END_SRC
@@ -870,8 +693,8 @@ See info for format-time-string
 #+END_SRC
 
 **** emms
-[[https://www.gnu.org/software/emms/manual/#Quickstart-Guide][
-The Emacs Multimedia System]]
+
+[[https://www.gnu.org/software/emms/manual/#Quickstart-Guide][The Emacs Multimedia System]]
 #+BEGIN_SRC emacs-lisp :tangle init.el
 (use-package emms
   :config
@@ -916,25 +739,6 @@ The Emacs Multimedia System]]
 #+begin_src emacs-lisp :tangle no
 (use-package org-ref)
 #+end_src
-
-**** change-inner
-
-#+begin_src emacs-lisp :tangle no
-(use-package change-inner
-  :config
-  ;;(global-set-key (kbd "M-i") 'change-inner)
-  (global-set-key (kbd "M-p") 'change-outer))
-#+end_src
-
-**** page-break-lines
-
-Displays page breaks as lines:
-#+begin_src emacs-lisp :tangle no
-(use-package page-break-lines
-  :config
-  (global-page-break-lines-mode))
-#+end_src
-https://ericjmritz.wordpress.com/2015/08/29/using-page-breaks-in-gnu-emacs/
 
 **** projectile
 
@@ -1043,45 +847,6 @@ http://ergoemacs.org/emacs/emacs_dired_open_file_in_ext_apps.html
 possible alternative to both:
 https://old.reddit.com/r/emacs/comments/l786s4/a_humble_advice_on_dired_and_projectile_for_elisp/
 
-**** keypression
-
-Bugged on my machine: opens lots of empty windows
-#+begin_src emacs-lisp :tangle no
-(use-package keypression
-  :init
-  (keypression-mode)
-  )
-#+end_src
-https://github.com/chuntaro/emacs-keypression
-
-**** fountain-mode
-
-Write screenplays (has basically no working export):
-#+begin_src emacs-lisp :tangle no
-(use-package fountain-mode)
-#+end_src
-
-**** bitlbee
-
-connect to telegram, whatsapp, etc over irc:
-#+begin_src emacs-lisp :tangle no
-(use-package bitlbee
-:config
-;(setq bitlbee-user-directory
-;bitlbee-executable)
-)
-#+end_src
-https://200ok.ch/posts/2019-11-01_irc_and_emacs_all_the_things.html
-
-#+begin_src shell
-sudo apt install --install-suggests bitlbee-libpurple bitlbee-plugin-otr
-#+end_src
-
-#+name: openinit
-#+begin_src emacs-lisp
-(find-file user-init-file)
-#+end_src
-
 **** rust-mode
 
 #+begin_src emacs-lisp :tangle init.el
@@ -1143,15 +908,11 @@ so kriegt man zumindest eine rudimentaere, und fast nutzlose etags file:
 (visit-tags-table TAGS)
 #+end_src
 
-**** TODO flymake
-
 **** json-navigator
 
 #+begin_src emacs-lisp :tangle init.el
 (use-package json-navigator)
 #+end_src
-
-**** TODO tree-mode
 
 **** web development
 
@@ -1229,19 +990,6 @@ Make the GNU project commercial [[https://emacs.stackexchange.com/questions/432/
 #+BEGIN_SRC emacs-lisp :tangle init.el
 (defun display-startup-echo-area-message ()
   (message ""))
-#+END_SRC
-
-**** hello
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(message "
-  ███████╗███╗   ███╗ █████╗  ██████╗███████╗██╗
-  ██╔════╝████╗ ████║██╔══██╗██╔════╝██╔════╝██║
-  █████╗  ██╔████╔██║███████║██║     ███████╗██║
-  ██╔══╝  ██║╚██╔╝██║██╔══██║██║     ╚════██║╚═╝
-  ███████╗██║ ╚═╝ ██║██║  ██║╚██████╗███████║██╗
-  ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚═╝
-  ")
 #+END_SRC
 
 *** Writing prose
@@ -1326,7 +1074,6 @@ Auto-update time stamps if present:
 
 #+BEGIN_SRC emacs-lisp :tangle init.el
 (save-place-mode t)
-;;(setq save-place-file (concat my-base-directory "places"))
 #+END_SRC
 
 *** search
@@ -1472,61 +1219,7 @@ TODO: https://github.com/monsanto/readline-complete.el
 			      (add-to-list 'eshell-visual-subcommands '("git" "log" "diff" "show"))
 			      (add-to-list 'eshell-visual-subcommands '("pass" "edit"))
 			      ))
-
-;; (defun eshell/x ()
-;;   "exit eshell and close its window"
-;;   (if (equal (count-windows) 1)
-;;       (progn
-;;	(message "eshell: kill-buffer")
-;;	(kill-buffer))
-;;     (progn
-;;       (message "eshell: kill-buffer-and-window")
-;;       (kill-buffer-and-window))
-;;     ))
-
 #+END_SRC
-
-ALTERNATIVE:
-eshell has to be called after starting emacs before the variable
-eshell-aliases-file gets populated :tangle (expand-file-name eshell-aliases-file)
-#+begin_src sh :tangle no
-alias aus shutdown now
-alias clamscan clamscan --recursive --allmatch --detect-pua=yes --detect-structured=yes --heuristic-scan-precedence=yes --max-filesize=2048M
-alias clip xclip -selection clipboard
-alias dla youtube-dl -x -f bestaudio --write-description --restrict-filenames --add-metadata --xattrs --write-sub --sub-lang en,en-GB,de $1
-alias dlcv youtube-dl --skip-download --continue --no-post-overwrites --no-overwrites --restrict-filenames --ignore-errors --output "%(playlist)s/subtitles/%(upload_date)s_%(playlist_index)s_%(title)s-%(id)s.%(ext)s" --write-sub --all-subs --batch-file urls --quiet > >(tee list_subs) && youtube-dl --continue --download-archive index --no-post-overwrites --no-overwrites --restrict-filenames --ignore-errors -f "worstvideo+worstaudio" --add-metadata --xattrs --output "%(playlist)s/%(upload_date)s_%(playlist_index)s_%(title)s-%(id)s.%(ext)s" --write-description --merge-output-format mkv --embed-subs --all-subs --batch-file urls --playlist-random --quiet > >(tee list) $1
-alias dlca youtube-dl -x --continue --download-archive index --no-post-overwrites --no-overwrites --restrict-filenames --ignore-errors -f bestaudio --add-metadata --xattrs --output "%(playlist)s/%(upload_date)s_%(playlist_index)s_%(title)s-%(id)s.%(ext)s" --write-description --embed-subs --all-subs --batch-file urls --playlist-random | tee list $1
-alias dlma youtube-dl -x --restrict-filenames --ignore-errors -f bestaudio --write-description --add-metadata --xattrs --write-sub --embed-subs --all-subs --batch-file urls $1
-alias dlmv youtube-dl --restrict-filenames --ignore-errors -f bestvideo+bestaudio/best --write-description --add-metadata --xattrs --merge-output-format mkv --embed-subs --all-subs --batch-file urls $1
-alias dlp youtube-dl -x --continue --download-archive index --no-post-overwrites --no-overwrites --output "%(playlist_index)s_%(title)s-%(id)s.%(ext)s" --restrict-filenames --ignore-errors -f bestaudio --write-description --add-metadata --xattrs --write-sub --all-subs --batch-file urls && mkdir subtitles && mv *.vtt *.description subtitles $1
-alias dlv youtube-dl -f bestvideo+bestaudio --write-description --restrict-filenames --add-metadata --xattrs --merge-output-format mkv --embed-subs --all-subs $1
-alias e emacs-nox $1
-alias ffmpeg ffmpeg -hide_banner $*
-alias ffprobe ffprobe -hide_banner $*
-alias ga git add
-alias gb git branch
-alias gch git checkout
-alias gco git commit
-alias gd git diff
-alias gf git fetch
-alias gl git log -3
-alias gm git merge
-alias gpl git pull
-alias gps git push
-alias grep grep --color=auto $*
-alias gs git status
-alias l ls -CFAlh --color=auto
-alias mkdir mkdir -pv $*
-alias mv mv -v $*
-alias path printf "%b\n" "$PATH" | tr -s ":" "\n"
-alias r ranger
-alias rm rm -rf $*
-alias rmdir rmdir --ignore-fail-on-non-empty -v $1
-alias today touch $(date -I_)
-alias update sudo apt update && apt list --upgradable && sudo apt upgrade && sudo apt autoremove && sudo apt-get autoclean && flatpak update && flatpak uninstall --delete-data --unused && sudo youtube-dl --update
-alias v nvim $1
-alias workgit ssh-agent; pass -c ssh-keygen; ssh-add .ssh/github
-#+end_src
 
 *** ediff
 
@@ -1574,17 +1267,6 @@ superword-mode does the opposite:
 #+begin_src emacs-lisp :tangle init.el
 (setq-default subword-mode t)
 #+end_src
-
-*** safe local variables
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(setq safe-local-variable-values
-      (list
-       (STARTUP . content)
-       (TITLE . init\.org)
-       (LANGUAGE . en)
-       (AUTHOR . (getenv "USER"))))
-#+END_SRC
 
 *** recursive minibuffer
 
@@ -1640,6 +1322,8 @@ Taken from https://superuser.com/a/184421
     (call-interactively #'fill-paragraph)))
 (global-set-key [remap fill-paragraph]
 		#'endless/fill-or-unfill)
+(global-set-key [remap org-fill-paragraph]
+		#'endless/fill-or-unfill)
 #+END_SRC
 Taken from http://endlessparentheses.com/fill-and-unfill-paragraphs-with-a-single-key.html
 
@@ -1649,7 +1333,7 @@ Taken from http://endlessparentheses.com/fill-and-unfill-paragraphs-with-a-singl
 (global-set-key (kbd "<f1>")    'linum-mode)
 (global-set-key (kbd "<f2>")    'toggle-truncate-lines)
 (global-set-key (kbd "<f3>")    'browse-url-at-point)
-(global-set-key (kbd "<f4>")    'string-rectangle)
+;; (global-set-key (kbd "<f4>")    'string-rectangle) ; has standard binding: C-x r t
 (global-set-key (kbd "<f5>")    'eval-buffer)
 ;; (global-set-key (kbd "<f6>")    'occur) ; has standard binding: M-s o
 (global-set-key (kbd "<f7>")    're-builder)
@@ -1661,15 +1345,6 @@ Taken from http://endlessparentheses.com/fill-and-unfill-paragraphs-with-a-singl
 (define-key package-menu-mode-map (kbd "f") 'package-menu-filter-by-keyword) ; eg "status:installed"
 #+END_SRC
 https://www.masteringemacs.org/article/mastering-key-bindings-emacs
-
-**** highlight changes
-
-See http://stackoverflow.com/a/1210266
-#+BEGIN_SRC emacs-lisp :tangle no
-(global-set-key (kbd "<f8>")    'highlight-changes-visible-mode)
-(global-highlight-changes-mode t)
-(setq highlight-changes-visibility-initial-state nil)
-#+END_SRC
 
 **** windmove
 
@@ -1691,7 +1366,6 @@ See http://stackoverflow.com/a/1210266
 (define-key ato/toggle-map "e" #'electric-quote-mode)
 (define-key ato/toggle-map "f" #'auto-fill-mode)
 ;; (define-key ato/toggle-map "l" #'toggle-truncate-lines)
-;; (define-key ato/toggle-map "l" #'linum-mode) ; linum-mode is for older emacsen https://www.emacswiki.org/emacs/LineNumbers
 (define-key ato/toggle-map "l" #'display-line-numbers-mode)
 (define-key ato/toggle-map "q" #'toggle-debug-on-quit)
 (define-key ato/toggle-map "t" #'ato/toggle-theme)
@@ -1700,7 +1374,6 @@ See http://stackoverflow.com/a/1210266
 (autoload 'dired-toggle-read-only "dired" nil t)
 (define-key ato/toggle-map "w" #'whitespace-mode)
 (define-key ato/toggle-map "g" #'glasses-mode)
-(define-key ato/toggle-map "k" #'keypression-mode)
 (define-key ato/toggle-map "v" #'visible-mode)
 (define-key ato/toggle-map "a" #'abbrev-mode)
 #+end_src
@@ -1714,16 +1387,6 @@ On Ubuntu, the [[https://stackoverflow.com/questions/17139067/how-do-i-change-th
 #+BEGIN_SRC emacs-lisp :tangle init.el
 (cond ((eq system-type 'gnu/linux)
        (setq python-shell-interpreter "python3")
-       ))
-#+END_SRC
-
-** Windows
-
-#+BEGIN_SRC emacs-lisp :tangle init.el
-(cond ((eq system-type 'windows-nt)
-       (add-to-list 'default-frame-alist
-		    '(font . "DejaVu Sans Mono-10"))
-       (set-default-file-modes #o666)
        ))
 #+END_SRC
 
@@ -1808,7 +1471,7 @@ More Infos [[https://www.emacswiki.org/emacs/SaveHist][here]] and [[https://stac
 
 ** TODO profiling init
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle init.el
 Profile Emacs Startup
 (add-hook 'emacs-startup-hook
 	  (lambda ()
@@ -1833,15 +1496,9 @@ Profile Emacs Startup
 As noted [[https://emacs.stackexchange.com/questions/27202/how-do-i-install-gnutls-for-emacs-25-1-on-windows][here]], the variable =dynamic-library-alist= is useful for
 finding out which version of a library Emacs is expecting.
 
-** artist-mode
-
-** picture-mode
-
 ** ruler-mode
 
 ** scroll-lock-mode + view-mode
-
-** ses-mode
 
 ** speedbar
 
@@ -1850,12 +1507,6 @@ finding out which version of a library Emacs is expecting.
 ** hi-lock-mode
 
 M-s h .
-
-** filter packages by archive
-
-http://emacsist.com/10243 which mentions
-http://endlessparentheses.com/new-in-emacs-25-1-filtering-by-status-and-archive.html
-as source
 
 **  other links
 
@@ -1866,7 +1517,7 @@ https://www.math.uh.edu/~bgb/emacs_keys.html
 
 ** truncate like nano
 
-https://www.reddit.com/r/emacs/comments/6au45k/is_it_possible_to_truncate_long_lines_the_same/
+https://old.reddit.com/r/emacs/comments/6au45k/is_it_possible_to_truncate_long_lines_the_same/
 
 or what about this?: Truncate all lines, except the one point is on,
 which gets wrapped.
