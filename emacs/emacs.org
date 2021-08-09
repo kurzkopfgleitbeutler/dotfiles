@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-08-09T13:04:12>
+#+Time-stamp: <2021-08-09T13:08:56>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -451,6 +451,14 @@ So much to learn from [[http://sriramkswamy.github.io/dotemacs/#orgheadline11][h
 	       ))
 	((eq system-type 'windows-nt)
 	 org-agenda-files (list (expand-file-name "~/files/agendafiles.org"))))
+  (set-face-attribute 'org-level-1 nil :weight 'bold)
+  (set-face-attribute 'org-level-2 nil :weight 'bold)
+  (set-face-attribute 'org-level-3 nil :weight 'bold)
+  (set-face-attribute 'org-level-4 nil :weight 'bold)
+  (set-face-attribute 'org-level-5 nil :weight 'bold)
+  (set-face-attribute 'org-level-6 nil :weight 'bold)
+  (set-face-attribute 'org-level-7 nil :weight 'bold)
+  (set-face-attribute 'org-level-8 nil :weight 'bold)
   )
 #+END_SRC
 https://jherrlin.github.io/posts/emacs-orgmode-source-code-blocks/
@@ -577,14 +585,6 @@ Use solarized-light in window system, wombat when run in console mode
 	solarized-use-variable-pitch nil)
   :init
   (my-set-font)
-  (set-face-attribute 'org-level-1 nil :weight bold)
-  (set-face-attribute 'org-level-2 nil :weight bold)
-  (set-face-attribute 'org-level-3 nil :weight bold)
-  (set-face-attribute 'org-level-4 nil :weight bold)
-  (set-face-attribute 'org-level-5 nil :weight bold)
-  (set-face-attribute 'org-level-6 nil :weight bold)
-  (set-face-attribute 'org-level-7 nil :weight bold)
-  (set-face-attribute 'org-level-8 nil :weight bold)
   )
 (add-hook 'window-setup-hook 'theme-after-init)
 #+END_SRC
@@ -1472,7 +1472,7 @@ More Infos [[https://www.emacswiki.org/emacs/SaveHist][here]] and [[https://stac
 ** TODO profiling init
 
 #+begin_src emacs-lisp :tangle init.el
-Profile Emacs Startup
+;; Profile Emacs Startup
 (add-hook 'emacs-startup-hook
 	  (lambda ()
 	    (message "*** Emacs loaded in %s with %d garbage collections."
