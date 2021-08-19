@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-08-09T13:08:56>
+#+Time-stamp: <2021-08-18T12:42:31>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -441,7 +441,8 @@ So much to learn from [[http://sriramkswamy.github.io/dotemacs/#orgheadline11][h
    'org-babel-load-languages
    '((emacs-lisp . t)
      (shell . t)
-     (js . t)))
+     (js . t)
+     (awk . t)))
   (add-to-list 'org-src-lang-modes '("html" . web))
   (add-to-list 'org-export-backends 'md)
   (cond ((eq system-type 'gnu/linux)
@@ -998,7 +999,7 @@ Look into tildify-mode as well.
 #+BEGIN_SRC emacs-lisp :tangle init.el
 (add-hook 'text-mode-hook
 	  (lambda ()
-	    (electric-quote-mode)
+	    ;; (electric-quote-mode)
 	    (auto-fill-mode)))
 #+END_SRC
 
@@ -1114,7 +1115,7 @@ Use =C-x C-j= in a file buffer to jump to it in dired (dired-jump).
       read-file-name-completion-ignore-case t
       read-buffer-completion-ignore-case t
       dired-dwim-target t
-      dired-guess-shell-alist-user '(("\\.pdf\\'" "mupdf")) ;or: okular
+      dired-guess-shell-alist-user '(("\\.pdf\\'" "org.kde.okular")) ;or: okular (flatpak: org.kde.okular)
       )
 #+END_SRC
 
