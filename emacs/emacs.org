@@ -1192,10 +1192,11 @@ TODO: https://github.com/monsanto/readline-complete.el
 			      (eshell/alias "gps" "git push $*")
 			      (eshell/alias "gs" "git status")
 			      (eshell/alias "l" "ls -CFAlhv --color=auto --group-directories-first $*")
+			      (eshell/alias "ll" "tree -afpuhFi --dirsfirst -L 1 -- $*")
 			      (eshell/alias "m" "mpv --no-audio-display --shuffle $(cat playlist.m3u | shuf)")
 			      (eshell/alias "mkdir" "mkdir -pv $*")
 			      (eshell/alias "path" "printf \"%b\n\" \"$PATH\" | tr -s \":\" \"\n\"") ; is functionally identical to eshell/addpath without arguments
-			      (eshell/alias "perms" "stat -c '%A %a %n' $*")
+			      (eshell/alias "perms" "stat -c '%A %a %U %h %F	%N' $*")
 			      (eshell/alias "psk" "ps -ely | grep $*")
 			      (eshell/alias "r" "ranger")
 			      (eshell/alias "raus" "lsblk -e7; udisksctl unmount --no-user-interaction --block-device $1")
