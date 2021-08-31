@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-08-18T12:42:31>
+#+Time-stamp: <2021-08-25T14:17:40>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -557,6 +557,13 @@ https://www.emacswiki.org/emacs/AbbrevMode
 
 					    ))
 #+END_SRC
+
+**** dired-du
+
+#+begin_src emacs-lisp :tangle no
+(use-package dired-du
+  )
+#+end_src
 
 **** theme
 
