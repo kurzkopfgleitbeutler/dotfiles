@@ -888,7 +888,7 @@ https://emacs-lsp.github.io/lsp-mode/page/installation/#use-package
 
 **** company
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp :tangle no
 (use-package company
   :config
   (setq company-dabbrev-downcase nil
