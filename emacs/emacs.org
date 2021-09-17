@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-09-02T13:04:09>
+#+Time-stamp: <2021-09-17T18:33:41>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -1191,6 +1191,7 @@ TODO: https://github.com/monsanto/readline-complete.el
 			      (eshell/alias "dlmv" "youtube-dl --restrict-filenames --ignore-errors -f bestvideo+bestaudio/best --write-description --add-metadata --xattrs --merge-output-format mkv --embed-subs --all-subs --batch-file urls")
 			      (eshell/alias "dlp" "youtube-dl -x --continue --download-archive index --no-post-overwrites --no-overwrites --output \"%(playlist_index)s_%(title)s-%(id)s.%(ext)s\" --restrict-filenames --ignore-errors -f bestaudio --write-description --add-metadata --xattrs --write-sub --all-subs --batch-file urls && mkdir subtitles && mv *.vtt *.description subtitles")
 			      (eshell/alias "dlv" "youtube-dl -f bestvideo+bestaudio --write-description --restrict-filenames --add-metadata --xattrs --merge-output-format mkv --embed-subs --all-subs $1")
+			      (eshell/alias "dvd" "mpv dvd://1")
 			      (eshell/alias "e" "emacs-nox $*")
 			      (eshell/alias "ffmpeg" "ffmpeg -hide_banner $1")
 			      (eshell/alias "ffprobe" "ffprobe -hide_banner $1")

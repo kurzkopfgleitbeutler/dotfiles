@@ -9,6 +9,7 @@ alias dlmv='youtube-dl --restrict-filenames --ignore-errors -f bestvideo+bestaud
 alias old_dlp='youtube-dl -x --output "%(playlist_index)s_%(title)s-%(id)s.%(ext)s" --restrict-filenames --ignore-errors -f bestaudio --write-description --add-metadata --xattrs --write-sub --sub-lang en,en-GB,de --batch-file urls'
 alias dlp='youtube-dl -x --continue --download-archive index --no-post-overwrites --no-overwrites --output "%(playlist_index)s_%(title)s-%(id)s.%(ext)s" --restrict-filenames --ignore-errors -f bestaudio --write-description --add-metadata --xattrs --write-sub --all-subs --batch-file urls && mkdir subtitles && mv *.vtt *.description subtitles'
 alias dlv='youtube-dl -f bestvideo+bestaudio --write-description --restrict-filenames --add-metadata --xattrs --merge-output-format mkv --embed-subs --all-subs'
+alias dvd='mpv dvd://1'
 alias e='emacs-nox'
 alias ffmpeg='ffmpeg -hide_banner'
 alias ffprobe='ffprobe -hide_banner'
