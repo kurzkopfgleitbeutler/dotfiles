@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-09-17T18:33:41>
+#+Time-stamp: <2021-09-21T09:03:52>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -198,6 +198,12 @@ With active region, let typed text replace selection:
 #+END_SRC
 
 ** interface
+
+*** title bar
+
+#+begin_src emacs-lisp :tangle init.el
+(setq frame-title-format '(multiple-frames "%b" ("" invocation-name ": %b %n")))
+#+end_src
 
 *** line-number-mode
 
