@@ -196,3 +196,5 @@ hide_edge_borders smart
 exec --no-startup-id /usr/libexec/kdeconnectd
 exec --no-startup-id feh --bg-scale /usr/share/backgrounds/default.png
 exec --no-startup-id redshift-gtk
+
+bindsym $mod+c exec emacs

@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-09-21T09:03:52>
+#+Time-stamp: <2021-09-21T12:15:23>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -305,7 +305,7 @@ taken from https://github.com/jwiegley/dot-emacs/blob/master/init.el
 (defun my-set-font ()
   (message "my-set-font got called")
   (set-frame-font mainfont t t)
-  (set-face-attribute 'default nil :height 140)
+  (set-face-attribute 'default nil :height 110)
 
   ;; https://explog.in/notes/writingsetup.html
   (set-face-attribute 'default nil :family mainfont)
