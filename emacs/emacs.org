@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-09-21T12:15:23>
+#+Time-stamp: <2021-10-21T10:31:47>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -586,7 +586,7 @@ Use solarized-light in window system, wombat when run in console mode
 	  (mapcar #'disable-theme custom-enabled-themes)
 	  (load-theme 'solarized-light t)
 	  ;; Attributes can be read with (face-attribute 'mode-line :background)
-	  ;; (set-face-attribute 'mode-line nil :background "grey75" :foreground "black")
+	  (set-face-attribute 'mode-line nil :background "grey75" :foreground "black")
 	  ;; (set-face-attribute 'mode-line-inactive nil :background "grey90" :foreground "grey75" )
 	  ;; (set-face-attribute 'mode-line-inactive nil :background nil :foreground nil :box nil :inherit nil)
 	  ;; (set-face-background 'minibuffer-prompt "grey90")
@@ -885,8 +885,8 @@ https://old.reddit.com/r/emacs/comments/l786s4/a_humble_advice_on_dired_and_proj
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l")
   :hook (;; replace XXX-mode with concrete major-mode(e.g. python-mode)
-	 (rust-mode . lsp))
-  :commands lsp
+	 (rust-mode . lsp-deferred))
+  :commands (lsp-deferred)
   )
 #+end_src
 https://emacs-lsp.github.io/lsp-mode/page/installation/#use-package
@@ -1229,7 +1229,7 @@ TODO: https://github.com/monsanto/readline-complete.el
 			      (eshell/alias "today" "touch $(date -I_)")
 			      (eshell/alias "update" "sudo apt update && apt list --upgradable && sudo apt upgrade && sudo apt autoremove && sudo apt-get autoclean && flatpak update && flatpak uninstall --delete-data --unused && sudo youtube-dl --update")
 			      (eshell/alias "v" "io.neovim.nvim $*")
-			      (eshell/alias "workgit" "ssh-agent; pass -c ssh-keygen; ssh-add ~/.ssh/github")
+			      (eshell/alias "workgit" "ssh-agent; pass -c ssh-keygen-github; ssh-add ~/.ssh/github")
 			      (eshell/alias "x" "exit")
 
 			      ;; deal with curses-like programs
