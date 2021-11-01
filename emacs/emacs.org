@@ -989,6 +989,12 @@ https://emacs.cafe/emacs/javascript/setup/2017/04/23/emacs-setup-javascript.html
 
 ** behaviour
 
+*** auto-quit running processes on exit
+
+#+begin_src emacs-lisp :tangle init.el
+(setq confirm-kill-processes nil)
+#+end_src
+
 *** input method
 
 https://stackoverflow.com/a/15801170
