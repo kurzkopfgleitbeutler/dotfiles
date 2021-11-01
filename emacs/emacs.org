@@ -893,7 +893,7 @@ https://emacs-lsp.github.io/lsp-mode/page/installation/#use-package
 
 **** which-key
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle init.el
 (use-package which-key
   :config
   (which-key-mode)
