@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-10-21T10:31:47>
+#+Time-stamp: <2021-11-01T20:10:34>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -988,6 +988,27 @@ https://emacs.cafe/emacs/javascript/setup/2017/04/23/emacs-setup-javascript.html
 #+end_src
 
 ** behaviour
+
+*** clean old buffers
+
+See also: midnight-mode
+#+begin_src emacs-lisp :tangle init.el
+(setq clean-buffer-list-kill-never-buffer-names '("*scratch*"
+						  "*Messages*"
+						  "info-ref.org"
+						  "knowledgebase.org"
+						  "emacs.org"
+						  "agenda.org"
+						  "0_date_topic_correspondent"
+						  "work"
+						  )
+      clean-buffer-list-kill-regexps '("\\`\\*Man "
+				       ".+"
+				       ))
+(add-hook 'emacs-startup-hook (lambda ()
+				(clean-buffer-list)
+				))
+#+end_src
 
 *** auto-quit running processes on exit
 
