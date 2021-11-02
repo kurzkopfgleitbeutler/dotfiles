@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-11-01T20:10:34>
+#+Time-stamp: <2021-11-02T10:33:31>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -1158,7 +1158,7 @@ The default keybinding for =dired-hide-details-mode= is =(=.
 Use =C-x C-j= in a file buffer to jump to it in dired (dired-jump).
 #+BEGIN_SRC emacs-lisp :tangle init.el
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
-(setq dired-listing-switches     "-hAlGv --group-directories-first"
+(setq dired-listing-switches     " --almost-all --group-directories-first --no-group --human-readable -l -v"
       ls-lisp-dirs-first         t
       ls-lisp-ignore-case        t
       dired-ls-F-marks-symlinks  t
@@ -1399,6 +1399,7 @@ Taken from http://endlessparentheses.com/fill-and-unfill-paragraphs-with-a-singl
 ;;(define-key (current-global-map) [remap org-transpose-element] 'ansi-term)
 (define-key dired-mode-map (kbd ";") 'ato-open-in-external-app)
 (define-key dired-mode-map (kbd "\\") 'dired-do-async-shell-command)
+(define-key dired-mode-map (kbd "C-c w") 'wdired-change-to-wdired-mode)
 ;;(global-set-key (kbd "C-x r") 'set-visited-file-name) ;shadows register commands (eg insert-register)
 (define-key package-menu-mode-map (kbd "f") 'package-menu-filter-by-keyword) ; eg "status:installed"
 #+END_SRC
