@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-11-02T20:02:23>
+#+Time-stamp: <2021-11-04T13:57:16>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -434,7 +434,7 @@ So much to learn from [[http://sriramkswamy.github.io/dotemacs/#orgheadline11][h
    org-src-tab-acts-natively t
    org-indent-indentation-per-level 1 ; https://explog.in/notes/writingsetup.html
    ;; org-cycle-separator-lines 1
-   org-default-notes-file (expand-file-name "agenda.org" my-org-directory)
+   org-default-notes-file (expand-file-name "/agenda/agenda.org" my-org-directory)
    org-clock-persist t
    org-hide-block-startup t
    org-confirm-babel-evaluate nil
@@ -1030,7 +1030,9 @@ See also: midnight-mode
 						  )
       clean-buffer-list-kill-regexps '("\\`\\*Man "
 				       ".+"
-				       ))
+				       )
+      clean-buffer-list-delay-general 7
+      )
 (add-hook 'emacs-startup-hook (lambda ()
 				(clean-buffer-list)
 				))
