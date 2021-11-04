@@ -471,19 +471,6 @@ So much to learn from [[http://sriramkswamy.github.io/dotemacs/#orgheadline11][h
 #+END_SRC
 https://jherrlin.github.io/posts/emacs-orgmode-source-code-blocks/
 
-***** toc-org
-
-M-x toc-org-mode
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package toc-org
-  :config
-  (if (require 'toc-org nil t)
-      (add-hook 'org-mode-hook 'toc-org-enable)
-    (warn "toc-org not found"))
-  )
-#+END_SRC
-https://github.com/snosov1/toc-org
-
 ***** tangle-dir
 
 Put string into register r via =C-x r i r= for easy access:
@@ -499,6 +486,38 @@ Put string into register r via =C-x r i r= for easy access:
 		     default-directory)))
 #+end_src
 https://emacs.stackexchange.com/questions/46479/how-to-set-a-tangled-parent-directory-for-each-subtree-in-org-mode
+
+***** toc-org
+
+M-x toc-org-mode
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package toc-org
+  :config
+  (if (require 'toc-org nil t)
+      (add-hook 'org-mode-hook 'toc-org-enable)
+    (warn "toc-org not found"))
+  )
+#+END_SRC
+https://github.com/snosov1/toc-org
+
+***** org-ref
+
+#+begin_src emacs-lisp :tangle no
+(use-package org-ref)
+#+end_src
+
+**** diminish
+
+Hide minor modes from the mode line
+#+begin_src emacs-lisp :tangle init.el
+(use-package diminish
+  :config
+  (eval-after-load "which-key" '(diminish 'which-key-mode))
+  (eval-after-load "hungry-delete" '(diminish 'hungry-delete-mode))
+  (eval-after-load "abbrev" '(diminish 'abbrev-mode))
+  (eval-after-load "simple" '(diminish 'auto-fill-function))
+)
+#+end_src
 
 **** abbrev-mode
 
@@ -749,12 +768,6 @@ See info for format-time-string
 )
 #+end_src
 
-**** org-ref
-
-#+begin_src emacs-lisp :tangle no
-(use-package org-ref)
-#+end_src
-
 **** projectile
 
 project management library:
@@ -862,35 +875,6 @@ http://ergoemacs.org/emacs/emacs_dired_open_file_in_ext_apps.html
 possible alternative to both:
 https://old.reddit.com/r/emacs/comments/l786s4/a_humble_advice_on_dired_and_projectile_for_elisp/
 
-**** rust-mode
-
-#+begin_src emacs-lisp :tangle init.el
-(use-package rust-mode
-  :config
-  (add-hook 'rust-mode-hook (lambda ()
-			      (setq indent-tabs-mode nil)))
-  ;; (add-hook 'before-save-hook (lambda ()
-  ;; 				(when (eq 'rust-mode major-mode)
-  ;; 				  (lsp-format-buffer))))
-  (setq rust-format-on-save t)
-  (define-key rust-mode-map (kbd "C-c C-c") 'rust-run)
-  )
-#+end_src
-
-**** lsp-mode
-
-#+begin_src emacs-lisp :tangle init.el
-(use-package lsp-mode
-  :init
-  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-keymap-prefix "C-c l")
-  :hook (;; replace XXX-mode with concrete major-mode(e.g. python-mode)
-	 (rust-mode . lsp-deferred))
-  :commands (lsp-deferred)
-  )
-#+end_src
-https://emacs-lsp.github.io/lsp-mode/page/installation/#use-package
-
 **** which-key
 
 #+begin_src emacs-lisp :tangle init.el
@@ -923,17 +907,61 @@ so kriegt man zumindest eine rudimentaere, und fast nutzlose etags file:
 (visit-tags-table TAGS)
 #+end_src
 
-**** json-navigator
+**** gnuplot
+
+#+begin_src emacs-lisp :tangle init.el
+(use-package gnuplot)
+#+end_src
+
+**** simple-httpd
+
+#+begin_src emacs-lisp :tangle init.el
+(use-package simple-httpd)
+#+end_src
+
+**** programming languages
+***** lsp-mode
+
+#+begin_src emacs-lisp :tangle init.el
+(use-package lsp-mode
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-c l")
+  :hook (;; replace XXX-mode with concrete major-mode(e.g. python-mode)
+	 (rust-mode . lsp-deferred)
+	 ;;(javascript-mode . lsp-deferred)
+	 )
+  :commands (lsp-deferred)
+  )
+#+end_src
+https://emacs-lsp.github.io/lsp-mode/page/installation/#use-package
+
+***** rust-mode
+
+#+begin_src emacs-lisp :tangle init.el
+(use-package rust-mode
+  :config
+  (add-hook 'rust-mode-hook (lambda ()
+			      (setq indent-tabs-mode nil)))
+  ;; (add-hook 'before-save-hook (lambda ()
+  ;; 				(when (eq 'rust-mode major-mode)
+  ;; 				  (lsp-format-buffer))))
+  (setq rust-format-on-save t)
+  (define-key rust-mode-map (kbd "C-c C-c") 'rust-run)
+  )
+#+end_src
+
+***** json-navigator
 
 #+begin_src emacs-lisp :tangle init.el
 (use-package json-navigator)
 #+end_src
 
-**** web development
+***** javascript
 
 https://emacs.cafe/emacs/javascript/setup/2017/04/23/emacs-setup-javascript.html
 
-***** js2-mode
+****** js2-mode
 
 #+begin_src emacs-lisp :tangle init.el
 (use-package js2-mode
@@ -943,7 +971,7 @@ https://emacs.cafe/emacs/javascript/setup/2017/04/23/emacs-setup-javascript.html
   (add-hook 'js2-mode-hook #'js2-imenu-extras-mode))
 #+end_src
 
-***** js2-refactor
+****** js2-refactor
 
 #+begin_src emacs-lisp :tangle init.el
 (use-package js2-refactor
@@ -954,7 +982,7 @@ https://emacs.cafe/emacs/javascript/setup/2017/04/23/emacs-setup-javascript.html
   )
 #+end_src
 
-***** xref-js2
+****** xref-js2
 
 #+begin_src emacs-lisp :tangle init.el
 (use-package xref-js2
@@ -966,16 +994,14 @@ https://emacs.cafe/emacs/javascript/setup/2017/04/23/emacs-setup-javascript.html
   )
 #+end_src
 
-**** gnuplot
+***** typescript
 
 #+begin_src emacs-lisp :tangle init.el
-(use-package gnuplot)
-#+end_src
-
-**** simple-httpd
-
-#+begin_src emacs-lisp :tangle init.el
-(use-package simple-httpd)
+(use-package ob-typescript)
+(use-package typescript-mode ;tide
+  :config
+  (add-to-list 'auto-mode-alist '("\\.ts?\\'" . typescript-mode))
+)
 #+end_src
 
 **** not in repositories - from manually downloaded file
