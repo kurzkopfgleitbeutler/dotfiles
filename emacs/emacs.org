@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-11-04T13:57:16>
+#+Time-stamp: <2021-11-08T15:01:35>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -1024,9 +1024,8 @@ https://emacs.cafe/emacs/javascript/setup/2017/04/23/emacs-setup-javascript.html
 (require 'apex-mode)
 #+end_src
 
+
 ** behaviour
-
-
 
 *** auto-quit running processes on exit
 
@@ -1568,9 +1567,9 @@ See also: midnight-mode
 				       )
       clean-buffer-list-delay-general 7
       )
-(add-hook 'emacs-startup-hook (lambda ()
-				(clean-buffer-list)
-				))
+;; (add-hook 'emacs-startup-hook (lambda ()
+;; 				(clean-buffer-list)
+;; 				))
 #+end_src
 
 
