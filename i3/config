@@ -203,6 +203,7 @@ exec --no-startup-id /usr/libexec/kdeconnectd # fedora
 exec --no-startup-id /usr/lib/x86_64-linux-gnu/libexec/kdeconnectd # ubuntu
 exec --no-startup-id /usr/bin/kdeconnect-indicator # ubuntu & fedora
 exec --no-startup-id /usr/bin/dropbox start
+exec --no-startup-id /usr/bin/syncthing serve --no-browser --logfile=default
 
 exec --no-startup-id feh --bg-scale /usr/share/backgrounds/default.png # fedora
 exec --no-startup-id redshift-gtk
