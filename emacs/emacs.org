@@ -1,4 +1,4 @@
-#+Time-stamp: <2021-11-08T15:01:35>
+#+Time-stamp: <2021-12-02T16:52:04>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -591,6 +591,15 @@ https://www.emacswiki.org/emacs/AbbrevMode
 					    ))
 #+END_SRC
 
+
+**** wgrep
+
+#+begin_src elisp :tangle init.el
+(use-package wgrep
+  :config
+  (setq wgrep-enable-key "e")
+  )
+#+end_src
 
 **** dired-du
 
