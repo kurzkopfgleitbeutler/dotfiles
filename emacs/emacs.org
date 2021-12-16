@@ -130,6 +130,14 @@ information.
 (fset 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
+*** fix for 'saving clipboard to x clipboard manager takes forever on exit'
+
+See [[https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=908159;msg=5][this bug report]] for details
+
+#+begin_src emacs-lisp :tangle init.el
+(setq x-select-enable-clipboard-manager nil)
+#+end_src
+
 Move mouse cursor if too close to point:
 #+BEGIN_SRC emacs-lisp :tangle no
 (mouse-avoidance-mode 'exile)
