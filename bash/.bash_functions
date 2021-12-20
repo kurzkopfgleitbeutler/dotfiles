@@ -9,7 +9,24 @@ ropy () {
 }
 
 gib () {
-    kdeconnect-cli --name "$1" --share "$2"
+    if [ "$#" = 1 ]
+    then
+	receiver=$( kdeconnect-cli --list-available --name-only | rofi -threads 0 -dmenu -i -auto-select -p "Send to which device?" )
+	if [ -n "$receiver" ]
+	then
+	    kdeconnect-cli --name "$receiver" --share "$(realpath $1)"
+	fi
+    fi
+
+    if [ "$#" = 2 ]
+    then
+	available=$(kdeconnect-cli --list-available --name-only)
+	# https://stackoverflow.com/questions/229551/how-to-check-if-a-string-contains-a-substring-in-bash/20460402#20460402
+	if [ -z "${available##*$1*}" ] && [ -z "$1" -o -n "$available" ]
+	then
+	    kdeconnect-cli --name "$1" --share "$(realpath $2)"
+	fi
+    fi
 }
 
 p () {
