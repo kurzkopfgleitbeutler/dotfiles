@@ -1,4 +1,3 @@
-#+Time-stamp: <2021-12-16T13:34:20>
 #+title: literate emacs init
 #+options: num:nil
 #+property: header-args :noweb yes :mkdirp yes :results silent
@@ -138,6 +137,8 @@ See [[https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=908159;msg=5][this bug r
 #+begin_src emacs-lisp :tangle init.el
 (setq x-select-enable-clipboard-manager nil)
 #+end_src
+
+*** mouse-avoidance-mode
 
 Move mouse cursor if too close to point:
 #+BEGIN_SRC emacs-lisp :tangle no
