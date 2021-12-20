@@ -8,27 +8,6 @@ ropy () {
      rsync --verbose --archive --hard-links --acls --xattrs --partial --delete-during "$1" "$2" >> "$2"/sync-report.txt 2>> "$2"/sync-errors.txt
 }
 
-gib () {
-    if [ "$#" = 1 ]
-    then
-	receiver=$( kdeconnect-cli --list-available --name-only | rofi -threads 0 -dmenu -i -auto-select -p "Send to which device?" )
-	if [ -n "$receiver" ]
-	then
-	    kdeconnect-cli --name "$receiver" --share "$(realpath $1)"
-	fi
-    fi
-
-    if [ "$#" = 2 ]
-    then
-	available=$(kdeconnect-cli --list-available --name-only)
-	# https://stackoverflow.com/questions/229551/how-to-check-if-a-string-contains-a-substring-in-bash/20460402#20460402
-	if [ -z "${available##*$1*}" ] && [ -z "$1" -o -n "$available" ]
-	then
-	    kdeconnect-cli --name "$1" --share "$(realpath $2)"
-	fi
-    fi
-}
-
 p () {
     # awk 'BEGIN { print "permissions octal owner	hardlinks filetype	name" } { printf("%-11s %5s %5s %8s %-12s %s\n", $1, $2, $3, $4, $5, $6) }'
     # { printf "%b\n" "permissions octal owner hardlinks filetype name" ; stat -c '%A %a %U %h %F %N' $* ; } | column -t
