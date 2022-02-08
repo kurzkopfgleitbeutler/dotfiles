@@ -10,6 +10,13 @@ scope ()
     unset verbose
     unset distname
 
+    distname="$(awk -F'=' '/^ID=/ {print tolower($2)}' /etc/*-release)"
+    # if [ "$distname" = "ubuntu" ]
+    # then
+    # elif [ "$distname" = "fedora" ]
+    # then
+    # fi
+
     # ---------- ARGPARSE ------------
     while getopts 'lv' c
     do
@@ -80,26 +87,36 @@ scope ()
 	    distname="ubuntu"
 	fi
     }
+    enso () {
+	# "ensure_softlink"
+	if [ -h "$2" ]
+	then
+	    rm "$2"
+	fi
+	ln -vs "$1" "$2"
+    }
 
     # ---------- MAIN ----------------
     main () {
 	hello
 	check_for_app $runtime_dependencies
 
-	ln -vs ~/dotfiles/env/.profile ~/.profile
-	if [ -n "$(sed -n '/^export my_base/p' ~/dotfiles/env/.profile)" ]
+	# env
+	enso ~/dotfiles/env/.profile ~/.profile
+	if [ -z "$(sed -n '/^export my_base/p' ~/dotfiles/env/.profile)" ]
 	then
 	    sed -i "1i export my_base=\'$script_path\'" ~/dotfiles/env/.profile
 	fi
+	enso ~/dotfiles/env/.Xresources  ~/.Xresources
 
 	# bash
-	ln -vs ~/dotfiles/bash/.bashrc ~/.bashrc
-	ln -vs ~/dotfiles/bash/.bash_aliases ~/.bash_aliases
-	ln -vs ~/dotfiles/bash/.bash_setenv ~/.bash_setenv
-	ln -vs ~/dotfiles/bash/.inputrc ~/.inputrc
+	enso ~/dotfiles/bash/.bashrc ~/.bashrc
+	enso ~/dotfiles/bash/.bash_aliases ~/.bash_aliases
+	enso ~/dotfiles/bash/.bash_setenv ~/.bash_setenv
+	enso ~/dotfiles/bash/.inputrc ~/.inputrc
 
 	#emacs
-	ln -vs ~/dotfiles/emacs/init.el ~/.config/emacs/init.el
+	enso ~/dotfiles/emacs/init.el ~/.config/emacs/init.el
 	if [ "$distname" = "fedora" ]
 	then
 	    trysudo ln -vs ~/dotfiles/emacs/site-start.el /usr/share/emacs/site-lisp/site-start.d/site-start.el
@@ -108,26 +125,31 @@ scope ()
 	    trysudo ln -vs ~/dotfiles/emacs/site-start.el /usr/local/share/emacs/site-lisp/site-start.el
 	fi
 
-	# env
-	ln -vs ~/dotfiles/env/.profile  ~/.profile
-	ln -vs ~/dotfiles/env/.Xresources  ~/.Xresources
-
 	# git
-	ln -vs ~/dotfiles/git/.gitconfig ~/.gitconfig
+	enso ~/dotfiles/git/.gitconfig ~/.gitconfig
 
 	# i3
-	ln -vs ~/dotfiles/i3/config ~/.config/i3/config
+	enso ~/dotfiles/i3/config ~/.config/i3/config
+
+	# mpv
+	if [ "$distname" = "ubuntu" ]
+	then
+	    enso ~/dotfiles/mpv/mpv.conf ~/.config/mpv/mpv.conf
+	fi
 
 	# neovim
-	ln -vs ~/dotfiles/nvim/init.vim ~/.config/nvim/init.vim
+	enso ~/dotfiles/nvim/init.vim ~/.config/nvim/init.vim
 	# flatpak version
-	mkdir -v ~/.var/app/io.neovim.nvim/config/nvim
-	ln -vs ~/dotfiles/nvim/init.vim ~/.var/app/io.neovim.nvim/config/nvim/init.vim
-	# note that nvim plugin manager junegunn/vim-plug uses ~/.local/share/nvim/ to put plugins
-	# but the flatpak version needs them in ~/.var/app/io.neovim.nvim/data/nvim
+	if [ -n "$(which io.neovim.nvim)" ]
+	then
+	    mkdir -v ~/.var/app/io.neovim.nvim/config/nvim
+	    enso ~/dotfiles/nvim/init.vim ~/.var/app/io.neovim.nvim/config/nvim/init.vim
+	    # note that nvim plugin manager junegunn/vim-plug uses ~/.local/share/nvim/ to put plugins
+	    # but the flatpak version needs them in ~/.var/app/io.neovim.nvim/data/nvim
+	fi
 
 	# vim
-	ln -vs ~/dotfiles/vim/.vimrc ~/.vimrc
+	enso ~/dotfiles/vim/.vimrc ~/.vimrc
 
 	printf "%b\n" ""
     }

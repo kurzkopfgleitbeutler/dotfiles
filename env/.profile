@@ -9,9 +9,10 @@ export my_emacs_projectile_searchpath=""
 export TERMINAL="urxvt" # i3-sensible-terminal
 
 # distname="$(awk -F'=' '/^ID=/ {print tolower($2)}' /etc/*-release)"
-# if [ "$distname" == "ubuntu" ]
+# if [ "$distname" = "ubuntu" ]
 # then
-# elif [ "$distname" == "fedora" ]
+# elif [ "$distname" = "fedora" ]
+# then
 # fi
 
 # ~/.profile: executed by the command interpreter for login shells.
