@@ -828,7 +828,7 @@ See info for format-time-string
 **** projectile
 
 project management library:
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp :tangle no
 (use-package projectile
   :init
   (projectile-mode +1)
