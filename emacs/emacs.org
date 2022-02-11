@@ -489,28 +489,6 @@ So much to learn from [[http://sriramkswamy.github.io/dotemacs/#orgheadline11][h
   (set-face-attribute 'org-level-6 nil :weight 'bold)
   (set-face-attribute 'org-level-7 nil :weight 'bold)
   (set-face-attribute 'org-level-8 nil :weight 'bold)
-  ;; :load-path "/usr/share/emacs/site-lisp"
-  ;; (org-link-set-parameters "mpv"
-  ;; 			   (lambda ($fpath) (let ((process-connection-type nil)) (start-process "" nil "xdg-open" $fpath)))
-  ;; 			   (lambda (path) (start-process "mpv from org" nil mpv path))
-  ;; 			   :follow (lambda (path) (browse-url-xdg-open path))
-  ;; 			   )
-  ;; (defun xdg-open (path)
-  ;;   ;; (shell-command (concat "xdg-open " path))
-  ;;   ;; (shell-command (concat "nohup xdg-open " path " </dev/null &>/dev/null &"))
-  ;;   ;; (async-shell-command (concat "setsid xdg-open " path))
-  ;;   ;; (start-process "xdg-open"
-  ;;   ;; 		   nil "setsid"
-  ;;   ;; 		   (concat "mpv " path)
-  ;;   ;; 		   )
-  ;;   (make-process :name "xdg-open"
-  ;; 		  :buffer nil
-  ;; 		  :command (cons "xdg-open" path)
-  ;; 		  ;; :command "xdg-open" path
-  ;; 		  )
-  ;;   ;; (call-process-shell-command "xdg-open&" nil 0)
-  ;;   )
-  ;; (org-link-set-parameters "xdg" :follow 'xdg-open)
   (org-link-set-parameters "xdg" :follow (lambda (path) (make-process :name "xdg-open" :buffer nil :command (list "xdg-open" path))))
   )
 #+END_SRC
