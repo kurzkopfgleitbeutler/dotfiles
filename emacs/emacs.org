@@ -1063,6 +1063,15 @@ https://emacs.cafe/emacs/javascript/setup/2017/04/23/emacs-setup-javascript.html
 #+end_src
 
 
+**** docstr
+
+#+begin_src emacs-lisp :tangle no
+(use-package docstr
+  :config
+  (add-hook 'web-mode-hook (lambda () (docstr-mode 1)))
+  )
+#+end_src
+
 **** not in repositories - from manually downloaded file
 
 ***** apex-mode
