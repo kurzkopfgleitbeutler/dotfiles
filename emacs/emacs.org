@@ -490,7 +490,11 @@ So much to learn from [[http://sriramkswamy.github.io/dotemacs/#orgheadline11][h
   (set-face-attribute 'org-level-7 nil :weight 'bold)
   (set-face-attribute 'org-level-8 nil :weight 'bold)
   ;; (org-link-set-parameters "xdg" :follow (lambda (path) (make-process :name "xdg-open" :buffer nil :command (list "xdg-open" path))))
-  (org-link-set-parameters "xdg" :follow (lambda (path) (async-shell-command (concat "nohup xdg-open " path))))
+  (org-link-set-parameters "xdg" :follow (lambda (path)
+					   (let ((async-shell-command-buffer 'new-buffer))
+					     (async-shell-command (concat "nohup xdg-open " path))
+					     )
+					   ))
   (add-to-list 'display-buffer-alist (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
   )
 #+END_SRC
