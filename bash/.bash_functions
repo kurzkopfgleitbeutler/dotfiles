@@ -36,3 +36,42 @@ p () {
 perms () {
     p
 }
+
+l () {
+    script='
+function human(x) {
+    if (x<1000) {return x} else {x/=1024}
+    s="kMGTEPZY";
+    while (x>=1000 && length(s)>1) {
+    	  x/=1024; s=substr(s,2)
+    }
+    return int(x+0.5) substr(s,1,1)
+}
+{
+    printf("%-4s %-6s ", $1, $2);
+    h=sub(/^[0-9]+/, human($3));
+    printf("%4s", $h);
+    $1=$2=$3="";
+    printf("%s\n", $0);
+}'
+
+    if [ $# -eq 0 ]
+    then
+	stat -c '%a %U %s %N' * | awk -e "$script"
+    else
+	for arg in $@
+	do
+	    if [ "$arg" = "." ]
+	    then
+		stat -c '%a %U %s %N' * | awk -e "$script"
+	    else
+		if [ "${arg: -1}" = "/" ]
+		then
+		    stat -c '%a %U %s %N' "$arg"* | awk -e "$script"
+		else
+		    stat -c '%a %U %s %N' "$arg"/* | awk -e "$script"
+		fi
+	    fi
+	done
+    fi
+}
