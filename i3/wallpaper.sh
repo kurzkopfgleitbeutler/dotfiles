@@ -1,0 +1,30 @@
+#!/bin/sh
+if [ -d  "$HOME/wallpapers" ]
+then
+    location="$HOME/wallpapers"
+else
+    if [ -d /usr/share/backgrounds ]
+    then
+	location="/usr/share/backgrounds"
+    else
+	exit
+    fi
+fi
+
+target="$(find "$location" -type f -size -5M \( \
+	      -iname '*.jpg' \
+	      -o -iname '*.png' \
+	      -o -iname '*.gif' \) \
+	     | shuf \
+	     | head -n 1)"
+
+if [ -r "$target" ] && [ "$(file --mime-type -b "$target" | awk -F'/' '{ print $1 }')" = "image" ]
+then
+    feh --bg-fill "$target"
+    gsettings set org.gnome.desktop.background picture-uri "$target"
+    gsettings set org.gnome.desktop.screensaver picture-uri "$target"
+fi
+
+# for file in $(find /usr/share/gnome-background-properties/ -type f -iname '*wallpaper*')
+# do :
+# done

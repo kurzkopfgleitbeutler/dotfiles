@@ -189,6 +189,11 @@ bar {
 }
 }
 
+# lockscreen
+# https://thevaluable.dev/i3-config-mouseless/
+set $i3lockwall sh ~/dotfiles/i3/lock.sh
+bindsym $mod+Ctrl+Shift+l exec --no-startup-id $i3lockwall
+
 # screen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 10
 bindsym XF86MonBrightnessDown exec xbacklight -dec 10
@@ -205,7 +210,8 @@ exec --no-startup-id /usr/bin/kdeconnect-indicator # ubuntu & fedora
 exec --no-startup-id /usr/bin/dropbox start
 exec --no-startup-id /usr/bin/syncthing serve --no-browser --logfile=default
 
-exec --no-startup-id feh --bg-scale /usr/share/backgrounds/default.png # fedora
+#exec --no-startup-id feh --bg-scale /usr/share/backgrounds/default.png # fedora
+exec --no-startup-id sh ~/dotfiles/i3/wallpaper.sh # wallpaper
 exec --no-startup-id redshift-gtk
 exec --no-startup-id /usr/bin/xfce4-clipman
 

@@ -27,6 +27,8 @@
 !nvim/init.vim
 
 !i3/config
+!i3/wallpaper.sh
+!i3/lock.sh
 
 # ...even if they are in subdirectories
 
