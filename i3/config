@@ -185,8 +185,8 @@ bar {
 
 	# https://thomashunter.name/i3-configurator/
 	colors {
-	background #888888
-}
+	       background #888888
+	}
 }
 
 # lockscreen

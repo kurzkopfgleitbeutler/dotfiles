@@ -130,6 +130,8 @@ scope ()
 
 	# i3
 	enso ~/dotfiles/i3/config ~/.config/i3/config
+	# mkdir -v ~/.config/i3status
+	enso ~/dotfiles/i3/i3status/config ~/.config/i3status/config
 
 	# mpv
 	if [ "$distname" = "ubuntu" ]
