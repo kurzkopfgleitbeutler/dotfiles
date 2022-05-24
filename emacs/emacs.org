@@ -316,9 +316,14 @@ Some nice ones from my font collection:
 - OpenDyslexic[Mono]
 - Roboto Mono/Condensed
 
+run this to change font while emacs is running:
+#+begin_src emacs-lisp :tangle no
+(let ((mainfont "Input Mono Compressed"))
+  (my-set-font))
+#+end_src
+
 #+begin_src emacs-lisp :tangle init.el
-;; (setq mainfont "Fantasque Sans Mono")
-(setq mainfont "ia Writer Quattro V")
+(setq mainfont "Fantasque Sans Mono")
 (setq fontdefault mainfont)
 (setq fontfixedpitch mainfont)
 (setq fontvariablepitch "Roboto Condensed")
