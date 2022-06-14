@@ -1,5 +1,4 @@
 alias aus='shutdown now'
-alias clamscan='clamscan --recursive --allmatch --detect-pua=yes --detect-structured=yes --heuristic-scan-precedence=yes --max-filesize=2048M'
 alias clip='xclip -selection clipboard'
 alias dla='youtube-dl -x -f bestaudio --write-description --restrict-filenames --add-metadata --xattrs --write-sub --sub-lang en,en-GB,de'
 alias dlcv='youtube-dl --skip-download --continue --no-post-overwrites --no-overwrites --restrict-filenames --ignore-errors --output "%(playlist)s/subtitles/%(upload_date)s_%(playlist_index)s_%(title)s-%(id)s.%(ext)s" --write-sub --all-subs --batch-file urls --quiet > >(tee list_subs) && youtube-dl --continue --download-archive index --no-post-overwrites --no-overwrites --restrict-filenames --ignore-errors -f "worstvideo+worstaudio" --add-metadata --xattrs --output "%(playlist)s/%(upload_date)s_%(playlist_index)s_%(title)s-%(id)s.%(ext)s" --write-description --merge-output-format mkv --embed-subs --all-subs --batch-file urls --playlist-random --quiet > >(tee list)'
