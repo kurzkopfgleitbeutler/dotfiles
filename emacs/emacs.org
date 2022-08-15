@@ -316,9 +316,11 @@ Some nice ones from my font collection:
 - OpenDyslexic[Mono]
 - Roboto Mono/Condensed
 
+- Terminus
+
 run this to change font while emacs is running:
 #+begin_src emacs-lisp :tangle no
-(let ((mainfont "Input Mono Compressed"))
+(let ((mainfont "Terminus"))
   (my-set-font))
 #+end_src
 
@@ -341,7 +343,7 @@ taken from https://github.com/jwiegley/dot-emacs/blob/master/init.el
   ;; https://explog.in/notes/writingsetup.html
   (set-face-attribute 'default nil :family mainfont)
   (set-face-attribute 'fixed-pitch nil :family mainfont)
-  (set-face-attribute 'variable-pitch nil :family "Input Serif")
+  (set-face-attribute 'variable-pitch nil :family fontvariablepitch)
 
   ;; (when (display-graphic-p)
   ;;   (when (member fontdefault (font-family-list))
