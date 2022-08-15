@@ -493,6 +493,7 @@ So much to learn from [[http://sriramkswamy.github.io/dotemacs/#orgheadline11][h
      (dot . t)
      (scheme . t)
      (python . t)
+     (julia . t)
      ))
   (setq scheme-program-name "guile"
 	org-babel-python-command "python3")
@@ -1098,6 +1099,11 @@ https://emacs.cafe/emacs/javascript/setup/2017/04/23/emacs-setup-javascript.html
 )
 #+end_src
 
+***** julia
+
+#+begin_src emacs-lisp :tangle init.el
+(use-package julia-mode)
+#+end_src
 
 **** docstr
 
