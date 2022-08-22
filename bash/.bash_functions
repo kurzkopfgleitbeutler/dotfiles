@@ -1,3 +1,7 @@
+emacs () {
+      emacsclient "$@" 2>/dev/null || /usr/bin/emacs "$@"
+}
+
 # bind 'les' to syntax-highlighting-enabled less through python's pygments
 les () {
     pygmentize -gf terminal256 -P style=monokai "$1" | less -R

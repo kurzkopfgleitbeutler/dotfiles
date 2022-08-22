@@ -59,7 +59,7 @@ https://stackoverflow.com/a/547451
 ** hello
 
 #+begin_src emacs-lisp :tangle init.el
-;; (server-start)
+(server-start)
 (message "[INFO] begin init.el")
 (message user-init-file)
 (message "[INFO] debug with M-x check-parens / ESC x check-parens")
