@@ -997,8 +997,14 @@ so kriegt man zumindest eine rudimentaere, und fast nutzlose etags file:
 
 **** simple-httpd
 
+=M-x httpd-start=
+
 #+begin_src emacs-lisp :tangle init.el
-(use-package simple-httpd)
+(use-package simple-httpd
+  :config
+  (setq httpd-root "/var/www"
+	httpd-port "8976")
+  )
 #+end_src
 
 **** programming languages
