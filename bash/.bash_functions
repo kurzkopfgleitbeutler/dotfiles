@@ -17,6 +17,80 @@ clamscan () {
 }
 
 p () {
+    if [ "$#" -eq "0" ]
+    then
+	id="$(pstree -alpsU | rofi -threads 0 -dmenu -i -p "Select a process" | awk '{print $1}' | awk -F',' '{print $2}')"
+	# echo $id
+	pstree -alpsU "$id"
+	read -p "Kill this process?" -n 1 flagkill
+	printf "%b\n" ""
+	if [ "$flagkill" = "y" ]
+	then
+	    kill "$id"
+	fi
+	return
+    fi
+
+    if [ "$#" -eq "1" ]
+    then
+	id="$(pgrep $1)"
+	num="$(wc -l <<< "$id")"
+	if [ "$num" -eq "1" ]
+	then
+	    pstree -alpsU "$id"
+	    read -p "Kill this process?" -n 1 flagkill
+	    printf "%b\n" ""
+	    if [ "$flagkill" = "y" ]
+	    then
+		kill "$id"
+	    fi
+	else
+	    i=1
+	    for oneid in $id
+	    do
+		printf "%b" "[$i] "
+		pstree -U "$oneid"
+		i=$((i + 1))
+	    done
+	    read -p "Kill one of these processes?" -n 1 flagkill
+	    printf "%b\n" ""
+	    if [ "$flagkill" = "y" ]
+	    then
+		read -p "Select process to kill: " flagid
+
+		pstree -alpsU "$oneid" # TODO: Change to pid of $i
+		read -p "Kill this process?" -n 1 flagkill2
+		printf "%b\n" ""
+		if [ "$flagkill2" = "y" ]
+		then
+		    kill "$id"
+		fi
+		#kill "$oneid"
+	    fi
+	fi
+	return
+    fi
+
+    for arg in $@
+    do
+	id="$(pgrep $arg)"
+	num="$(wc -l <<< "$id")"
+	pstree -U "$id"
+    done
+
+    	# pstree -alpsU $ids
+	# read -p "Kill process?" -n 1 flagkill
+	# printf "%b\n" ""
+	# if [ "$flagkill" = "y" ]
+	# then
+	#     kill $ids
+	# fi
+
+    #    pstree -alpsU "$id" #| rofi -threads 0 -dmenu -i -auto-select -p "Kill which process?"
+    # pkill name
+}
+
+perms () {
     # awk 'BEGIN { print "permissions octal owner	hardlinks filetype	name" } { printf("%-11s %5s %5s %8s %-12s %s\n", $1, $2, $3, $4, $5, $6) }'
     # { printf "%b\n" "permissions octal owner hardlinks filetype name" ; stat -c '%A %a %U %h %F %N' $* ; } | column -t
     #find . -maxdepth 1 -printf "%M %m %u %n %y %f\n" | column -t
@@ -40,9 +114,6 @@ p () {
 	# read -p "next?" p
 	# echo "$f"
     done
-}
-perms () {
-    p
 }
 
 l () {
