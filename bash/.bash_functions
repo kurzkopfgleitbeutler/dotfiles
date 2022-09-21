@@ -136,6 +136,7 @@ function human(x) {
 
     if [ $# -eq 0 ]
     then
+	# access rights in octal | user name of owner | block size | quoted file name with dereference if symbolic link
 	stat -c '%a %U %s %N' * | awk -e "$script"
     else
 	for arg in $@
