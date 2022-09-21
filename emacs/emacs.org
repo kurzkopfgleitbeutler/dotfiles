@@ -1462,7 +1462,7 @@ https://github.com/rudolfochrist/german-holidays/blob/master/german-holidays.el
 
 *** icomplete
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (icomplete-mode)
 (setq icomplete-compute-delay 0)
 #+END_SRC
