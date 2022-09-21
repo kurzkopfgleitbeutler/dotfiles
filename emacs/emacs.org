@@ -1011,7 +1011,7 @@ so kriegt man zumindest eine rudimentaere, und fast nutzlose etags file:
 
 ***** lisps
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp :tangle no
 (use-package smartparens)
 (use-package geiser
   :init
@@ -1056,7 +1056,7 @@ https://emacs-lsp.github.io/lsp-mode/page/installation/#use-package
 
 ***** json-navigator
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp :tangle no
 (use-package json-navigator)
 #+end_src
 
@@ -1110,7 +1110,7 @@ https://emacs.cafe/emacs/javascript/setup/2017/04/23/emacs-setup-javascript.html
 
 ***** julia
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp :tangle no
 (use-package julia-mode)
 #+end_src
 
