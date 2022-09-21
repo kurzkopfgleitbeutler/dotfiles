@@ -216,4 +216,4 @@ exec --no-startup-id redshift-gtk
 exec --no-startup-id /usr/bin/xfce4-clipman
 
 bindsym $mod+c exec emacs
-bindsym $mod+m exec audacious
+bindsym $mod+m exec audacious ; exec pavucontrol
