@@ -5,9 +5,6 @@ set nocompatible
 set modelines=0
 
 "Use pathogen to easily modify the runtime path to include all plugins under the ~/.vim/bundle directory
-filetype off
-call pathogen#helptags()
-call pathogen#infect()
 filetype plugin indent on
 syntax on
 
@@ -92,4 +89,3 @@ inoremap jk <Esc>
 
 "make help appear in a vertical split on the bottomright instead of a horizontal one when invoking with :h
 cabbrev h vert bo h
-
