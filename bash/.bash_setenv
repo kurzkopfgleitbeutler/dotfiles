@@ -7,3 +7,4 @@ export HISTCONTROL=ignoreboth
 export HISTFILE=${my_base}/bash/.bash_history
 export HISTSIZE=10000
 export HISTFILESIZE=20000
+export HISTIGNORE="history:fc:ls:pwd:aus:update"
