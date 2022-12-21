@@ -1,6 +1,7 @@
 !! reload with: $ xrdb ~/.Xresources
 
 !! https://wiki.archlinux.org/title/Xorg#Display_size_and_DPI
+!! xdpyinfo | grep -B2 resolution
 Xft.dpi: 162x161
 
 !! URxvt Appearance
