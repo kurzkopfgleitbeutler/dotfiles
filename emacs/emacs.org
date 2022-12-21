@@ -464,7 +464,7 @@ So much to learn from [[http://sriramkswamy.github.io/dotemacs/#orgheadline11][h
   (setq
    ;; org-startup-indented t ; clean view
    org-indent-mode nil
-   ;; org-startup-folded 'children
+   org-startup-folded 'children
    org-adapt-indentation nil
    org-hide-emphasis-markers t
    org-hide-leading-stars t
@@ -479,7 +479,7 @@ So much to learn from [[http://sriramkswamy.github.io/dotemacs/#orgheadline11][h
    org-hide-block-startup t
    org-confirm-babel-evaluate nil
    org-src-preserve-indentation t ; https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-makefile.html
-   org-startup-with-inline-images t
+   org-startup-with-inline-images nil
    org-refile-targets '((org-agenda-files . (:maxlevel . 6)))
    org-log-done 'time ; keep track of when a certain TODO item was marked as done
    )
