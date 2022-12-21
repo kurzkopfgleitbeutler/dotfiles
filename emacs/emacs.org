@@ -133,6 +133,12 @@ information.
 ;; (fset 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
+*** disable suspend-frame
+
+#+begin_src emacs-lisp :tangle init.el
+(global-unset-key (kbd "C-z"))
+#+end_src
+
 *** fix for 'saving clipboard to x clipboard manager takes forever on exit'
 
 See [[https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=908159;msg=5][this bug report]] for details
