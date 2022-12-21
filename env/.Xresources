@@ -1,5 +1,8 @@
 !! reload with: $ xrdb ~/.Xresources
 
+!! https://wiki.archlinux.org/title/Xorg#Display_size_and_DPI
+Xft.dpi: 162x161
+
 !! URxvt Appearance
 URxvt.font: xft:DejaVu Sans Mono:style=regular:size=13
 URxvt.scrollBar: False
