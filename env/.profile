@@ -60,3 +60,9 @@ fi
 if [ -d "/var/lib/flatpak/exports/bin" ] ; then
     PATH="$PATH:/var/lib/flatpak/exports/bin"
 fi
+
+# add java home to path: readlink -f $(which java)
+if [ -f "$(which java)" ] ; then
+    export JAVA_HOME=$(readlink -f $(which java) | sed "s:/bin/java::")
+    PATH="$PATH:$JAVA_HOME/bin"
+fi
