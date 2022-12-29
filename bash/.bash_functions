@@ -157,3 +157,7 @@ function human(x) {
 	done
     fi
 }
+
+clip () {
+    printf "%b" "$@" | xclip -selection clipboard
+}
