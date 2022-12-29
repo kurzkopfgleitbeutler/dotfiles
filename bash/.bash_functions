@@ -158,6 +158,8 @@ function human(x) {
     fi
 }
 
-clip () {
-    printf "%b" "$@" | xclip -selection clipboard
+c () {
+    # in this instance, $* instead of $@ makes sense
+    # otherwise, spaces between arguments get lost
+    printf "%b" "$*" | xclip -selection clipboard
 }
