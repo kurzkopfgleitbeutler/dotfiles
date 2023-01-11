@@ -344,7 +344,7 @@ taken from https://github.com/jwiegley/dot-emacs/blob/master/init.el
 (defun my-set-font ()
   (message "my-set-font got called")
   (set-frame-font mainfont t t)
-  (set-face-attribute 'default nil :height 130)
+  (set-face-attribute 'default nil :height 130) ; default: 130
 
   ;; https://explog.in/notes/writingsetup.html
   (set-face-attribute 'default nil :family mainfont)
