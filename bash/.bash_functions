@@ -14,6 +14,7 @@ ropy () {
 
 cs () {
     now="$(date '+%Y-%m-%d-%H-%M-%S')"
+    printf "%b\n" "$@" > "${now}_clamscan_report.txt"
     clamscan --recursive --allmatch --detect-pua=yes --detect-structured=yes --heuristic-scan-precedence=yes --max-filesize=2048M --log="${now}_clamscan_report.txt" -- $@
     # clamscan --recursive --allmatch --detect-pua=yes --detect-structured=yes --heuristic-scan-precedence=yes --max-filesize=2048M -- $@ | tee "$@"_clam_report.txt
 }
