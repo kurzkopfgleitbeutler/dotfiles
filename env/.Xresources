@@ -13,73 +13,62 @@ URxvt.scrollWithBuffer: True
 URxvt.scrollTtyKeypress: True
 !URxvt.borderLess: True !kills it in i3
 
-!! https://github.com/solarized/xresources/blob/master/Xresources.light
-#define S_base03        #002b36
-#define S_base02        #073642
-#define S_base01        #586e75
-#define S_base00        #657b83
-#define S_base0         #839496
-#define S_base1         #93a1a1
-#define S_base2         #eee8d5
-#define S_base3         #fdf6e3
-
-!! EITHER: solarized light
-*background:            S_base3
-*foreground:            S_base00
-*fadeColor:             S_base3
-*cursorColor:           S_base01
-*pointerColorBackground:S_base1
-*pointerColorForeground:S_base01
-
-! !! OR: solarized dark
-! *background:            S_base03
-! *foreground:            S_base0
-! *fadeColor:             S_base03
-! *cursorColor:           S_base1
-! *pointerColorBackground:S_base01
-! *pointerColorForeground:S_base1
-
-#define S_yellow        #b58900
-#define S_orange        #cb4b16
-#define S_red           #dc322f
-#define S_magenta       #d33682
-#define S_violet        #6c71c4
-#define S_blue          #268bd2
-#define S_cyan          #2aa198
-#define S_green         #859900
-
-!! black dark/light
-*color0:                S_base02
-*color8:                S_base03
-
-!! red dark/light
-*color1:                S_red
-*color9:                S_orange
-
-!! green dark/light
-*color2:                S_green
-*color10:               S_base01
-
-!! yellow dark/light
-*color3:                S_yellow
-*color11:               S_base00
-
-!! blue dark/light
-*color4:                S_blue
-*color12:               S_base0
-
-!! magenta dark/light
-*color5:                S_magenta
-*color13:               S_violet
-
-!! cyan dark/light
-*color6:                S_cyan
-*color14:               S_base1
-
-!! white dark/light
-*color7:                S_base2
-*color15:               S_base3
-
 !! xmessage
 Xmessage*geometry: +1920+1200
 Xmessage*Scrollbar.width: 0
+
+!---------------------------------------------------------------------------
+! Selenized light color palette for urxvt and X Window System
+!
+#define    bg_0        #fbf3db
+#define    bg_1        #e9e4d0
+#define    bg_2        #cfcebe
+#define    dim_0       #909995
+#define    fg_0        #53676d
+#define    fg_1        #3a4d53
+
+#define    red         #d2212d
+#define    green       #489100
+#define    yellow      #ad8900
+#define    blue        #0072d4
+#define    magenta     #ca4898
+#define    cyan        #009c8f
+#define    orange      #c25d1e
+#define    violet      #8762c6
+
+#define    br_red      #cc1729
+#define    br_green    #428b00
+#define    br_yellow   #a78300
+#define    br_blue     #006dce
+#define    br_magenta  #c44392
+#define    br_cyan     #00978a
+#define    br_orange   #bc5819
+#define    br_violet   #825dc0
+
+*background:              bg_0
+*foreground:              fg_0
+*fading:                  40
+*fadeColor:               bg_0
+*cursorColor:             fg_1
+*pointerColorBackground:  bg_2
+*pointerColorForeground:  fg_1
+
+! normal colors: "black", red, green, yellow, blue, magenta, cyan, "white"
+*color0:     bg_1
+*color1:     red
+*color2:     green
+*color3:     yellow
+*color4:     blue
+*color5:     magenta
+*color6:     cyan
+*color7:     dim_0
+
+! bright/bold versions of colors (in the same order)
+*color8:     bg_2
+*color9:     br_red
+*color10:    br_green
+*color11:    br_yellow
+*color12:    br_blue
+*color13:    br_magenta
+*color14:    br_cyan
+*color15:    fg_1

@@ -25,6 +25,9 @@ export TERMINAL="urxvt" # i3-sensible-terminal
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
+# fix dircolors for Selenized
+export LS_COLORS="$LS_COLORS:ow=1;7;34:st=30;44:su=30;41"
+
 # gnupg
 export GPG_TTY=$(tty)
 
