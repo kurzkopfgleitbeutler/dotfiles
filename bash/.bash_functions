@@ -1,5 +1,5 @@
 emacs () {
-      emacsclient "$@" 2>/dev/null || /usr/bin/emacs "$@"
+      emacsclient "$@" 2>/dev/null || /usr/local/bin/emacs "$@"
 }
 
 # bind 'les' to syntax-highlighting-enabled less through python's pygments
