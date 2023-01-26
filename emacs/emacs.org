@@ -818,7 +818,7 @@ See info for format-time-string
 **** emms
 
 [[https://www.gnu.org/software/emms/manual/#Quickstart-Guide][The Emacs Multimedia System]]
-#+BEGIN_SRC emacs-lisp :tangle init.el
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package emms
   :config
   (emms-all)
@@ -875,7 +875,7 @@ project management library:
 
 Make backspace and C-d erase /all/ consecutive white space in a given
 direction:
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp :tangle no
 (use-package hungry-delete
   :init
   (global-hungry-delete-mode))
