@@ -1130,6 +1130,12 @@ https://emacs.cafe/emacs/javascript/setup/2017/04/23/emacs-setup-javascript.html
   )
 #+end_src
 
+**** notmuch
+
+#+begin_src emacs-lisp :tangle init.el
+(use-package notmuch)
+#+end_src
+
 **** not in repositories - from manually downloaded file
 
 ***** apex-mode

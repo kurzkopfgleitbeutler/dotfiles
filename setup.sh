@@ -153,6 +153,10 @@ scope ()
 	# vim
 	enso ~/dotfiles/vim/.vimrc ~/.vimrc
 
+	# mail
+	# mkdir -v ~/.config/offlineimap
+	enso ~/dotfiles/mail/.offlineimaprc ~/.config/offlineimap/config
+
 	printf "%b\n" ""
     }
     log main $@
