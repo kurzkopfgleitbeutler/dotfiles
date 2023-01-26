@@ -69,3 +69,16 @@ if [ -f "$(which java)" ] ; then
     export JAVA_HOME=$(readlink -f $(which java) | sed "s:/bin/java::")
     PATH="$PATH:$JAVA_HOME/bin"
 fi
+
+# https://wiki.archlinux.org/title/SSH_keys#ssh-agent
+# since upgrade to ubuntu 22.04, the bash alias: ssh-agent; pass -c ssh-keygen-github; ssh-add ~/.ssh/github
+# doesn't work anymore. Also, the alias: eval "$(ssh-agent)"; pass -c ssh-keygen-github; ssh-add ~/.ssh/github
+# spawns an $SSH_AGENT_PID only as child of the current bash.
+# without this, alias workgit='eval "$(ssh-agent)"; pass -c ssh-keygen-github; ssh-add ~/.ssh/' is a small workaround for only bash
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+    ssh-agent > "$XDG_RUNTIME_DIR/ssh-agent.env"
+fi
+if [ ! -f "$SSH_AUTH_SOCK" ]
+then
+    source "$XDG_RUNTIME_DIR/ssh-agent.env" > /dev/null
+fi
