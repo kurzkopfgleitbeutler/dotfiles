@@ -205,8 +205,11 @@ exec --no-startup-id /usr/bin/syncthing serve --no-browser --logfile=default
 
 #exec --no-startup-id feh --bg-scale /usr/share/backgrounds/default.png # fedora
 exec --no-startup-id sh ~/dotfiles/i3/wallpaper.sh # wallpaper
+exec --no-startup-id sh ~/dotfiles/i3/battery.sh # low battery warnings https://github.com/rjekker/i3-battery-popup
+
 # started like this, redshift doesn't use the config file under ~/.config/redshift/redshift.conf
 exec --no-startup-id redshift-gtk -m randr -t 6500:3000 -l manual -l 51.1:6.8
+
 exec --no-startup-id /usr/bin/xfce4-clipman
 
 bindsym $mod+x exec code

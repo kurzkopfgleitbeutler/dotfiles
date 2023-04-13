@@ -30,6 +30,8 @@
 !i3/wallpaper.sh
 !i3/lock.sh
 !i3/include/lockmenu.conf
+!i3/battery.sh
+
 !i3/include/i3-selenized-black.conf
 !i3/include/i3-selenized-dark.conf
 !i3/include/i3-selenized-light.conf
