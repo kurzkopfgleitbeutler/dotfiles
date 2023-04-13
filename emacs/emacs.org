@@ -684,7 +684,7 @@ Use solarized-light in window system, wombat when run in console mode
     (if (display-graphic-p)
 	(progn
 	  (mapcar #'disable-theme custom-enabled-themes)
-	  (load-theme 'solarized-selenized-light t)
+	  (load-theme 'solarized-selenized-white t)
 	  ;; Attributes can be read with (face-attribute 'mode-line :background)
 	  (set-face-attribute 'mode-line nil :background "grey75" :foreground "black")
 	  ;; (set-face-attribute 'mode-line-inactive nil :background "grey90" :foreground "grey75" )

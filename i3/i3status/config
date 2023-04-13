@@ -7,8 +7,33 @@
 # If the above line is not correctly displayed, fix your editor first!
 
 general {
-        colors = true
-        interval = 5
+	colors = true
+	interval = 5
+
+	# color_good = "$bar_good"
+	# color_degraded = "$bar_degraded"
+	# color_bad = "$bar_bad"
+
+	# selenized-black
+	color_good = "#70b433"
+	color_degraded = "#dbb32d"
+	color_bad = "#ed4a46"
+
+	# selenized-dark
+	# color_good = "#75b938"
+	# color_degraded = "#dbb32d"
+	# color_bad = "#fa5750"
+
+	# selenized-light
+	# color_good = "#489100"
+	# color_degraded = "#ad8900"
+	# color_bad = "#d2212d"
+
+	# selenized-white
+	# color_good = "#1d9700"
+	# color_degraded = "#c49700"
+	# color_bad = "#d6000c"
+
 }
 
 order += "ipv6"

@@ -30,7 +30,17 @@
 !i3/wallpaper.sh
 !i3/lock.sh
 !i3/include/lockmenu.conf
+!i3/include/i3-selenized-black.conf
+!i3/include/i3-selenized-dark.conf
+!i3/include/i3-selenized-light.conf
+!i3/include/i3-selenized-white.conf
+
 !i3/i3status/config
+
+!env/selenized-black.xdefaults
+!env/selenized-dark.xdefaults
+!env/selenized-light.xdefaults
+!env/selenized-white.xdefaults
 
 # ...even if they are in subdirectories
 
