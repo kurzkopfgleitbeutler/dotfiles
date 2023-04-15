@@ -127,7 +127,7 @@ information.
       delete-by-moving-to-trash t
       switch-to-buffer-in-dedicated-window 'prompt
       kill-whole-line t
-      auto-hscroll-mode 'current-line ; https://old.reddit.com/r/emacs/comments/6au45k/is_it_possible_to_truncate_long_lines_the_same/dhqzchv/
+      ;;auto-hscroll-mode 'current-line ; https://old.reddit.com/r/emacs/comments/6au45k/is_it_possible_to_truncate_long_lines_the_same/dhqzchv/
       use-short-answers t
       )
 ;; (fset 'yes-or-no-p 'y-or-n-p)
