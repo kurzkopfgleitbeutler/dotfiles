@@ -1145,6 +1145,12 @@ https://emacs.cafe/emacs/javascript/setup/2017/04/23/emacs-setup-javascript.html
 (use-package notmuch)
 #+end_src
 
+**** focus
+
+#+begin_src emacs-lisp :tangle init.el
+(use-package focus)
+#+end_src
+
 **** not in repositories - from manually downloaded file
 
 ***** apex-mode
