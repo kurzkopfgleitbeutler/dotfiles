@@ -1151,6 +1151,12 @@ https://emacs.cafe/emacs/javascript/setup/2017/04/23/emacs-setup-javascript.html
 (use-package focus)
 #+end_src
 
+**** elpher
+
+#+begin_src emacs-lisp :tangle init.el
+(use-package elpher)
+#+end_src
+
 **** not in repositories - from manually downloaded file
 
 ***** apex-mode
