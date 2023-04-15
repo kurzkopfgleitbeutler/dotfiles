@@ -164,3 +164,124 @@ c () {
     # otherwise, spaces between arguments get lost
     printf "%b" "$*" | xclip -selection clipboard
 }
+
+dlma () {
+    mkdir subtitles
+    while true
+    do
+	youtube-dl \
+	    -x \
+	    --continue \
+	    --download-archive index \
+	    --no-post-overwrites \
+	    --no-overwrites \
+	    --restrict-filenames \
+	    -f bestaudio \
+	    --write-description \
+	    --add-metadata \
+	    --xattrs \
+	    --playlist-random \
+	    --embed-subs \
+	    --write-sub \
+	    --all-subs \
+	    --batch-file urls
+	if [ "$?" -eq "0" ] ; then break ; fi
+    done
+    mv *.vtt *.description subtitles
+}
+# alias dlmv='youtube-dl --restrict-filenames --ignore-errors -f bestvideo+bestaudio/best --write-description --add-metadata --xattrs --merge-output-format mkv --embed-subs --all-subs --batch-file urls'
+dlmv () {
+    mkdir subtitles
+    while true
+    do
+	youtube-dl \
+	    --restrict-filenames \
+	    -f bestvideo+bestaudio/best \
+	    --write-description \
+	    --add-metadata \
+	    --xattrs \
+	    --merge-output-format mkv \
+	    --embed-subs \
+	    --all-subs \
+	    --batch-file urls
+	if [ "$?" -eq "0" ] ; then break ; fi
+    done
+    mv *.vtt *.description subtitles
+}
+dlpa () {
+    mkdir subtitles
+    while true
+    do
+    youtube-dl \
+	-x \
+	--continue \
+	--download-archive index \
+	--no-post-overwrites \
+	--no-overwrites \
+	--output "%(playlist_index)s_%(title)s-%(id)s.%(ext)s" \
+	--restrict-filenames \
+	-f bestaudio \
+	--write-description \
+	--add-metadata \
+	--xattrs \
+	--playlist-random \
+	--embed-subs \
+	--write-sub \
+	--all-subs \
+	--batch-file urls
+    if [ "$?" -eq "0" ] ; then break ; fi
+    done
+    mv *.vtt *.description subtitles
+}
+# alias dlpv='youtube-dl    --continue --download-archive index --no-post-overwrites --no-overwrites --output "%(playlist_index)s_%(title)s-%(id)s.%(ext)s" --restrict-filenames --ignore-errors -f bestvideo+bestaudio --write-description --add-metadata --xattrs --merge-output-format mkv --embed-subs --write-sub --all-subs --batch-file urls && mkdir subtitles && mv *.vtt *.description subtitles'
+dlpv () {
+    mkdir subtitles
+    while true
+    do
+	youtube-dl \
+	    --continue \
+	    --download-archive index \
+	    --no-post-overwrites \
+	    --no-overwrites \
+	    --output "%(playlist_index)s_%(title)s-%(id)s.%(ext)s" \
+	    --restrict-filenames \
+	    --ignore-errors \
+	    -f bestvideo+bestaudio \
+	    --write-description \
+	    --add-metadata \
+	    --xattrs \
+	    --merge-output-format mkv \
+	    --embed-subs \
+	    --write-sub \
+	    --all-subs \
+	    --batch-file urls
+	if [ "$?" -eq "0" ] ; then break ; fi
+    done
+    mv *.vtt *.description subtitles
+}
+# alias dlpvl='youtube-dl    --continue --download-archive index --no-post-overwrites --no-overwrites --output "%(playlist_index)s_%(title)s-%(id)s.%(ext)s" --restrict-filenames --ignore-errors -f worstvideo+worstaudio --write-description --add-metadata --xattrs --merge-output-format mkv --embed-subs --write-sub --all-subs --batch-file urls && mkdir subtitles && mv *.vtt *.description subtitles'
+dlpvl () {
+    mkdir subtitles
+    while true
+    do
+	youtube-dl \
+	    --continue \
+	    --download-archive index \
+	    --no-post-overwrites \
+	    --no-overwrites \
+	    --output "%(playlist_index)s_%(title)s-%(id)s.%(ext)s" \
+	    --restrict-filenames \
+	    --ignore-errors \
+	    -f worstvideo+worstaudio \
+	    --write-description \
+	    --add-metadata \
+	    --xattrs \
+	    --merge-output-format mkv \
+	    --embed-subs \
+	    --write-sub \
+	    --all-subs \
+	    --batch-file urls
+	if [ "$?" -eq "0" ] ; then break ; fi
+    done
+    mv *.vtt *.description subtitles
+}
