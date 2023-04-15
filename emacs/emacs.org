@@ -232,7 +232,8 @@ With active region, let typed text replace selection:
 *** title bar
 
 #+begin_src emacs-lisp :tangle init.el
-(setq frame-title-format '(multiple-frames "%b" ("" invocation-name ": %b %n")))
+;; (setq frame-title-format '(multiple-frames "%b" ("" invocation-name ": %b %n")))
+(setq frame-title-format '(multiple-frames "%b" ("" invocation-name " %n")))
 #+end_src
 
 *** line-number-mode
