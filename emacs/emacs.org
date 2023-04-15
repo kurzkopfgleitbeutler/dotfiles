@@ -327,7 +327,7 @@ Some nice ones from my font collection:
 
 run this to change font while emacs is running:
 #+begin_src emacs-lisp :tangle no
-(let ((mainfont "Terminus"))
+(let ((mainfont "Fira Code"))
   (my-set-font))
 #+end_src
 
@@ -344,13 +344,19 @@ taken from https://github.com/jwiegley/dot-emacs/blob/master/init.el
 #+begin_src emacs-lisp :tangle init.el
 (defun my-set-font ()
   (message "my-set-font got called")
-  (set-frame-font mainfont t t)
+  (when (member mainfont (font-family-list))
+    (set-frame-font mainfont t t)
+    )
   (set-face-attribute 'default nil :height 130) ; default: 130
 
   ;; https://explog.in/notes/writingsetup.html
-  (set-face-attribute 'default nil :family mainfont)
-  (set-face-attribute 'fixed-pitch nil :family mainfont)
-  (set-face-attribute 'variable-pitch nil :family fontvariablepitch)
+  (when (member mainfont (font-family-list))
+    (set-face-attribute 'default nil :family mainfont)
+    (set-face-attribute 'fixed-pitch nil :family mainfont)
+    )
+  (when (member fontvariablepitch (font-family-list))
+    (set-face-attribute 'variable-pitch nil :family fontvariablepitch)
+    )
 
   ;; (when (display-graphic-p)
   ;;   (when (member fontdefault (font-family-list))
