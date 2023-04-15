@@ -544,6 +544,9 @@ So much to learn from [[http://sriramkswamy.github.io/dotemacs/#orgheadline11][h
 					     )
 					   ))
   (add-to-list 'display-buffer-alist (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
+
+  ;; https://stackoverflow.com/questions/41568410/configure-org-mode-to-use-lualatex/41625195#41625195
+  (setq org-latex-compiler "lualatex")
   )
 #+END_SRC
 https://jherrlin.github.io/posts/emacs-orgmode-source-code-blocks/
