@@ -119,10 +119,12 @@ scope ()
 	enso ~/dotfiles/emacs/init.el ~/.config/emacs/init.el
 	if [ "$distname" = "fedora" ]
 	then
-	    trysudo ln -vs ~/dotfiles/emacs/site-start.el /usr/share/emacs/site-lisp/site-start.d/site-start.el
+	    #trysudo
+	    sudo ln -vs ~/dotfiles/emacs/site-start.el /usr/share/emacs/site-lisp/site-start.d/site-start.el
 	elif [ "$distname" = "ubuntu" ]
 	then
-	    trysudo ln -vs ~/dotfiles/emacs/site-start.el /usr/local/share/emacs/site-lisp/site-start.el
+	    #trysudo
+	    sudo ln -vs ~/dotfiles/emacs/site-start.el /usr/local/share/emacs/site-lisp/site-start.el
 	fi
 
 	# git
