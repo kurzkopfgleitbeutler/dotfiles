@@ -1,13 +1,13 @@
 #!/bin/sh
 
-if [ "$(command -v xdpyinfo)" ]
-then
-    res="$(xdpyinfo | awk '/dimensions/ {print $2}')"
-else
-    res="1920x1080"
-fi
+# if [ "$(command -v xdpyinfo)" ]
+# then
+#     res="$(xdpyinfo | awk '/dimensions/ {print $2}')"
+# else
+#     res="1920x1080"
+# fi
 
-convert -size "$res" xc: +noise Random -virtual-pixel tile -blur 0x5 -normalize -fx g -sigmoidal-contrast 15x50% -solarize 50% /tmp/fehbg.png
+convert -size 480x270 xc: +noise Random -virtual-pixel tile -blur 0x5 -normalize -fx g -sigmoidal-contrast 15x50% -solarize 50% /tmp/fehbg.png
 feh --bg-fill /tmp/fehbg.png
 exit
 
