@@ -214,4 +214,5 @@ exec --no-startup-id /usr/bin/xfce4-clipman
 
 bindsym $mod+x exec code
 bindsym $mod+c exec emacs
+bindsym $mod+b exec chromium-browser
 bindsym $mod+m exec audacious ; exec pavucontrol
