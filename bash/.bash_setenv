@@ -1,5 +1,23 @@
 export LANG='en_US.UTF-8'
-export VISUAL='emacsclient --alternate-editor=nvim --no-wait'
+
+if [ $(command -v nvim) ]
+then
+    export VISUAL='nvim'
+else if [ $(command -v emacsclient) ]
+     then
+	 if [ $(command -v geany) ]
+	 then
+	     export VISUAL='emacsclient --alternate-editor=geany --no-wait'
+	 else
+	     export VISUAL='emacsclient --alternate-editor=vi --no-wait'
+	 fi
+     else if [ $(command -v geany) ]
+	  then
+	      export VISUAL='geany'
+	  fi
+     fi
+fi
+
 export EDITOR='vi'
 
 # don't put duplicate lines or lines starting with space in the history. See bash(1) for more options
