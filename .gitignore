@@ -21,10 +21,15 @@
 !emacs/apex-mode/apex-mode.el
 !emacs/apex-mode/README.md
 
+!env/selenized-black.xdefaults
+!env/selenized-dark.xdefaults
+!env/selenized-light.xdefaults
+!env/selenized-white.xdefaults
+
 !git/.gitconfig
 
-!vim/.vimrc
-!nvim/init.vim
+!helix/config.toml
+!helix/languages.toml
 
 !i3/config
 !i3/wallpaper.sh
@@ -39,10 +44,9 @@
 
 !i3/i3status/config
 
-!env/selenized-black.xdefaults
-!env/selenized-dark.xdefaults
-!env/selenized-light.xdefaults
-!env/selenized-white.xdefaults
+!nvim/init.vim
+
+!vim/.vimrc
 
 # ...even if they are in subdirectories
 
