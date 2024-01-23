@@ -1578,9 +1578,9 @@ Taken from https://superuser.com/a/184421
 
 **** Unfill
 
-#+BEGIN_SRC emacs-lisp :tangle init.el
+#+BEGIN_SRC emacs-lisp :tangle no
 (defun endless/fill-or-unfill ()
-  "Like ‘fill-paragraph’, but unfill if used twice."
+  "Like 'fill-paragraph', but unfill if used twice."
   (interactive)
   (let ((fill-column
 	 (if (eq last-command 'endless/fill-or-unfill)
@@ -1590,11 +1590,60 @@ Taken from https://superuser.com/a/184421
     (call-interactively #'fill-paragraph)))
 (global-set-key [remap fill-paragraph]
 		#'endless/fill-or-unfill)
-(global-set-key [remap org-fill-paragraph]
-		#'endless/fill-or-unfill)
 #+END_SRC
 Taken from http://endlessparentheses.com/fill-and-unfill-paragraphs-with-a-single-key.html
 
+#+begin_src emacs-lisp :tangle init.el
+(use-package unfill)
+
+(defun fill-sentences-in-paragraph ()
+  "Put a newline at the end of each sentence in the current paragraph."
+  (interactive)
+  (save-excursion
+    (mark-paragraph)
+    (call-interactively 'fill-sentences-in-region)
+    ))
+
+(defun fill-sentences-in-region (start end)
+  "Put a newline at the end of each sentence in the region marked by (start end)."
+  (interactive "*r")
+  (call-interactively 'unfill-region)
+  (save-excursion
+    (goto-char start)
+    (while (< (point) end)
+      (forward-sentence)
+      (if (looking-at-p " ")
+	  (newline-and-indent)
+	))))
+
+(defvar repetition-counter 0
+  "How often cycle-on-repetition was called in a row using the same command.")
+
+(defun cycle-on-repetition (list-of-expressions)
+  "Return the first element from the list on the first call,
+the second expression on the second consecutive call etc"
+  (interactive)
+  (if (equal this-command last-command)
+      (setq repetition-counter (+ repetition-counter 1))
+    (setq repetition-counter 0)
+    )
+  (nth
+   (mod repetition-counter (length list-of-expressions))
+   list-of-expressions) ;; implicit return of the last evaluated value
+  )
+
+(defun reformat-paragraph ()
+  "Cycles the paragraph between three states. filled/unfilled/fill-sentences."
+  (interactive)
+  (funcall (cycle-on-repetition '(fill-paragraph fill-sentences-in-paragraph unfill-paragraph)))
+  ;;(funcall (cycle-on-repetition '(fill-paragraph unfill-paragraph)))
+  )
+
+(global-set-key
+ (kbd "M-q") 'reformat-paragraph
+ )
+#+end_src
+Taken from https://schauderbasis.de/posts/reformat_paragraph/
 
 *** new additions
 
