@@ -1,15 +1,7 @@
-emacs () {
-      emacsclient "$@" 2>/dev/null || /usr/local/bin/emacs "$@"
-}
-
-# bind 'les' to syntax-highlighting-enabled less through python's pygments
-les () {
-    pygmentize -gf terminal256 -P style=monokai "$1" | less -R
-}
-
-# avoid losing data when moving to new hard drives, file systems etc
-ropy () {
-    rsync --verbose --archive --hard-links --acls --xattrs --partial --delete-during "$1" "$2" >> "$2"/sync-report.txt 2>> "$2"/sync-errors.txt
+c () {
+    # in this instance, $* instead of $@ makes sense
+    # otherwise, spaces between arguments get lost
+    printf "%b" "$*" | xclip -selection clipboard
 }
 
 cs () {
@@ -17,6 +9,83 @@ cs () {
     printf "%b\n" "$@" > "${now}_clamscan_report.txt"
     clamscan --recursive --allmatch --detect-pua=yes --detect-structured=yes --heuristic-scan-precedence=yes --max-filesize=2048M --log="${now}_clamscan_report.txt" -- $@
     # clamscan --recursive --allmatch --detect-pua=yes --detect-structured=yes --heuristic-scan-precedence=yes --max-filesize=2048M -- $@ | tee "$@"_clam_report.txt
+}
+
+emacs () {
+    emacsclient "$@" 2>/dev/null || /usr/local/bin/emacs "$@"
+}
+
+funs () {
+    compgen -A function | awk '/^[^_]/ { print }'
+}
+
+h () {
+    for arg in $@
+    do
+	printf "%b\n" "+++ type +++"
+	type "$arg"
+
+	printf "%b\n" "\n+++ apropos +++"
+	man -k "$arg" # aka apropos
+
+	printf "%b\n" "\n+++ whatis +++"
+	man -f "$arg" # aka whatis
+
+	printf "%b\n" "\n+++ which +++"
+	which "$arg"
+
+	printf "%b\n" "\n+++ whereis +++"
+	whereis "$arg"
+    done
+}
+
+keys () {
+    xev | awk -F'[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }'
+}
+
+l () {
+    script='
+function human(x) {
+    if (x<1000) {return x} else {x/=1024}
+    s="kMGTEPZY";
+    while (x>=1000 && length(s)>1) {
+    	  x/=1024; s=substr(s,2)
+    }
+    return int(x+0.5) substr(s,1,1)
+}
+{
+    printf("%-4s %-6s ", $1, $2);
+    h=sub(/^[0-9]+/, human($3));
+    printf("%4s", $h);
+    $1=$2=$3="";
+    printf("%s\n", $0);
+}'
+
+    if [ $# -eq 0 ]
+    then
+	# access rights in octal | user name of owner | block size | quoted file name with dereference if symbolic link
+	stat -c '%a %U %s %N' * | awk -e "$script"
+    else
+	for arg in $@
+	do
+	    if [ "$arg" = "." ]
+	    then
+		stat -c '%a %U %s %N' * | awk -e "$script"
+	    else
+		if [ "${arg: -1}" = "/" ]
+		then
+		    stat -c '%a %U %s %N' "$arg"* | awk -e "$script"
+		else
+		    stat -c '%a %U %s %N' "$arg"/* | awk -e "$script"
+		fi
+	    fi
+	done
+    fi
+}
+
+# bind 'les' to syntax-highlighting-enabled less through python's pygments
+les () {
+    pygmentize -gf terminal256 -P style=monokai "$1" | less -R
 }
 
 p () {
@@ -81,13 +150,13 @@ p () {
 	pstree -U "$id"
     done
 
-    	# pstree -alpsU $ids
-	# read -p "Kill process?" -n 1 flagkill
-	# printf "%b\n" ""
-	# if [ "$flagkill" = "y" ]
-	# then
-	#     kill $ids
-	# fi
+    # pstree -alpsU $ids
+    # read -p "Kill process?" -n 1 flagkill
+    # printf "%b\n" ""
+    # if [ "$flagkill" = "y" ]
+    # then
+    #     kill $ids
+    # fi
 
     #    pstree -alpsU "$id" #| rofi -threads 0 -dmenu -i -auto-select -p "Kill which process?"
     # pkill name
@@ -119,50 +188,22 @@ perms () {
     done
 }
 
-l () {
-    script='
-function human(x) {
-    if (x<1000) {return x} else {x/=1024}
-    s="kMGTEPZY";
-    while (x>=1000 && length(s)>1) {
-    	  x/=1024; s=substr(s,2)
-    }
-    return int(x+0.5) substr(s,1,1)
+# avoid losing data when moving to new hard drives, file systems etc
+ropy () {
+    rsync --verbose --archive --hard-links --acls --xattrs --partial --delete-during "$1" "$2" >> "$2"/sync-report.txt 2>> "$2"/sync-errors.txt
 }
-{
-    printf("%-4s %-6s ", $1, $2);
-    h=sub(/^[0-9]+/, human($3));
-    printf("%4s", $h);
-    $1=$2=$3="";
-    printf("%s\n", $0);
-}'
 
-    if [ $# -eq 0 ]
+# https://superuser.com/questions/181517/how-to-execute-a-command-whenever-a-file-changes
+# re-run
+rr () {
+    if [ "$#" -eq "2" ]
     then
-	# access rights in octal | user name of owner | block size | quoted file name with dereference if symbolic link
-	stat -c '%a %U %s %N' * | awk -e "$script"
-    else
-	for arg in $@
+	while inotifywait -q -q -e close_write "$1"
 	do
-	    if [ "$arg" = "." ]
-	    then
-		stat -c '%a %U %s %N' * | awk -e "$script"
-	    else
-		if [ "${arg: -1}" = "/" ]
-		then
-		    stat -c '%a %U %s %N' "$arg"* | awk -e "$script"
-		else
-		    stat -c '%a %U %s %N' "$arg"/* | awk -e "$script"
-		fi
-	    fi
+	    printf "\n\n"
+	    $2 "$1"
 	done
-    fi
-}
-
-c () {
-    # in this instance, $* instead of $@ makes sense
-    # otherwise, spaces between arguments get lost
-    printf "%b" "$*" | xclip -selection clipboard
+	fi
 }
 
 dlma () {
@@ -212,24 +253,24 @@ dlpa () {
     mkdir subtitles
     while true
     do
-    youtube-dl \
-	-x \
-	--continue \
-	--download-archive index \
-	--no-post-overwrites \
-	--no-overwrites \
-	--output "%(playlist_index)s_%(title)s-%(id)s.%(ext)s" \
-	--restrict-filenames \
-	-f bestaudio \
-	--write-description \
-	--add-metadata \
-	--xattrs \
-	--playlist-random \
-	--embed-subs \
-	--write-sub \
-	--all-subs \
-	--batch-file urls
-    if [ "$?" -eq "0" ] ; then break ; fi
+	youtube-dl \
+	    -x \
+	    --continue \
+	    --download-archive index \
+	    --no-post-overwrites \
+	    --no-overwrites \
+	    --output "%(playlist_index)s_%(title)s-%(id)s.%(ext)s" \
+	    --restrict-filenames \
+	    -f bestaudio \
+	    --write-description \
+	    --add-metadata \
+	    --xattrs \
+	    --playlist-random \
+	    --embed-subs \
+	    --write-sub \
+	    --all-subs \
+	    --batch-file urls
+	if [ "$?" -eq "0" ] ; then break ; fi
     done
     mv *.vtt *.description subtitles
 }
