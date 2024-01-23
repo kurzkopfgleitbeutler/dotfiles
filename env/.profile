@@ -8,6 +8,9 @@ export my_emacs_projectile_searchpath=""
 
 export TERMINAL="urxvt" # i3-sensible-terminal
 
+# Use 'Print' key as right-click
+/usr/bin/xmodmap -e 'keycode 107 = Menu'
+
 # distname="$(awk -F'=' '/^ID=/ {print tolower($2)}' /etc/*-release)"
 # if [ "$distname" = "ubuntu" ]
 # then
