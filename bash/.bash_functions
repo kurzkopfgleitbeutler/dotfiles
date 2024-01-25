@@ -213,7 +213,7 @@ dlma () {
     mkdir subtitles
     while true
     do
-	youtube-dl \
+	yt-dlp \
 	    -x \
 	    --continue \
 	    --download-archive index \
@@ -238,7 +238,7 @@ dlmv () {
     mkdir subtitles
     while true
     do
-	youtube-dl \
+	yt-dlp \
 	    --restrict-filenames \
 	    -f bestvideo+bestaudio/best \
 	    --write-description \
@@ -256,24 +256,24 @@ dlpa () {
     mkdir subtitles
     while true
     do
-	youtube-dl \
-	    -x \
-	    --continue \
-	    --download-archive index \
-	    --no-post-overwrites \
-	    --no-overwrites \
-	    --output "%(playlist_index)s_%(title)s-%(id)s.%(ext)s" \
-	    --restrict-filenames \
-	    -f bestaudio \
-	    --write-description \
-	    --add-metadata \
-	    --xattrs \
-	    --playlist-random \
-	    --embed-subs \
-	    --write-sub \
-	    --all-subs \
-	    --batch-file urls
-	if [ "$?" -eq "0" ] ; then break ; fi
+    yt-dlp \
+	-x \
+	--continue \
+	--download-archive index \
+	--no-post-overwrites \
+	--no-overwrites \
+	--output "%(playlist_index)s_%(title)s-%(id)s.%(ext)s" \
+	--restrict-filenames \
+	-f bestaudio \
+	--write-description \
+	--add-metadata \
+	--xattrs \
+	--playlist-random \
+	--embed-subs \
+	--write-sub \
+	--all-subs \
+	--batch-file urls
+    if [ "$?" -eq "0" ] ; then break ; fi
     done
     mv *.vtt *.description subtitles
 }
@@ -282,7 +282,7 @@ dlpv () {
     mkdir subtitles
     while true
     do
-	youtube-dl \
+	yt-dlp \
 	    --continue \
 	    --download-archive index \
 	    --no-post-overwrites \
@@ -308,7 +308,7 @@ dlpvl () {
     mkdir subtitles
     while true
     do
-	youtube-dl \
+	yt-dlp \
 	    --continue \
 	    --download-archive index \
 	    --no-post-overwrites \
