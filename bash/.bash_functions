@@ -36,7 +36,10 @@ h () {
 
 	printf "%b\n" "\n+++ whereis +++"
 	whereis "$arg"
-    done
+
+    	printf "%b\n" "\n+++ --help +++"
+	"$arg" --help | head -n 10
+done
 }
 
 keys () {
