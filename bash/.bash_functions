@@ -62,6 +62,24 @@ $(man -k "$arg" 2>&1)
 " | less
     done
 }
+
+hi () {
+    # delete this invocation, so list is empty if there's no other entry with the search string
+    history -d -1
+    if [ $# -eq 0 ]
+    then
+	cmds="$( history | awk '{$1="";print}' | cut -c 2- | tac | sort -u )"
+    else
+	cmds="$( history | awk '{$1="";print}' | cut -c 2- | tac | sort -u | grep "$@" )"
+    fi
+    if [ -z "$cmds" ]
+    then
+	printf "%b\n" "No history entry containing $@"
+	return
+    fi
+    cmd="$( printf "%b\n" "$cmds" | rofi -threads 0 -dmenu -i -p "Shell History" -auto-select )"
+    printf "%b" "$cmd" | xclip -selection clipboard
+    xdotool type "$(printf "%b" "$cmd")"
 }
 
 keys () {
@@ -228,7 +246,7 @@ rr () {
 	    printf "\n\n"
 	    $2 "$1"
 	done
-	fi
+    fi
 }
 
 dlma () {
@@ -278,24 +296,24 @@ dlpa () {
     mkdir subtitles
     while true
     do
-    yt-dlp \
-	-x \
-	--continue \
-	--download-archive index \
-	--no-post-overwrites \
-	--no-overwrites \
-	--output "%(playlist_index)s_%(title)s-%(id)s.%(ext)s" \
-	--restrict-filenames \
-	-f bestaudio \
-	--write-description \
-	--add-metadata \
-	--xattrs \
-	--playlist-random \
-	--embed-subs \
-	--write-sub \
-	--all-subs \
-	--batch-file urls
-    if [ "$?" -eq "0" ] ; then break ; fi
+	yt-dlp \
+	    -x \
+	    --continue \
+	    --download-archive index \
+	    --no-post-overwrites \
+	    --no-overwrites \
+	    --output "%(playlist_index)s_%(title)s-%(id)s.%(ext)s" \
+	    --restrict-filenames \
+	    -f bestaudio \
+	    --write-description \
+	    --add-metadata \
+	    --xattrs \
+	    --playlist-random \
+	    --embed-subs \
+	    --write-sub \
+	    --all-subs \
+	    --batch-file urls
+	if [ "$?" -eq "0" ] ; then break ; fi
     done
     mv *.vtt *.description subtitles
 }
