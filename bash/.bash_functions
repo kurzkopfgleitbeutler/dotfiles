@@ -35,24 +35,33 @@ funs () {
 h () {
     for arg in $@
     do
-	printf "%b\n" "+++ type +++"
-	type "$arg"
+	printf "%b\n" "+++ type +++
 
-	printf "%b\n" "\n+++ apropos +++"
-	man -k "$arg" # aka apropos
+$(type "$arg" 2>&1)
 
-	printf "%b\n" "\n+++ whatis +++"
-	man -f "$arg" # aka whatis
++++ whatis +++
 
-	printf "%b\n" "\n+++ which +++"
-	which "$arg"
+$(man -f "$arg" 2>&1)
 
-	printf "%b\n" "\n+++ whereis +++"
-	whereis "$arg"
++++ which +++
 
-    	printf "%b\n" "\n+++ --help +++"
-	"$arg" --help | head -n 10
-done
+$(which "$arg" 2>&1)
+
++++ whereis +++
+
+$(whereis "$arg" 2>&1)
+
++++ --help +++
+
+$("$arg" --help 2>&1 | head -n 5)
+  [...]
+
++++ apropos +++
+
+$(man -k "$arg" 2>&1)
+" | less
+    done
+}
 }
 
 keys () {
