@@ -4,6 +4,19 @@ c () {
     printf "%b" "$*" | xclip -selection clipboard
 }
 
+cd () {
+    showfun='l'
+    # showfun='tree -a -L 1 -p -u -h -v -i -C'
+    if [ "$#" -eq "2" ]
+    then
+	command cd "$1"
+	$showfun | grep "$2"
+    else
+	command cd "$@"
+	$showfun
+    fi
+}
+
 cs () {
     now="$(date '+%Y-%m-%d-%H-%M-%S')"
     printf "%b\n" "$@" > "${now}_clamscan_report.txt"
